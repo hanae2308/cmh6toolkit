@@ -1057,227 +1057,160 @@
       }
     }
 
-    // =============================================
-    // BULK HEADER REMOVER
-    // =============================================
-    function initBulkRemover() {
-      const dropArea = document.getElementById('removerUploadArea');
-      const fileInput = document.getElementById('removerFileInput');
-      const transformBtn = document.getElementById('removerTransformBtn');
-      const templateBtn = document.getElementById('removerTemplateBtn');
-      const templateContainer = document.getElementById('removerTemplateContainer');
-      const processTemplateBtn = document.getElementById('removerProcessTemplateBtn');
-      const resultsArea = document.getElementById('removerResults');
+   function initBulkRemover() {
+  const dropArea = document.getElementById('removerUploadArea');
+  const fileInput = document.getElementById('removerFileInput');
+  const transformBtn = document.getElementById('removerTransformBtn');
+  const templateBtn = document.getElementById('removerTemplateBtn');
+  const templateContainer = document.getElementById('removerTemplateContainer');
+  const processTemplateBtn = document.getElementById('removerProcessTemplateBtn');
+  const resultsArea = document.getElementById('removerResults');
 
-      let filesToProcess = [];
+  let filesToProcess = [];
 
-      // Toggle template input visibility
-      templateBtn.addEventListener('click', () => {
-        templateContainer.style.display = templateContainer.style.display === 'block' ? 'none' : 'block';
-        showButtonFeedback(templateBtn, templateContainer.style.display === 'block' ? "Template Shown" : "Template Hidden");
-      });
+  templateBtn.addEventListener('click', () => {
+    const show = templateContainer.style.display === 'block';
+    templateContainer.style.display = show ? 'none' : 'block';
+    showButtonFeedback(templateBtn, show ? "Template Hidden" : "Template Shown");
+  });
 
-      // Drag and Drop support
-      ["dragenter", "dragover"].forEach(event => {
-        dropArea.addEventListener(event, e => {
-          e.preventDefault();
-          e.stopPropagation();
-          dropArea.classList.add("dragover");
-        });
-      });
+  ["dragenter", "dragover"].forEach(event => {
+    dropArea.addEventListener(event, e => {
+      e.preventDefault();
+      dropArea.classList.add("dragover");
+    });
+  });
 
-      ["dragleave", "drop"].forEach(event => {
-        dropArea.addEventListener(event, e => {
-          e.preventDefault();
-          e.stopPropagation();
-          dropArea.classList.remove("dragover");
-        });
-      });
+  ["dragleave", "drop"].forEach(event => {
+    dropArea.addEventListener(event, e => {
+      e.preventDefault();
+      dropArea.classList.remove("dragover");
+    });
+  });
 
-      dropArea.addEventListener("drop", e => {
-        e.preventDefault();
-        filesToProcess = Array.from(e.dataTransfer.files).filter(f => f.name.toLowerCase().endsWith(".eml"));
-        updateFileList();
-        showButtonFeedback(transformBtn, `${filesToProcess.length} files ready`);
-      });
+  dropArea.addEventListener("drop", e => {
+    filesToProcess = Array.from(e.dataTransfer.files).filter(f => f.name.toLowerCase().endsWith(".eml"));
+    updateFileList();
+    showButtonFeedback(transformBtn, `${filesToProcess.length} files ready`);
+  });
 
-      fileInput.addEventListener("change", e => {
-        filesToProcess = Array.from(e.target.files).filter(f => f.name.toLowerCase().endsWith(".eml"));
-        updateFileList();
-        showButtonFeedback(transformBtn, `${filesToProcess.length} files ready`);
-      });
+  fileInput.addEventListener("change", e => {
+    filesToProcess = Array.from(e.target.files).filter(f => f.name.toLowerCase().endsWith(".eml"));
+    updateFileList();
+    showButtonFeedback(transformBtn, `${filesToProcess.length} files ready`);
+  });
 
-      transformBtn.addEventListener('click', () => {
-        processFiles();
-        showButtonFeedback(transformBtn, "Processing...");
-      });
-      
-      processTemplateBtn.addEventListener('click', () => {
-        processWithTemplate();
-        showButtonFeedback(processTemplateBtn, "Processing...");
-      });
-
-      function updateFileList() {
-        if (filesToProcess.length === 0) {
-          resultsArea.innerHTML = '<p>No files selected</p>';
-          return;
-        }
-
-        resultsArea.innerHTML = `
-          <p><strong>Selected files:</strong> ${filesToProcess.length}</p>
-          <ul style="margin-top: 0.5rem; max-height: 200px; overflow-y: auto;">
-            ${filesToProcess.map(file => `<li>${file.name}</li>`).join('')}
-          </ul>
-        `;
-      }
-
-      function extractBody(content) {
-        // First try standard \r\n\r\n (Windows)
-        let headerEnd = content.indexOf('\r\n\r\n');
-        if (headerEnd !== -1) {
-          return content.slice(headerEnd + 4).trim();
-        }
-        
-        // Then try \n\n (Unix)
-        headerEnd = content.indexOf('\n\n');
-        if (headerEnd !== -1) {
-          return content.slice(headerEnd + 2).trim();
-        }
-        
-        // If no empty line found, try to find first HTML tag
-        const htmlStart = content.indexOf('<');
-        if (htmlStart !== -1) {
-          return content.slice(htmlStart).trim();
-        }
-        
-        // If all else fails, return empty string
-        return '';
-      }
-
-      function processFiles() {
-        if (filesToProcess.length === 0) {
-          showButtonFeedback(transformBtn, "Upload files first!");
-          return;
-        }
-
-        const zip = new JSZip();
-        let processedCount = 0;
-
-        function processNextFile(index) {
-          if (index >= filesToProcess.length) {
-            zip.generateAsync({ type: "blob" }).then(content => {
-              const a = document.createElement("a");
-              a.href = URL.createObjectURL(content);
-              a.download = "email_bodies_only.zip";
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-              URL.revokeObjectURL(a.href);
-              showButtonFeedback(transformBtn, "Downloaded!");
-            });
-            return;
-          }
-
-          const file = filesToProcess[index];
-          const reader = new FileReader();
-          
-          reader.onload = function(e) {
-            try {
-              const content = e.target.result;
-              const bodyContent = extractBody(content);
-              
-              if (!bodyContent) {
-                resultsArea.innerHTML += `<p style="color: var(--danger);">No body content found in: ${file.name}</p>`;
-              } else {
-                const newFilename = file.name.replace(/\.eml$/i, '_body.txt');
-                zip.file(newFilename, bodyContent);
-                processedCount++;
-              }
-              
-              processNextFile(index + 1);
-            } catch (error) {
-              resultsArea.innerHTML += `<p style="color: var(--danger);">Error processing ${file.name}</p>`;
-              processNextFile(index + 1);
-            }
-          };
-          
-          reader.onerror = function() {
-            resultsArea.innerHTML += `<p style="color: var(--danger);">Error reading ${file.name}</p>`;
-            processNextFile(index + 1);
-          };
-          
-          reader.readAsText(file);
-        }
-
-        // Start processing
-        processNextFile(0);
-      }
-
-      function processWithTemplate() {
-        if (filesToProcess.length === 0) {
-          showButtonFeedback(processTemplateBtn, "Upload files first!");
-          return;
-        }
-
-        const template = document.getElementById("removerTemplateInput").value;
-        if (!template) {
-          showButtonFeedback(processTemplateBtn, "Enter template first!");
-          return;
-        }
-
-        if (!template.includes("[newsletter]")) {
-          showButtonFeedback(processTemplateBtn, 'Add "[newsletter]"!');
-          return;
-        }
-
-        const zip = new JSZip();
-        let processedCount = 0;
-
-        function processNextFile(index) {
-          if (index >= filesToProcess.length) {
-            zip.generateAsync({ type: "blob" }).then(content => {
-              const a = document.createElement("a");
-              a.href = URL.createObjectURL(content);
-              a.download = "templated_emails.zip";
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-              URL.revokeObjectURL(a.href);
-              showButtonFeedback(processTemplateBtn, "Downloaded!");
-            });
-            return;
-          }
-
-          const file = filesToProcess[index];
-          const reader = new FileReader();
-          
-          reader.onload = function(e) {
-            try {
-              const content = e.target.result;
-              const bodyContent = extractBody(content);
-              const finalContent = template.replace("[newsletter]", bodyContent);
-              zip.file(file.name, finalContent);
-              processedCount++;
-              
-              processNextFile(index + 1);
-            } catch (error) {
-              resultsArea.innerHTML += `<p style="color: var(--danger);">Error processing ${file.name}</p>`;
-              processNextFile(index + 1);
-            }
-          };
-          
-          reader.onerror = function() {
-            resultsArea.innerHTML += `<p style="color: var(--danger);">Error reading ${file.name}</p>`;
-            processNextFile(index + 1);
-          };
-          
-          reader.readAsText(file);
-        }
-
-        // Start processing
-        processNextFile(0);
-      }
+  transformBtn.addEventListener('click', () => {
+    if (filesToProcess.length === 0) {
+      showButtonFeedback(transformBtn, "Upload files first!");
+    } else {
+      showButtonFeedback(transformBtn, "Processing...");
+      processFiles();
     }
+  });
+
+  processTemplateBtn.addEventListener('click', () => {
+    const template = document.getElementById("removerTemplateInput").value;
+    if (filesToProcess.length === 0) {
+      showButtonFeedback(processTemplateBtn, "Upload files first!");
+    } else if (!template.includes("[newsletter]")) {
+      showButtonFeedback(processTemplateBtn, 'Add "[newsletter]"!');
+    } else {
+      showButtonFeedback(processTemplateBtn, "Processing...");
+      processWithTemplate(template);
+    }
+  });
+
+  function updateFileList() {
+    resultsArea.innerHTML = filesToProcess.length === 0
+      ? '<p>No files selected</p>'
+      : `<p><strong>Selected files:</strong> ${filesToProcess.length}</p>
+         <ul style="margin-top: 0.5rem; max-height: 200px; overflow-y: auto;">
+         ${filesToProcess.map(file => `<li>${file.name}</li>`).join('')}</ul>`;
+  }
+
+  function extractBody(content) {
+    let headerEnd = content.indexOf('\r\n\r\n');
+    if (headerEnd !== -1) return content.slice(headerEnd + 4).trim();
+    headerEnd = content.indexOf('\n\n');
+    if (headerEnd !== -1) return content.slice(headerEnd + 2).trim();
+    const htmlStart = content.indexOf('<');
+    if (htmlStart !== -1) return content.slice(htmlStart).trim();
+    return '';
+  }
+
+  function processFiles() {
+    const zip = new JSZip();
+    function processNext(index) {
+      if (index >= filesToProcess.length) {
+        zip.generateAsync({ type: "blob" }).then(content => {
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(content);
+          a.download = "email_bodies_only.zip";
+          a.click();
+          URL.revokeObjectURL(a.href);
+          showButtonFeedback(transformBtn, "Downloaded!");
+        });
+        return;
+      }
+      const file = filesToProcess[index];
+      const reader = new FileReader();
+      reader.onload = e => {
+        const body = extractBody(e.target.result);
+        if (body) {
+          const name = file.name.replace(/\.eml$/i, '_body.txt');
+          zip.file(name, body);
+        } else {
+          resultsArea.innerHTML += `<p style="color:red;">No body: ${file.name}</p>`;
+        }
+        processNext(index + 1);
+      };
+      reader.onerror = () => {
+        resultsArea.innerHTML += `<p style="color:red;">Error reading: ${file.name}</p>`;
+        processNext(index + 1);
+      };
+      reader.readAsText(file);
+    }
+    processNext(0);
+  }
+
+  function processWithTemplate(template) {
+    const zip = new JSZip();
+    function processNext(index) {
+      if (index >= filesToProcess.length) {
+        zip.generateAsync({ type: "blob" }).then(content => {
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(content);
+          a.download = "templated_emails.zip";
+          a.click();
+          URL.revokeObjectURL(a.href);
+          showButtonFeedback(processTemplateBtn, "Downloaded!");
+        });
+        return;
+      }
+      const file = filesToProcess[index];
+      const reader = new FileReader();
+      reader.onload = e => {
+        const body = extractBody(e.target.result);
+        const final = template.replace("[newsletter]", body);
+        zip.file(file.name, final);
+        processNext(index + 1);
+      };
+      reader.onerror = () => {
+        resultsArea.innerHTML += `<p style="color:red;">Error reading: ${file.name}</p>`;
+        processNext(index + 1);
+      };
+      reader.readAsText(file);
+    }
+    processNext(0);
+  }
+
+  function showButtonFeedback(button, msg) {
+    const original = button.innerHTML;
+    button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${msg}`;
+    setTimeout(() => { button.innerHTML = original; }, 2000);
+  }
+}
 
     // =============================================
     // SINGLE HEADER REMOVER
