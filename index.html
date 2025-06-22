@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>📤 CMH6 Newsletter Toolkit</title>
+  <style>
+    :root {
+      --primary: #3a86ff;
+      --secondary: #8338ec;
+      --success: #06d6a0;
+      --warning: #ffbe0b;
+      --danger: #ff006e;
+      --dark: #212529;
+      --light: #f8f9fa;
+    }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #f5f7ff;
+      margin: 0;
+      padding: 0;
+      color: var(--dark);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    h1 {
+      color: var(--primary);
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .subtitle {
+      color: #6c757d;
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+    
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    
+   .tool-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+    
+    .tool-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    .tool-icon {
+      color: white;
+      padding: 2rem;
+      text-align: center;
+      font-size: 2.5rem;
+    }
+    
+   .tool-content {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+    
+  .tool-title {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: var(--dark);
+  text-align: center;
+}
+    
+    .tool-desc {
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  text-align: center;
+  flex-grow: 1;
+}
+    
+  .btn {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  background: var(--primary);
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.3s;
+  border: none;
+  cursor: pointer;
+  width: calc(100% - 3rem);
+  margin: 0 auto 1.5rem;
+  text-align: center;
+}
+    
+    .btn:hover {
+      background: #2a75e6;
+    }
+    
+    .tool-section {
+      display: none;
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      margin-top: 2rem;
+    }
+    
+    .tool-section.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .back-btn {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 1rem;
+      cursor: pointer;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .section-title {
+      font-size: 1.8rem;
+      color: var(--dark);
+      margin-bottom: 1.5rem;
+    }
+    
+    .upload-area {
+      border: 2px dashed #ced4da;
+      border-radius: 8px;
+      padding: 3rem 2rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s;
+    }
+    
+    .upload-area:hover {
+      border-color: var(--primary);
+    }
+    
+    .file-label {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      background: #f0f5ff;
+      border-radius: 8px;
+      color: var(--primary);
+      cursor: pointer;
+      margin-top: 1rem;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    
+    .file-label:hover {
+      background: #e0ebff;
+    }
+    
+    .file-input {
+      display: none;
+    }
+    
+    .action-btns {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .action-btns .btn {
+      flex: 1;
+    }
+    
+    .btn-secondary {
+      background: #6c757d;
+    }
+    
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+    
+    .btn-success {
+      background: var(--success);
+    }
+    
+    .btn-success:hover {
+      background: #05a181;
+    }
+    
+    .btn-warning {
+      background: var(--warning);
+    }
+    
+    .btn-warning:hover {
+      background: #e6a700;
+    }
+    
+    .btn-danger {
+      background: var(--danger);
+    }
+    
+    .btn-danger:hover {
+      background: #d0006e;
+    }
+    
+    textarea {
+      width: 100%;
+      min-height: 200px;
+      padding: 1rem;
+      border: 1px solid #ced4da;
+      border-radius: 8px;
+      font-family: inherit;
+      margin-bottom: 1rem;
+    }
+    
+    .results-area {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid #eee;
+    }
+    
+    .message-info {
+      margin: 10px 0;
+      padding: 10px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    
+    .download-link {
+      display: block;
+      margin: 5px 0;
+      font-weight: bold;
+      color: #0066cc;
+      text-decoration: none;
+    }
+    
+    .message-details {
+      font-size: 0.8em;
+      color: #666;
+      margin-top: 5px;
+    }
+    
+    #progress {
+      margin: 10px 0;
+      display: none;
+    }
+    
+    .single-remover-card .tool-icon {
+      background: linear-gradient(135deg, #8a2be2, #9932cc);
+    }
+    
+    .domain-extractor-card .tool-icon {
+      background: linear-gradient(135deg, #ff7b00, #ff9500);
+    }
+    
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📤 CMH6 Newsletter Toolkit</h1>
+      <p class="subtitle">Transform, convert, and optimize your n files with our powerful toolkit</p>
+    </header>
+    
+    <div class="tool-grid">
+      <!-- Single Email Header Transformer -->
+      <div class="tool-card" data-tool="single-transformer">
+        <div class="tool-icon" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+          <i class="fas fa-envelope"></i>
+        </div>
+        <div class="tool-content">
+          <h3 class="tool-title">Single Newsletter Header Transformer</h3>
+          <p class="tool-desc">Modify headers in individual newsletter source with RDNS and EID </p>
+          <a class="btn">Use Tool</a>
+        </div>
+      </div>
+      
+      <!-- Bulk Email Header Transformer -->
+      <div class="tool-card" data-tool="bulk-transformer">
+        <div class="tool-icon" style="background: linear-gradient(135deg, var(--success), #05a181);">
+          <i class="fas fa-envelopes-bulk"></i>
+        </div>
+        <div class="tool-content">
+          <h3 class="tool-title">Bulk Newsletter Header Transformer</h3>
+          <p class="tool-desc">Process multiple newsletter sources simultaneously </p>
+          <a class="btn">Use Tool</a>
+        </div>
+      </div>
+      
+      <!-- MBOX Converter -->
+      <div class="tool-card" data-tool="mbox-converter">
+        <div class="tool-icon" style="background: linear-gradient(135deg, var(--warning), #e6a700);">
+          <i class="fas fa-box-archive"></i>
+        </div>
+        <div class="tool-content">
+          <h3 class="tool-title">MBOX Converter</h3>
+          <p class="tool-desc">Convert MBOX files to individual EML files with clean headers</p>
+          <a class="btn">Use Tool</a>
+        </div>
+      </div>
+      
+      <!-- Bulk Header Remover -->
+      <div class="tool-card" data-tool="bulk-remover">
+        <div class="tool-icon" style="background: linear-gradient(135deg, var(--danger), #d0006e);">
+          <i class="fas fa-trash-alt"></i>
+        </div>
+        <div class="tool-content">
+          <h3 class="tool-title">Bulk Header Remover</h3>
+          <p class="tool-desc">Completely remove all headers from multiple newsletters, keeping only the body</p>
+          <a class="btn">Use Tool</a>
+        </div>
+      </div>
+      
+      <!-- Single Header Remover -->
+      <div class="tool-card single-remover-card" data-tool="single-remover">
+        <div class="tool-icon">
+          <i class="fas fa-envelope-open-text"></i>
+        </div>
+        <div class="tool-content">
+          <h3 class="tool-title">Single Header Remover</h3>
+          <p class="tool-desc">Remove all headers from a single newsletter source quickly and easily</p>
+          <a class="btn">Use Tool</a>
+        </div>
+      </div>
+      
+      <!-- Domain and IP Extractor -->
+      <div class="tool-card domain-extractor-card" data-tool="domain-extractor">
+        <div class="tool-icon">
+          <i class="fas fa-globe"></i>
+        </div>
+        <div class="tool-content">
+          <h3 class="tool-title">Domain & IP Extractor</h3>
+          <p class="tool-desc">Extract domains and IPs from text and show their associations</p>
+          <a class="btn">Use Tool</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tool Sections -->
+    
+    <!-- Single Email Header Transformer -->
+    <div id="single-transformer" class="tool-section">
+      <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
+      <h2 class="section-title"><i class="fas fa-envelope"></i> Single newsletter Header Transformer</h2>
+      
+      <textarea id="singleInput" placeholder="Paste your newsletter source here..."></textarea>
+      
+      <div class="action-btns">
+        <button id="singleTransformBtn" class="btn"><i class="fas fa-magic"></i> Transform Headers</button>
+        <button id="singleIpBtn" class="btn btn-warning"><i class="fas fa-plus"></i> Add [IP] to Subject</button>
+        <button id="singleCopyBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Copy Output</button>
+        <button id="singleClearBtn" class="btn btn-danger"><i class="fas fa-trash"></i> Clear All</button>
+      </div>
+      
+      <textarea id="singleOutput" placeholder="Transformed headers will appear here..." readonly></textarea>
+    </div>
+    
+    <!-- Bulk Email Header Transformer -->
+    <div id="bulk-transformer" class="tool-section">
+      <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
+      <h2 class="section-title"><i class="fas fa-envelopes-bulk"></i> Bulk newsletter Header Transformer</h2>
+      
+      <div class="upload-area" id="bulkUploadArea">
+        <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--success); margin-bottom: 1rem;"></i>
+        <p>Drag and drop multiple .eml files here</p>
+        <p>or</p>
+        <label for="bulkFileInput" class="file-label">
+          <i class="fas fa-folder-open"></i> Select Files
+        </label>
+        <input type="file" id="bulkFileInput" class="file-input" multiple accept=".eml">
+      </div>
+      
+      <div class="action-btns">
+        <button id="bulkTransformBtn" class="btn"><i class="fas fa-magic"></i> Transform Headers</button>
+        <button id="bulkIpBtn" class="btn btn-warning"><i class="fas fa-plus"></i> Add [IP] Tag</button>
+        <button id="bulkTemplateBtn" class="btn btn-success"><i class="fas fa-file-alt"></i> Use Template</button>
+      </div>
+      
+      <div class="template-container" id="bulkTemplateContainer" style="display: none; margin-top: 1.5rem;">
+        <textarea id="bulkTemplateInput" placeholder="Enter your template text here. Use [newsletter] where you want the processed email content to appear."></textarea>
+        <button id="bulkProcessTemplateBtn" class="btn" style="margin-top: 1rem;"><i class="fas fa-cogs"></i> Process with Template</button>
+      </div>
+      
+      <div class="results-area" id="bulkResults"></div>
+    </div>
+    
+    <!-- MBOX Converter -->
+    <div id="mbox-converter" class="tool-section">
+      <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
+      <h2 class="section-title"><i class="fas fa-box-archive"></i> MBOX Converter</h2>
+      
+      <div class="upload-area" id="mboxUploadArea">
+        <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--warning); margin-bottom: 1rem;"></i>
+        <p>Drag and drop an MBOX file here</p>
+        <p>or</p>
+        <label for="mboxFileInput" class="file-label">
+          <i class="fas fa-folder-open"></i> Select File
+        </label>
+        <input type="file" id="mboxFileInput" class="file-input" accept=".mbox">
+      </div>
+      
+      <p style="text-align: center; margin: 1.5rem 0; color: #6c757d;">or</p>
+      
+      <textarea id="mboxContent" placeholder="Paste your MBOX content here..."></textarea>
+      
+      <button id="mboxConvertBtn" class="btn"><i class="fas fa-exchange-alt"></i> Convert to EML</button>
+      
+      <div id="progress" style="text-align: center;">
+        Processing... <span id="progressCount">0</span> messages converted
+      </div>
+      
+      <div class="results-area" id="mboxResults"></div>
+      
+      <button id="mboxDownloadAll" class="btn" style="display: none; margin-top: 1rem;">
+        <i class="fas fa-file-archive"></i> Download All as ZIP
+      </button>
+    </div>
+    
+    <!-- Bulk Header Remover -->
+    <div id="bulk-remover" class="tool-section">
+      <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
+      <h2 class="section-title"><i class="fas fa-trash-alt"></i> Bulk Header Remover</h2>
+      
+      <div class="upload-area" id="removerUploadArea">
+        <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--danger); margin-bottom: 1rem;"></i>
+        <p>Drag and drop multiple .eml files here</p>
+        <p>or</p>
+        <label for="removerFileInput" class="file-label">
+          <i class="fas fa-folder-open"></i> Select Files
+        </label>
+        <input type="file" id="removerFileInput" class="file-input" multiple accept=".eml">
+      </div>
+      
+      <div class="action-btns">
+        <button id="removerTransformBtn" class="btn"><i class="fas fa-eraser"></i> Remove Headers</button>
+        <button id="removerTemplateBtn" class="btn btn-success"><i class="fas fa-file-alt"></i> Use Template</button>
+      </div>
+      
+      <div class="template-container" id="removerTemplateContainer" style="display: none; margin-top: 1.5rem;">
+        <textarea id="removerTemplateInput" placeholder="Enter your template text here. Use [newsletter] where you want the processed email content to appear."></textarea>
+        <button id="removerProcessTemplateBtn" class="btn" style="margin-top: 1rem;"><i class="fas fa-cogs"></i> Process with Template</button>
+      </div>
+      
+      <div class="results-area" id="removerResults"></div>
+    </div>
+    
+    <!-- Single Header Remover -->
+    <div id="single-remover" class="tool-section">
+      <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
+      <h2 class="section-title"><i class="fas fa-envelope-open-text"></i> Single Header Remover</h2>
+      
+      <div class="input-group">
+        <label for="singleRemoverInput">Email Content:</label>
+        <textarea id="singleRemoverInput" placeholder="Paste your newsletter content here..."></textarea>
+      </div>
+      
+      <div class="action-btns">
+        <button id="singleRemoverBtn" class="btn"><i class="fas fa-eraser"></i> Remove Headers</button>
+        <button id="singleRemoverCopyBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Copy</button>
+        <button id="singleRemoverClearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear</button>
+      </div>
+      
+      <div class="input-group">
+        <label for="singleRemoverOutput">Processed Content:</label>
+        <textarea id="singleRemoverOutput" placeholder="Processed newsletter content will appear here..." readonly></textarea>
+      </div>
+    </div>
+    
+    <!-- Domain and IP Extractor -->
+    <div id="domain-extractor" class="tool-section">
+      <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
+      <h2 class="section-title"><i class="fas fa-globe"></i> Domain & IP Extractor</h2>
+      
+      <div class="input-group">
+        <label for="domainExtractorInput">Text Content:</label>
+        <textarea id="domainExtractorInput" placeholder="Enter text containing domains and IPs..."></textarea>
+      </div>
+      
+      <div class="action-btns">
+        <button id="domainExtractorBtn" class="btn"><i class="fas fa-search"></i> Extract Domains & IPs</button>
+        <button id="domainExtractorCopyBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Copy</button>
+        <button id="domainExtractorClearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear</button>
+      </div>
+      
+      <div class="input-group">
+        <label for="domainExtractorOutput">Extracted Results:</label>
+        <textarea id="domainExtractorOutput" placeholder="Extracted domains with their associated IPs will appear here..." readonly></textarea>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script>
+    // Tool navigation
+    const toolCards = document.querySelectorAll('.tool-card');
+    const toolSections = document.querySelectorAll('.tool-section');
+    const backButtons = document.querySelectorAll('.back-btn');
+    
+    // Clear tool data when going back
+    function clearToolData(toolId) {
+      switch(toolId) {
+        case 'single-transformer':
+          document.getElementById('singleInput').value = '';
+          document.getElementById('singleOutput').value = '';
+          break;
+        case 'bulk-transformer':
+          document.getElementById('bulkFileInput').value = '';
+          document.getElementById('bulkResults').innerHTML = '';
+          document.getElementById('bulkTemplateInput').value = '';
+          document.getElementById('bulkTemplateContainer').style.display = 'none';
+          break;
+        case 'mbox-converter':
+          document.getElementById('mboxFileInput').value = '';
+          document.getElementById('mboxContent').value = '';
+          document.getElementById('mboxResults').innerHTML = '';
+          document.getElementById('mboxDownloadAll').style.display = 'none';
+          break;
+        case 'bulk-remover':
+          document.getElementById('removerFileInput').value = '';
+          document.getElementById('removerResults').innerHTML = '';
+          document.getElementById('removerTemplateInput').value = '';
+          document.getElementById('removerTemplateContainer').style.display = 'none';
+          break;
+        case 'single-remover':
+          document.getElementById('singleRemoverInput').value = '';
+          document.getElementById('singleRemoverOutput').value = '';
+          break;
+        case 'domain-extractor':
+          document.getElementById('domainExtractorInput').value = '';
+          document.getElementById('domainExtractorOutput').value = '';
+          break;
+      }
+    }
+    
+    // Show tool section when card is clicked
+    toolCards.forEach(card => {
+      card.addEventListener('click', function() {
+        const toolId = this.getAttribute('data-tool');
+        
+        // Hide all sections
+        toolSections.forEach(section => {
+          section.classList.remove('active');
+        });
+        
+        // Show selected section
+        document.getElementById(toolId).classList.add('active');
+        
+        // Scroll to section
+        document.getElementById(toolId).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+    
+    // Back button functionality
+    backButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        // Get the active tool section
+        const activeSection = document.querySelector('.tool-section.active');
+        if (activeSection) {
+          clearToolData(activeSection.id);
+        }
+        
+        // Hide all sections
+        toolSections.forEach(section => {
+          section.classList.remove('active');
+        });
+        
+        // Scroll back to top
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    // Initialize all tools
+    document.addEventListener('DOMContentLoaded', function() {
+      initSingleTransformer();
+      initBulkTransformer();
+      initMboxConverter();
+      initBulkRemover();
+      initSingleRemover();
+      initDomainExtractor();
+    });
+
+    // Helper function for button feedback
+    function showButtonFeedback(button, message, duration = 2000) {
+      const originalText = button.innerHTML;
+      button.innerHTML = `<i class="fas fa-check"></i> ${message}`;
+      button.disabled = true;
+      
+      setTimeout(() => {
+        button.innerHTML = originalText;
+        button.disabled = false;
+      }, duration);
+    }
+
+    // =============================================
+    // SINGLE EMAIL HEADER TRANSFORMER
+    // =============================================
+    function initSingleTransformer() {
+      const transformBtn = document.getElementById('singleTransformBtn');
+      const ipBtn = document.getElementById('singleIpBtn');
+      const copyBtn = document.getElementById('singleCopyBtn');
+      const clearBtn = document.getElementById('singleClearBtn');
+      const inputText = document.getElementById('singleInput');
+      const outputText = document.getElementById('singleOutput');
+
+      transformBtn.addEventListener('click', () => {
+        transformHeaders(false);
+        showButtonFeedback(transformBtn, "Done!");
+      });
+
+      ipBtn.addEventListener('click', () => {
+        transformHeaders(true);
+        showButtonFeedback(ipBtn, "Done!");
+      });
+
+      copyBtn.addEventListener('click', () => {
+        if (!outputText.value) {
+          showButtonFeedback(copyBtn, "Nothing to copy!");
+          return;
+        }
+        outputText.select();
+        document.execCommand("copy");
+        showButtonFeedback(copyBtn, "Copied!");
+      });
+
+      clearBtn.addEventListener('click', () => {
+        inputText.value = '';
+        outputText.value = '';
+        showButtonFeedback(clearBtn, "Cleared!");
+      });
+
+      function transformHeaders(addIP) {
+        let input = inputText.value;
+        if (!input.trim()) {
+          showButtonFeedback(transformBtn, "Paste headers first!");
+          return;
+        }
+
+        let output = input;
+
+        // Remove Delivered-To and Return-Path
+        output = output.replace(/^Delivered-To:.*\n?/gim, '');
+        output = output.replace(/^Return-Path:.*\n?/gim, '');
+
+        // Replace domain in From with [RDNS]
+        output = output.replace(/(From:\s*.*?<[^@<\s]+)@[^>\s]+/gi, '$1@[RDNS]');
+        output = output.replace(/(From:\s*[^<\s@]+)@([^\s]+)/gi, '$1@[RDNS]');
+
+        // Replace domain in Sender with [RDNS]
+        output = output.replace(/(Sender:\s*.*?<[^@<\s]+)@[^>\s]+/gi, '$1@[RDNS]');
+        output = output.replace(/(Sender:\s*[^<\s@]+)@([^\s]+)/gi, '$1@[RDNS]');
+
+        // Insert [EID] into Message-ID
+        output = output.replace(/(Message-ID:\s*<)([^@]+)(@[^>]+>)/gi, function (_, prefix, id, suffix) {
+          const pos = Math.max(1, Math.floor(Math.random() * id.length));
+          return prefix + id.slice(0, pos) + '[EID]' + id.slice(pos) + suffix;
+        });
+
+        // If Add [IP] button was clicked
+        if (addIP) {
+          output = output.replace(/^(Subject:.*?)$/im, function (_, subject) {
+            return subject.includes('[IP]') ? subject : subject + ' [IP]';
+          });
+        }
+
+        outputText.value = output;
+      }
+    }
+
+    // =============================================
+    // BULK EMAIL HEADER TRANSFORMER
+    // =============================================
+    function initBulkTransformer() {
+      const dropArea = document.getElementById('bulkUploadArea');
+      const fileInput = document.getElementById('bulkFileInput');
+      const transformBtn = document.getElementById('bulkTransformBtn');
+      const ipBtn = document.getElementById('bulkIpBtn');
+      const templateBtn = document.getElementById('bulkTemplateBtn');
+      const templateContainer = document.getElementById('bulkTemplateContainer');
+      const processTemplateBtn = document.getElementById('bulkProcessTemplateBtn');
+      const resultsArea = document.getElementById('bulkResults');
+
+      let filesToProcess = [];
+
+      // Toggle template input visibility
+      templateBtn.addEventListener('click', () => {
+        templateContainer.style.display = templateContainer.style.display === 'block' ? 'none' : 'block';
+        showButtonFeedback(templateBtn, templateContainer.style.display === 'block' ? "Template Shown" : "Template Hidden");
+      });
+
+      // Drag and Drop support
+      ["dragenter", "dragover"].forEach(event =>
+        dropArea.addEventListener(event, e => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropArea.classList.add("dragover");
+        })
+      );
+
+      ["dragleave", "drop"].forEach(event =>
+        dropArea.addEventListener(event, e => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropArea.classList.remove("dragover");
+        })
+      );
+
+      dropArea.addEventListener("drop", e => {
+        filesToProcess = [...e.dataTransfer.files].filter(f => f.name.endsWith(".eml"));
+        updateFileList();
+        showButtonFeedback(transformBtn, `${filesToProcess.length} files ready`);
+      });
+
+      fileInput.addEventListener("change", e => {
+        filesToProcess = [...e.target.files].filter(f => f.name.endsWith(".eml"));
+        updateFileList();
+        showButtonFeedback(transformBtn, `${filesToProcess.length} files ready`);
+      });
+
+      transformBtn.addEventListener('click', () => {
+        processFiles(false);
+        showButtonFeedback(transformBtn, "Processing...");
+      });
+      
+      ipBtn.addEventListener('click', () => {
+        processFiles(true);
+        showButtonFeedback(ipBtn, "Processing...");
+      });
+      
+      processTemplateBtn.addEventListener('click', () => {
+        processWithTemplate();
+        showButtonFeedback(processTemplateBtn, "Processing...");
+      });
+
+      function updateFileList() {
+        if (filesToProcess.length === 0) {
+          resultsArea.innerHTML = '<p>No files selected</p>';
+          return;
+        }
+
+        resultsArea.innerHTML = `
+          <p><strong>Selected files:</strong> ${filesToProcess.length}</p>
+          <ul style="margin-top: 0.5rem; max-height: 200px; overflow-y: auto;">
+            ${Array.from(filesToProcess).map(file => `<li>${file.name}</li>`).join('')}
+          </ul>
+        `;
+      }
+
+      function transformContent(content, addIP) {
+        let output = content;
+
+        output = output
+		
+		.replace(/^Delivered-To:.*\n?/gim, '');
+        output = output.replace(/^Return-Path:.*\n?/gim, '');
+
+        output = output.replace(/(From:\s*.*?<[^@<\s]+)@[^>\s]+/gi, '$1@[RDNS]');
+        output = output.replace(/(From:\s*[^<\s@]+)@([^\s]+)/gi, '$1@[RDNS]');
+
+        output = output.replace(/(Sender:\s*.*?<[^@<\s]+)@[^>\s]+/gi, '$1@[RDNS]');
+        output = output.replace(/(Sender:\s*[^<\s@]+)@([^\s]+)/gi, '$1@[RDNS]');
+
+        output = output.replace(/(Message-ID:\s*<)([^@]+)(@[^>]+>)/gi, (_, prefix, id, suffix) => {
+          const pos = Math.max(1, Math.floor(Math.random() * id.length));
+          return prefix + id.slice(0, pos) + '[EID]' + id.slice(pos) + suffix;
+        });
+
+        if (addIP) {
+          output = output.replace(/^(Subject:.*?)$/im, (_, subject) =>
+            subject.includes('[IP]') ? subject : subject + ' [IP]'
+          );
+        }
+
+        return output;
+      }
+
+      function processFiles(addIP) {
+        if (filesToProcess.length === 0) {
+          showButtonFeedback(transformBtn, "Upload files first!");
+          return;
+        }
+
+        const zip = new JSZip();
+
+        Promise.all(filesToProcess.map(file => {
+          return file.text().then(content => {
+            const output = transformContent(content, addIP);
+            zip.file(file.name, output);
+          });
+        })).then(() => {
+          zip.generateAsync({ type: "blob" }).then(content => {
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(content);
+            a.download = "transformed_headers.zip";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(a.href);
+            showButtonFeedback(transformBtn, "Downloaded!");
+          });
+        }).catch(error => {
+          showButtonFeedback(transformBtn, "Error occurred!");
+          console.error(error);
+        });
+      }
+
+      function processWithTemplate() {
+        if (filesToProcess.length === 0) {
+          showButtonFeedback(processTemplateBtn, "Upload files first!");
+          return;
+        }
+
+        const template = document.getElementById("bulkTemplateInput").value;
+        if (!template) {
+          showButtonFeedback(processTemplateBtn, "Enter template first!");
+          return;
+        }
+
+        if (!template.includes("[newsletter]")) {
+          showButtonFeedback(processTemplateBtn, 'Add "[newsletter]"!');
+          return;
+        }
+
+        const zip = new JSZip();
+
+        Promise.all(filesToProcess.map(file => {
+          return file.text().then(content => {
+            const transformedContent = transformContent(content, false);
+            const finalContent = template.replace("[newsletter]", transformedContent);
+            zip.file(file.name, finalContent);
+          });
+        })).then(() => {
+          zip.generateAsync({ type: "blob" }).then(content => {
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(content);
+            a.download = "templated_emails.zip";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(a.href);
+            showButtonFeedback(processTemplateBtn, "Downloaded!");
+          });
+        }).catch(error => {
+          showButtonFeedback(processTemplateBtn, "Error occurred!");
+          console.error(error);
+        });
+      }
+    }
+
+    // =============================================
+    // MBOX CONVERTER
+    // =============================================
+    function initMboxConverter() {
+      const fileInput = document.getElementById('mboxFileInput');
+      const mboxContent = document.getElementById('mboxContent');
+      const convertBtn = document.getElementById('mboxConvertBtn');
+      const progress = document.getElementById('progress');
+      const progressCount = document.getElementById('progressCount');
+      const resultsDiv = document.getElementById('mboxResults');
+      const downloadAllBtn = document.getElementById('mboxDownloadAll');
+
+      convertBtn.addEventListener('click', () => {
+        convertMboxToEml();
+        showButtonFeedback(convertBtn, "Processing...");
+      });
+      
+      downloadAllBtn.addEventListener('click', () => {
+        downloadAllAsZip();
+        showButtonFeedback(downloadAllBtn, "Downloading...");
+      });
+
+      function convertMboxToEml() {
+        resultsDiv.innerHTML = '';
+        downloadAllBtn.style.display = 'none';
+        
+        let contentPromise;
+        
+        if (fileInput.files.length > 0) {
+          contentPromise = fileInput.files[0].text();
+        } else if (mboxContent.value.trim() !== '') {
+          contentPromise = Promise.resolve(mboxContent.value);
+        } else {
+          showButtonFeedback(convertBtn, "Add MBOX content!");
+          return;
+        }
+        
+        progress.style.display = 'block';
+        
+        contentPromise.then(content => {
+          const messages = parseMbox(content);
+          progressCount.textContent = messages.length;
+          
+          if (messages.length === 0) {
+            resultsDiv.innerHTML = '<p>No messages found in the MBOX file.</p>';
+            progress.style.display = 'none';
+            showButtonFeedback(convertBtn, "No messages!");
+            return;
+          }
+          
+          const zip = new JSZip();
+          let count = 0;
+          
+          messages.forEach((message, index) => {
+            const emlContent = message.raw;
+            
+            // Extract subject from headers
+            let subject = extractHeader(emlContent, 'Subject') || `No_Subject_${index + 1}`;
+            
+            // Clean subject for filename
+            const cleanSubject = subject
+              .replace(/[^\w\s-]/g, '')
+              .replace(/\s+/g, ' ')
+              .trim()
+              .substring(0, 100)
+              .replace(/\s/g, '_');
+            
+            const filename = `${cleanSubject}.eml`;
+            
+            // Create download link for individual message
+            const blob = new Blob([emlContent], { type: 'message/rfc822' });
+            const url = URL.createObjectURL(blob);
+            
+            // Create message info display
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message-info';
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            link.textContent = `Download: ${filename}`;
+            link.className = 'download-link';
+            
+            const details = document.createElement('div');
+            details.className = 'message-details';
+            details.textContent = `Subject: ${subject}`;
+            
+            messageDiv.appendChild(link);
+            messageDiv.appendChild(details);
+            resultsDiv.appendChild(messageDiv);
+            
+            // Add to ZIP
+            zip.file(filename, emlContent);
+            
+            count++;
+            progressCount.textContent = count;
+          });
+          
+          progress.style.display = 'none';
+          
+          if (messages.length > 1) {
+            // Store ZIP for download
+            window.mboxZip = zip;
+            downloadAllBtn.style.display = 'block';
+          }
+          
+          showButtonFeedback(convertBtn, "Conversion done!");
+        }).catch(error => {
+          console.error('Error:', error);
+          resultsDiv.innerHTML = `<p style="color: red;">Error processing MBOX file: ${error.message}</p>`;
+          progress.style.display = 'none';
+          showButtonFeedback(convertBtn, "Error occurred!");
+        });
+      }
+      
+      function parseMbox(content) {
+        const messages = [];
+        const lines = content.split(/\r?\n/);
+        let currentMessage = [];
+        let inMessage = false;
+        
+        for (const line of lines) {
+          if (line.startsWith('From ') && currentMessage.length > 0) {
+            // New message starting, save the previous one
+            messages.push({ raw: currentMessage.join('\n') });
+            currentMessage = [line];
+            inMessage = true;
+          } else if (line.startsWith('From ') && !inMessage) {
+            // First message starting
+            currentMessage = [line];
+            inMessage = true;
+          } else if (inMessage) {
+            currentMessage.push(line);
+          }
+        }
+        
+        // Add the last message
+        if (currentMessage.length > 0) {
+          messages.push({ raw: currentMessage.join('\n') });
+        }
+        
+        return messages;
+      }
+      
+      function extractHeader(emailContent, headerName) {
+        const headerRegex = new RegExp(`^${headerName}:\\s*(.*)$`, 'im');
+        const match = emailContent.match(headerRegex);
+        return match ? match[1].trim() : null;
+      }
+      
+      function downloadAllAsZip() {
+        if (!window.mboxZip) {
+          showButtonFeedback(downloadAllBtn, "Nothing to download!");
+          return;
+        }
+        
+        window.mboxZip.generateAsync({ type: 'blob' }).then(content => {
+          const url = URL.createObjectURL(content);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'converted_emails.zip';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+          showButtonFeedback(downloadAllBtn, "Downloaded!");
+        });
+      }
+    }
+
+    // =============================================
+    // BULK HEADER REMOVER
+    // =============================================
+    function initBulkRemover() {
+      const dropArea = document.getElementById('removerUploadArea');
+      const fileInput = document.getElementById('removerFileInput');
+      const transformBtn = document.getElementById('removerTransformBtn');
+      const templateBtn = document.getElementById('removerTemplateBtn');
+      const templateContainer = document.getElementById('removerTemplateContainer');
+      const processTemplateBtn = document.getElementById('removerProcessTemplateBtn');
+      const resultsArea = document.getElementById('removerResults');
+
+      let filesToProcess = [];
+
+      // Toggle template input visibility
+      templateBtn.addEventListener('click', () => {
+        templateContainer.style.display = templateContainer.style.display === 'block' ? 'none' : 'block';
+        showButtonFeedback(templateBtn, templateContainer.style.display === 'block' ? "Template Shown" : "Template Hidden");
+      });
+
+      // Drag and Drop support
+      ["dragenter", "dragover"].forEach(event => {
+        dropArea.addEventListener(event, e => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropArea.classList.add("dragover");
+        });
+      });
+
+      ["dragleave", "drop"].forEach(event => {
+        dropArea.addEventListener(event, e => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropArea.classList.remove("dragover");
+        });
+      });
+
+      dropArea.addEventListener("drop", e => {
+        e.preventDefault();
+        filesToProcess = Array.from(e.dataTransfer.files).filter(f => f.name.toLowerCase().endsWith(".eml"));
+        updateFileList();
+        showButtonFeedback(transformBtn, `${filesToProcess.length} files ready`);
+      });
+
+      fileInput.addEventListener("change", e => {
+        filesToProcess = Array.from(e.target.files).filter(f => f.name.toLowerCase().endsWith(".eml"));
+        updateFileList();
+        showButtonFeedback(transformBtn, `${filesToProcess.length} files ready`);
+      });
+
+      transformBtn.addEventListener('click', () => {
+        processFiles();
+        showButtonFeedback(transformBtn, "Processing...");
+      });
+      
+      processTemplateBtn.addEventListener('click', () => {
+        processWithTemplate();
+        showButtonFeedback(processTemplateBtn, "Processing...");
+      });
+
+      function updateFileList() {
+        if (filesToProcess.length === 0) {
+          resultsArea.innerHTML = '<p>No files selected</p>';
+          return;
+        }
+
+        resultsArea.innerHTML = `
+          <p><strong>Selected files:</strong> ${filesToProcess.length}</p>
+          <ul style="margin-top: 0.5rem; max-height: 200px; overflow-y: auto;">
+            ${filesToProcess.map(file => `<li>${file.name}</li>`).join('')}
+          </ul>
+        `;
+      }
+
+      function extractBody(content) {
+        // First try standard \r\n\r\n (Windows)
+        let headerEnd = content.indexOf('\r\n\r\n');
+        if (headerEnd !== -1) {
+          return content.slice(headerEnd + 4).trim();
+        }
+        
+        // Then try \n\n (Unix)
+        headerEnd = content.indexOf('\n\n');
+        if (headerEnd !== -1) {
+          return content.slice(headerEnd + 2).trim();
+        }
+        
+        // If no empty line found, try to find first HTML tag
+        const htmlStart = content.indexOf('<');
+        if (htmlStart !== -1) {
+          return content.slice(htmlStart).trim();
+        }
+        
+        // If all else fails, return empty string
+        return '';
+      }
+
+      function processFiles() {
+        if (filesToProcess.length === 0) {
+          showButtonFeedback(transformBtn, "Upload files first!");
+          return;
+        }
+
+        const zip = new JSZip();
+        let processedCount = 0;
+
+        function processNextFile(index) {
+          if (index >= filesToProcess.length) {
+            zip.generateAsync({ type: "blob" }).then(content => {
+              const a = document.createElement("a");
+              a.href = URL.createObjectURL(content);
+              a.download = "email_bodies_only.zip";
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(a.href);
+              showButtonFeedback(transformBtn, "Downloaded!");
+            });
+            return;
+          }
+
+          const file = filesToProcess[index];
+          const reader = new FileReader();
+          
+          reader.onload = function(e) {
+            try {
+              const content = e.target.result;
+              const bodyContent = extractBody(content);
+              
+              if (!bodyContent) {
+                resultsArea.innerHTML += `<p style="color: var(--danger);">No body content found in: ${file.name}</p>`;
+              } else {
+                const newFilename = file.name.replace(/\.eml$/i, '_body.txt');
+                zip.file(newFilename, bodyContent);
+                processedCount++;
+              }
+              
+              processNextFile(index + 1);
+            } catch (error) {
+              resultsArea.innerHTML += `<p style="color: var(--danger);">Error processing ${file.name}</p>`;
+              processNextFile(index + 1);
+            }
+          };
+          
+          reader.onerror = function() {
+            resultsArea.innerHTML += `<p style="color: var(--danger);">Error reading ${file.name}</p>`;
+            processNextFile(index + 1);
+          };
+          
+          reader.readAsText(file);
+        }
+
+        // Start processing
+        processNextFile(0);
+      }
+
+      function processWithTemplate() {
+        if (filesToProcess.length === 0) {
+          showButtonFeedback(processTemplateBtn, "Upload files first!");
+          return;
+        }
+
+        const template = document.getElementById("removerTemplateInput").value;
+        if (!template) {
+          showButtonFeedback(processTemplateBtn, "Enter template first!");
+          return;
+        }
+
+        if (!template.includes("[newsletter]")) {
+          showButtonFeedback(processTemplateBtn, 'Add "[newsletter]"!');
+          return;
+        }
+
+        const zip = new JSZip();
+        let processedCount = 0;
+
+        function processNextFile(index) {
+          if (index >= filesToProcess.length) {
+            zip.generateAsync({ type: "blob" }).then(content => {
+              const a = document.createElement("a");
+              a.href = URL.createObjectURL(content);
+              a.download = "templated_emails.zip";
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(a.href);
+              showButtonFeedback(processTemplateBtn, "Downloaded!");
+            });
+            return;
+          }
+
+          const file = filesToProcess[index];
+          const reader = new FileReader();
+          
+          reader.onload = function(e) {
+            try {
+              const content = e.target.result;
+              const bodyContent = extractBody(content);
+              const finalContent = template.replace("[newsletter]", bodyContent);
+              zip.file(file.name, finalContent);
+              processedCount++;
+              
+              processNextFile(index + 1);
+            } catch (error) {
+              resultsArea.innerHTML += `<p style="color: var(--danger);">Error processing ${file.name}</p>`;
+              processNextFile(index + 1);
+            }
+          };
+          
+          reader.onerror = function() {
+            resultsArea.innerHTML += `<p style="color: var(--danger);">Error reading ${file.name}</p>`;
+            processNextFile(index + 1);
+          };
+          
+          reader.readAsText(file);
+        }
+
+        // Start processing
+        processNextFile(0);
+      }
+    }
+
+    // =============================================
+    // SINGLE HEADER REMOVER
+    // =============================================
+    function initSingleRemover() {
+      const inputText = document.getElementById('singleRemoverInput');
+      const outputText = document.getElementById('singleRemoverOutput');
+      const removeBtn = document.getElementById('singleRemoverBtn');
+      const copyBtn = document.getElementById('singleRemoverCopyBtn');
+      const clearBtn = document.getElementById('singleRemoverClearBtn');
+      
+      removeBtn.addEventListener('click', removeHeaders);
+      copyBtn.addEventListener('click', copyOutput);
+      clearBtn.addEventListener('click', clearAll);
+      
+      function removeHeaders() {
+        if (!inputText.value.trim()) {
+          showButtonFeedback(removeBtn, "Paste content first!");
+          return;
+        }
+        
+        const content = inputText.value;
+        let output = content;
+        
+        // First try standard \r\n\r\n (Windows)
+        let headerEnd = output.indexOf('\r\n\r\n');
+        if (headerEnd !== -1) {
+          output = output.slice(headerEnd + 4).trim();
+        } else {
+          // Then try \n\n (Unix)
+          headerEnd = output.indexOf('\n\n');
+          if (headerEnd !== -1) {
+            output = output.slice(headerEnd + 2).trim();
+          } else {
+            // If no empty line found, try to find first HTML tag
+            const htmlStart = output.indexOf('<');
+            if (htmlStart !== -1) {
+              output = output.slice(htmlStart).trim();
+            } else {
+              showButtonFeedback(removeBtn, "No headers found!");
+              return;
+            }
+          }
+        }
+        
+        outputText.value = output;
+        showButtonFeedback(removeBtn, "Headers removed!");
+      }
+      
+      function copyOutput() {
+        if (!outputText.value.trim()) {
+          showButtonFeedback(copyBtn, "Nothing to copy!");
+          return;
+        }
+        
+        outputText.select();
+        document.execCommand('copy');
+        showButtonFeedback(copyBtn, "Copied!");
+      }
+      
+      function clearAll() {
+        inputText.value = '';
+        outputText.value = '';
+        showButtonFeedback(clearBtn, "Cleared!");
+      }
+    }
+
+    // =============================================
+    // DOMAIN & IP EXTRACTOR
+    // =============================================
+    function initDomainExtractor() {
+      const extractBtn = document.getElementById('domainExtractorBtn');
+      const copyBtn = document.getElementById('domainExtractorCopyBtn');
+      const clearBtn = document.getElementById('domainExtractorClearBtn');
+      const inputText = document.getElementById('domainExtractorInput');
+      const outputText = document.getElementById('domainExtractorOutput');
+
+      extractBtn.addEventListener('click', extractDomainsAndIPs);
+      copyBtn.addEventListener('click', copyOutput);
+      clearBtn.addEventListener('click', clearAll);
+
+      function extractDomainsAndIPs() {
+        const text = inputText.value.trim();
+        if (!text) {
+          showButtonFeedback(extractBtn, "Enter text first!");
+          return;
+        }
+
+        // Extract IPs
+        const ipRegex = /\b(?:\d{1,3}\.){3}\d{1,3}\b/g;
+        const ips = text.match(ipRegex) || [];
+
+        // Extract domains (more comprehensive regex)
+        const domainRegex = /(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gi;
+        const domains = text.match(domainRegex) || [];
+
+        // Create mapping of domains to IPs
+        const domainToIPs = {};
+        
+        // For simple association, we'll pair them by order
+        // This is a basic implementation - you might want to improve this logic
+        domains.forEach((domain, index) => {
+          const ip = ips[index] || 'No associated IP';
+          if (!domainToIPs[domain]) {
+            domainToIPs[domain] = [];
+          }
+          if (ip !== 'No associated IP' && !domainToIPs[domain].includes(ip)) {
+            domainToIPs[domain].push(ip);
+          }
+        });
+
+        // Add any IPs that weren't associated with domains
+        ips.forEach(ip => {
+          let found = false;
+          for (const domain in domainToIPs) {
+            if (domainToIPs[domain].includes(ip)) {
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            domainToIPs[ip] = ['No associated domain'];
+          }
+        });
+
+        // Format the output
+        let output = '';
+        for (const [key, values] of Object.entries(domainToIPs)) {
+          output += `${key}:\n`;
+          values.forEach(value => {
+            output += `  - ${value}\n`;
+          });
+          output += '\n';
+        }
+
+        if (output === '') {
+          output = 'No domains or IPs found in the input text.';
+        }
+
+        outputText.value = output;
+        showButtonFeedback(extractBtn, "Extraction complete!");
+      }
+
+      function copyOutput() {
+        if (!outputText.value.trim()) {
+          showButtonFeedback(copyBtn, "Nothing to copy!");
+          return;
+        }
+        outputText.select();
+        document.execCommand('copy');
+        showButtonFeedback(copyBtn, "Copied!");
+      }
+
+      function clearAll() {
+        inputText.value = '';
+        outputText.value = '';
+        showButtonFeedback(clearBtn, "Cleared!");
+      }
+    }
+  </script>
+</body>
+</html>
