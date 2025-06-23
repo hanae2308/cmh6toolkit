@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>📤 CMH6 Newsletter Toolkit</title>
-  <style>
+ <style>
     :root {
       --primary: #3a86ff;
       --secondary: #8338ec;
@@ -101,20 +101,20 @@
     }
     
     .btn {
-      display: inline-block;
-      padding: 0.8rem 1.5rem;
-      background: var(--primary);
-      color: white;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 500;
-      transition: background 0.3s;
-      border: none;
-      cursor: pointer;
-      width: calc(100% - 3rem);
-      margin: 0 auto 1.5rem;
-      text-align: center;
-    }
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  background: var(--primary);
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.3s;
+  border: none;
+  cursor: pointer;
+  width: calc(100% - 3rem);
+  margin: 0 auto 1.5rem;
+  text-align: center;
+}
     
     .btn:hover {
       background: #2a75e6;
@@ -194,10 +194,6 @@
       display: flex;
       gap: 1rem;
       margin-top: 1.5rem;
-    }
-    
-    .action-btns .btn {
-      flex: 1;
     }
     
     .btn-secondary {
@@ -292,7 +288,89 @@
       margin-bottom: 0.5rem;
       font-weight: 500;
     }
-  </style>
+
+    /* NEW: Radio buttons matching theme */
+    .radio-group {
+      display: flex;
+      gap: 1.5rem;
+      margin: 1rem 0;
+      justify-content: center;
+    }
+    
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .radio-option input[type="radio"] {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--primary);
+      border-radius: 50%;
+      outline: none;
+      cursor: pointer;
+      position: relative;
+    }
+    
+    .radio-option input[type="radio"]:checked {
+      background-color: var(--primary);
+    }
+    
+    .radio-option input[type="radio"]:checked::after {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    
+    .radio-option label {
+      font-size: 1rem;
+      color: var(--dark);
+      cursor: pointer;
+    }
+	/* Floating Back to Top Button */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  transition: all 0.3s;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  border: none;
+}
+
+.back-to-top:hover {
+  background: #2a75e6;
+  transform: translateY(-3px);
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+
+}
+</style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -374,6 +452,9 @@
           <a class="btn">Use Tool</a>
         </div>
       </div>
+	  <button class="back-to-top" id="backToTopBtn" title="Back to Top">
+  <i class="fas fa-arrow-up"></i>
+</button>
     </div>
     
     <!-- Tool Sections -->
@@ -381,10 +462,22 @@
     <!-- Single Email Header Transformer -->
     <div id="single-transformer" class="tool-section">
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
-      <h2 class="section-title"><i class="fas fa-envelope"></i> Single newsletter Header Transformer</h2>
+      <h2 class="section-title"><i class="fas fa-envelope"></i> Single Newsletter Header Transformer</h2>
+      
+     
       
       <textarea id="singleInput" placeholder="Paste your newsletter source here..."></textarea>
       
+	   <div class="radio-group">
+        <div class="radio-option">
+          <input type="radio" id="singleRdns" name="singleReplace" value="RDNS" checked>
+          <label for="singleRdns">Use [RDNS]</label>
+        </div>
+        <div class="radio-option">
+          <input type="radio" id="singlePrpath" name="singleReplace" value="P_RPATH">
+          <label for="singlePrpath">Use [P_RPATH]</label>
+        </div>
+      </div>
       <div class="action-btns">
         <button id="singleTransformBtn" class="btn"><i class="fas fa-magic"></i> Transform Headers</button>
         <button id="singleIpBtn" class="btn btn-warning"><i class="fas fa-plus"></i> Add [IP] to Subject</button>
@@ -398,7 +491,9 @@
     <!-- Bulk Email Header Transformer -->
     <div id="bulk-transformer" class="tool-section">
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
-      <h2 class="section-title"><i class="fas fa-envelopes-bulk"></i> Bulk newsletter Header Transformer</h2>
+      <h2 class="section-title"><i class="fas fa-envelopes-bulk"></i> Bulk Newsletter Header Transformer</h2>
+      
+      
       
       <div class="upload-area" id="bulkUploadArea">
         <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--success); margin-bottom: 1rem;"></i>
@@ -410,6 +505,16 @@
         <input type="file" id="bulkFileInput" class="file-input" multiple accept=".eml,.zip">
       </div>
       
+	  <div class="radio-group">
+        <div class="radio-option">
+          <input type="radio" id="bulkRdns" name="bulkReplace" value="RDNS" checked>
+          <label for="bulkRdns">Use [RDNS]</label>
+        </div>
+        <div class="radio-option">
+          <input type="radio" id="bulkPrpath" name="bulkReplace" value="P_RPATH">
+          <label for="bulkPrpath">Use [P_RPATH]</label>
+        </div>
+      </div>
       <div class="action-btns">
         <button id="bulkTransformBtn" class="btn"><i class="fas fa-magic"></i> Transform Headers</button>
         <button id="bulkIpBtn" class="btn btn-warning"><i class="fas fa-plus"></i> Add [IP] Tag</button>
@@ -439,7 +544,9 @@
         <input type="file" id="mboxFileInput" class="file-input" accept=".mbox,.zip">
       </div>
       
-      <button id="mboxConvertBtn" class="btn"><i class="fas fa-exchange-alt"></i> Convert to EML</button>
+      <div class="action-btns">
+        <button id="mboxConvertBtn" class="btn"><i class="fas fa-exchange-alt"></i> Convert to EML</button>
+      </div>
       
       <div id="progress" style="text-align: center;">
         Processing... <span id="progressCount">0</span> messages converted
@@ -503,27 +610,30 @@
     </div>
     
     <!-- Domain and IP Extractor -->
-    <div id="domain-extractor" class="tool-section">
-      <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
-      <h2 class="section-title"><i class="fas fa-globe"></i> Domain & IP Extractor</h2>
-      
-      <div class="input-group">
-        <label for="domainExtractorInput">Text Content:</label>
-        <textarea id="domainExtractorInput" placeholder="Enter text containing domains and IPs..."></textarea>
-      </div>
-      
-      <div class="action-btns">
-        <button id="domainExtractorBtn" class="btn"><i class="fas fa-search"></i> Extract Domains & IPs</button>
-        <button id="domainExtractorCopyBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Copy</button>
-        <button id="domainExtractorClearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear</button>
-      </div>
-      
-      <div class="input-group">
-        <label for="domainExtractorOutput">Extracted Results:</label>
-        <textarea id="domainExtractorOutput" placeholder="Extracted domains with their associated IPs will appear here..." readonly></textarea>
-      </div>
-    </div>
+<div id="domain-extractor" class="tool-section">
+  <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
+  <h2 class="section-title"><i class="fas fa-globe"></i> Domain & IP Extractor</h2>
+  
+  <div class="input-group">
+    <label for="domainExtractorInput">Text Content:</label>
+    <textarea id="domainExtractorInput" placeholder="Paste your text with domains and IPs here..."></textarea>
   </div>
+  
+  <div class="action-btns">
+    <button id="domainExtractorBtn" class="btn"><i class="fas fa-search"></i> Extract</button>
+    <button id="domainExtractorCopyBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Copy</button>
+    <button id="domainExtractorClearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear</button>
+  </div>
+  
+  <div class="input-group">
+    <label for="domainExtractorOutput">Results:</label>
+    <textarea id="domainExtractorOutput" readonly></textarea>
+  </div>
+</div>
+	
+  </div>
+
+
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script>
@@ -609,7 +719,33 @@
       });
     });
 
-    // Initialize all tools
+    // Back to Top Button
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
+      // Get the active tool section if any
+      const activeSection = document.querySelector('.tool-section.active');
+      if (activeSection) {
+        clearToolData(activeSection.id);
+        activeSection.classList.remove('active');
+      }
+      
+      // Scroll to top with smooth behavior
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    // Initialize all tools when page loads
     document.addEventListener('DOMContentLoaded', function() {
       initSingleTransformer();
       initBulkTransformer();
@@ -675,29 +811,32 @@
           return;
         }
 
+        // Get selected replacement option
+        const replacement = document.querySelector('input[name="singleReplace"]:checked').value;
+        
+        // Remove everything from start to Return-Path
+        const returnPathIndex = input.indexOf('Return-Path:');
+        if (returnPathIndex !== -1) {
+          const nextNewLine = input.indexOf('\n', returnPathIndex);
+          input = input.substring(nextNewLine + 1);
+        }
+
         let output = input;
 
-        // Remove Delivered-To and Return-Path
-        output = output.replace(/^Delivered-To:.*\n?/gim, '');
-        output = output.replace(/^Return-Path:.*\n?/gim, '');
-
-        // Replace domain in From with [RDNS]
-        output = output.replace(/(From:\s*.*?<[^@<\s]+)@[^>\s]+/gi, '$1@[RDNS]');
-        output = output.replace(/(From:\s*[^<\s@]+)@([^\s]+)/gi, '$1@[RDNS]');
-
-        // Replace domain in Sender with [RDNS]
-        output = output.replace(/(Sender:\s*.*?<[^@<\s]+)@[^>\s]+/gi, '$1@[RDNS]');
-        output = output.replace(/(Sender:\s*[^<\s@]+)@([^\s]+)/gi, '$1@[RDNS]');
+        // Replace domains with selected placeholder
+        output = output.replace(/(From:\s*.*?<[^@<\s]+)@[^>\s]+/gi, `$1@[${replacement}]`);
+        output = output.replace(/(From:\s*[^<\s@]+)@([^\s]+)/gi, `$1@[${replacement}]`);
+        output = output.replace(/(Sender:\s*.*?<[^@<\s]+)@[^>\s]+/gi, `$1@[${replacement}]`);
+        output = output.replace(/(Sender:\s*[^<\s@]+)@([^\s]+)/gi, `$1@[${replacement}]`);
 
         // Insert [EID] into Message-ID
-        output = output.replace(/(Message-ID:\s*<)([^@]+)(@[^>]+>)/gi, function (_, prefix, id, suffix) {
+        output = output.replace(/(Message-ID:\s*<)([^@]+)(@[^>]+>)/gi, function(_, prefix, id, suffix) {
           const pos = Math.max(1, Math.floor(Math.random() * id.length));
           return prefix + id.slice(0, pos) + '[EID]' + id.slice(pos) + suffix;
         });
 
-        // If Add [IP] button was clicked
         if (addIP) {
-          output = output.replace(/^(Subject:.*?)$/im, function (_, subject) {
+          output = output.replace(/^(Subject:.*?)$/im, function(_, subject) {
             return subject.includes('[IP]') ? subject : subject + ' [IP]';
           });
         }
@@ -707,7 +846,7 @@
     }
 
     // =============================================
-    // BULK EMAIL HEADER TRANSFORMER - FIXED VERSION
+    // BULK EMAIL HEADER TRANSFORMER
     // =============================================
     function initBulkTransformer() {
       const dropArea = document.getElementById('bulkUploadArea');
@@ -808,17 +947,29 @@
       }
 
       function transformContent(content, addIP) {
-        let output = content
-          .replace(/^Delivered-To:.*\n?/gim, '')
-          .replace(/^Return-Path:.*\n?/gim, '')
-          .replace(/(From:\s*.*?<[^@<\s]+)@[^>\s]+/gi, '$1@[RDNS]')
-          .replace(/(From:\s*[^<\s@]+)@([^\s]+)/gi, '$1@[RDNS]')
-          .replace(/(Sender:\s*.*?<[^@<\s]+)@[^>\s]+/gi, '$1@[RDNS]')
-          .replace(/(Sender:\s*[^<\s@]+)@([^\s]+)/gi, '$1@[RDNS]')
-          .replace(/(Message-ID:\s*<)([^@]+)(@[^>]+>)/gi, (_, prefix, id, suffix) => {
-            const pos = Math.max(1, Math.floor(Math.random() * id.length));
-            return prefix + id.slice(0, pos) + '[EID]' + id.slice(pos) + suffix;
-          });
+        // Get selected replacement option
+        const replacement = document.querySelector('input[name="bulkReplace"]:checked').value;
+        
+        // Remove everything from start to Return-Path
+        const returnPathIndex = content.indexOf('Return-Path:');
+        if (returnPathIndex !== -1) {
+          const nextNewLine = content.indexOf('\n', returnPathIndex);
+          content = content.substring(nextNewLine + 1);
+        }
+
+        let output = content;
+
+        // Replace domains with selected placeholder
+        output = output.replace(/(From:\s*.*?<[^@<\s]+)@[^>\s]+/gi, `$1@[${replacement}]`);
+        output = output.replace(/(From:\s*[^<\s@]+)@([^\s]+)/gi, `$1@[${replacement}]`);
+        output = output.replace(/(Sender:\s*.*?<[^@<\s]+)@[^>\s]+/gi, `$1@[${replacement}]`);
+        output = output.replace(/(Sender:\s*[^<\s@]+)@([^\s]+)/gi, `$1@[${replacement}]`);
+
+        // Insert [EID] into Message-ID
+        output = output.replace(/(Message-ID:\s*<)([^@]+)(@[^>]+>)/gi, (_, prefix, id, suffix) => {
+          const pos = Math.max(1, Math.floor(Math.random() * id.length));
+          return prefix + id.slice(0, pos) + '[EID]' + id.slice(pos) + suffix;
+        });
 
         if (addIP) {
           output = output.replace(/^(Subject:.*?)$/im, (_, subject) =>
@@ -903,8 +1054,9 @@
       ipBtn.addEventListener('click', () => processFiles(true));
       processTemplateBtn.addEventListener('click', processWithTemplate);
     }
-  // =============================================
-    // MBOX CONVERTER - FIXED VERSION
+
+    // =============================================
+    // MBOX CONVERTER
     // =============================================
     function initMboxConverter() {
       const fileInput = document.getElementById('mboxFileInput');
@@ -1097,7 +1249,7 @@
     }
 
     // =============================================
-    // BULK HEADER REMOVER - FIXED VERSION
+    // BULK HEADER REMOVER
     // =============================================
     function initBulkRemover() {
       const dropArea = document.getElementById('removerUploadArea');
@@ -1283,7 +1435,8 @@
       transformBtn.addEventListener('click', processFiles);
       processTemplateBtn.addEventListener('click', processWithTemplate);
     }
-	    // =============================================
+
+    // =============================================
     // SINGLE HEADER REMOVER
     // =============================================
     function initSingleRemover() {
@@ -1349,98 +1502,128 @@
       }
     }
 
-    // =============================================
-    // DOMAIN & IP EXTRACTOR
-    // =============================================
-    function initDomainExtractor() {
-      const extractBtn = document.getElementById('domainExtractorBtn');
-      const copyBtn = document.getElementById('domainExtractorCopyBtn');
-      const clearBtn = document.getElementById('domainExtractorClearBtn');
-      const inputText = document.getElementById('domainExtractorInput');
-      const outputText = document.getElementById('domainExtractorOutput');
+ // =============================================
+// DOMAIN & IP EXTRACTOR - WORKING VERSION
+// =============================================
+function initDomainExtractor() {
+  const extractBtn = document.getElementById('domainExtractorBtn');
+  const copyBtn = document.getElementById('domainExtractorCopyBtn');
+  const clearBtn = document.getElementById('domainExtractorClearBtn');
+  const inputText = document.getElementById('domainExtractorInput');
+  const outputText = document.getElementById('domainExtractorOutput');
 
-      extractBtn.addEventListener('click', extractDomainsAndIPs);
-      copyBtn.addEventListener('click', copyOutput);
-      clearBtn.addEventListener('click', clearAll);
+  // Event listeners
+  extractBtn.addEventListener('click', extractDomainsAndIPs);
+  copyBtn.addEventListener('click', copyOutput);
+  clearBtn.addEventListener('click', clearAll);
 
-      function extractDomainsAndIPs() {
-        const text = inputText.value.trim();
-        if (!text) {
-          showButtonFeedback(extractBtn, "Enter text first!");
-          return;
-        }
+  function extractDomainsAndIPs() {
+    try {
+      const text = inputText.value.trim();
+      if (!text) {
+        showButtonFeedback(extractBtn, "Enter text first!");
+        return;
+      }
 
-        // Extract IPs
-        const ipRegex = /\b(?:\d{1,3}\.){3}\d{1,3}\b/g;
-        const ips = text.match(ipRegex) || [];
+      // Improved IP regex (matches real IP addresses)
+      const ipRegex = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/g;
+      const ips = [...new Set(text.match(ipRegex) || [])]; // Remove duplicates
 
-        // Extract domains (more comprehensive regex)
-        const domainRegex = /(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/gi;
-        const domains = text.match(domainRegex) || [];
+      // Improved domain regex
+      const domainRegex = /(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}\b/gi;
+      const domains = [...new Set(text.match(domainRegex) || [])]; // Remove duplicates
 
-        // Create mapping of domains to IPs
-        const domainToIPs = {};
+      // Create mapping of domains to IPs
+      const domainToIps = {};
+      
+      // Associate IPs that appear near domains (within 100 characters)
+      domains.forEach(domain => {
+        const domainPos = text.indexOf(domain);
+        domainToIps[domain] = [];
         
-        // For simple association, we'll pair them by order
-        // This is a basic implementation - you might want to improve this logic
-        domains.forEach((domain, index) => {
-          const ip = ips[index] || 'No associated IP';
-          if (!domainToIPs[domain]) {
-            domainToIPs[domain] = [];
-          }
-          if (ip !== 'No associated IP' && !domainToIPs[domain].includes(ip)) {
-            domainToIPs[domain].push(ip);
-          }
-        });
-
-        // Add any IPs that weren't associated with domains
         ips.forEach(ip => {
-          let found = false;
-          for (const domain in domainToIPs) {
-            if (domainToIPs[domain].includes(ip)) {
-              found = true;
-              break;
-            }
-          }
-          if (!found) {
-            domainToIPs[ip] = ['No associated domain'];
+          const ipPos = text.indexOf(ip);
+          if (Math.abs(ipPos - domainPos) < 100) {
+            domainToIps[domain].push(ip);
           }
         });
+        
+        // Remove duplicates and sort IPs numerically
+        domainToIps[domain] = [...new Set(domainToIps[domain])].sort((a, b) => {
+          const numA = a.split('.').map(Number);
+          const numB = b.split('.').map(Number);
+          return numA[0] - numB[0] || numA[1] - numB[1] || numA[2] - numB[2] || numA[3] - numB[3];
+        });
+      });
 
-        // Format the output
-        let output = '';
-        for (const [key, values] of Object.entries(domainToIPs)) {
-          output += `${key}:\n`;
-          values.forEach(value => {
-            output += `  - ${value}\n`;
+      // Find IPs that weren't associated with any domain
+      const unassociatedIPs = ips.filter(ip => {
+        return !Object.values(domainToIps).some(ipList => ipList.includes(ip));
+      });
+
+      // Format the output exactly as requested
+      let output = '';
+      
+      // Add domains with their IPs
+      for (const [domain, ipList] of Object.entries(domainToIps)) {
+        if (ipList.length > 0) {
+          output += `${domain}\n`;
+          ipList.forEach(ip => {
+            output += `   ${ip}\n`;
           });
           output += '\n';
         }
-
-        if (output === '') {
-          output = 'No domains or IPs found in the input text.';
-        }
-
-        outputText.value = output;
-        showButtonFeedback(extractBtn, "Extraction complete!");
+      }
+      
+      // Add unassociated IPs at the end
+      if (unassociatedIPs.length > 0) {
+        output += 'Unassociated IPs:\n';
+        unassociatedIPs.forEach(ip => {
+          output += `   ${ip}\n`;
+        });
       }
 
-      function copyOutput() {
-        if (!outputText.value.trim()) {
-          showButtonFeedback(copyBtn, "Nothing to copy!");
-          return;
-        }
-        outputText.select();
-        document.execCommand('copy');
-        showButtonFeedback(copyBtn, "Copied!");
-      }
-
-      function clearAll() {
-        inputText.value = '';
-        outputText.value = '';
-        showButtonFeedback(clearBtn, "Cleared!");
-      }
+      outputText.value = output.trim() || 'No domains or IPs found in the input text.';
+      showButtonFeedback(extractBtn, "Extraction complete!");
+    } catch (error) {
+      console.error("Extraction error:", error);
+      outputText.value = "An error occurred during extraction. Please check the console.";
+      showButtonFeedback(extractBtn, "Error occurred!");
     }
-  </script>
+  }
+
+  function copyOutput() {
+    if (!outputText.value.trim()) {
+      showButtonFeedback(copyBtn, "Nothing to copy!");
+      return;
+    }
+    outputText.select();
+    document.execCommand('copy');
+    showButtonFeedback(copyBtn, "Copied!");
+  }
+
+  function clearAll() {
+    inputText.value = '';
+    outputText.value = '';
+    showButtonFeedback(clearBtn, "Cleared!");
+  }
+}
+
+// Make sure to call this function during initialization
+document.addEventListener('DOMContentLoaded', function() {
+  initDomainExtractor();
+});
+</script>
+<footer style="
+  text-align: center;
+  padding: 0.5rem;
+  margin-top: 1rem;
+  border-top: 1px solid #eee;
+  color: #6c757d;
+  font-size: 0.6rem;
+">
+  <p><strong>CMH6 Newsletter Toolkit</strong></p>
+  <p>Created by Hanae HM & CMH6 Team</p>
+</footer>
 </body>
 </html>
