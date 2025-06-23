@@ -53,17 +53,17 @@
       margin-bottom: 3rem;
     }
     
-   .tool-card {
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-  transition: transform 0.3s, box-shadow 0.3s;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
+    .tool-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
     
     .tool-card:hover {
       transform: translateY(-5px);
@@ -77,44 +77,44 @@
       font-size: 2.5rem;
     }
     
-   .tool-content {
-  padding: 1.5rem;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
+    .tool-content {
+      padding: 1.5rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
     
-  .tool-title {
-  font-size: 1.3rem;
-  margin-bottom: 0.5rem;
-  color: var(--dark);
-  text-align: center;
-}
+    .tool-title {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+      text-align: center;
+    }
     
     .tool-desc {
-  color: #6c757d;
-  margin-bottom: 1.5rem;
-  font-size: 0.95rem;
-  text-align: center;
-  flex-grow: 1;
-}
+      color: #6c757d;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+      text-align: center;
+      flex-grow: 1;
+    }
     
-  .btn {
-  display: inline-block;
-  padding: 0.8rem 1.5rem;
-  background: var(--primary);
-  color: white;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background 0.3s;
-  border: none;
-  cursor: pointer;
-  width: calc(100% - 3rem);
-  margin: 0 auto 1.5rem;
-  text-align: center;
-}
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      background: var(--primary);
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.3s;
+      border: none;
+      cursor: pointer;
+      width: calc(100% - 3rem);
+      margin: 0 auto 1.5rem;
+      text-align: center;
+    }
     
     .btn:hover {
       background: #2a75e6;
@@ -402,12 +402,12 @@
       
       <div class="upload-area" id="bulkUploadArea">
         <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--success); margin-bottom: 1rem;"></i>
-        <p>Drag and drop multiple .eml files here</p>
+        <p>Drag and drop multiple .eml files or .zip archives here</p>
         <p>or</p>
         <label for="bulkFileInput" class="file-label">
           <i class="fas fa-folder-open"></i> Select Files
         </label>
-        <input type="file" id="bulkFileInput" class="file-input" multiple accept=".eml">
+        <input type="file" id="bulkFileInput" class="file-input" multiple accept=".eml,.zip">
       </div>
       
       <div class="action-btns">
@@ -431,12 +431,12 @@
       
       <div class="upload-area" id="mboxUploadArea">
         <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--warning); margin-bottom: 1rem;"></i>
-        <p>Drag and drop an MBOX file here</p>
+        <p>Drag and drop an MBOX file or .zip archive here</p>
         <p>or</p>
         <label for="mboxFileInput" class="file-label">
           <i class="fas fa-folder-open"></i> Select File
         </label>
-        <input type="file" id="mboxFileInput" class="file-input" accept=".mbox">
+        <input type="file" id="mboxFileInput" class="file-input" accept=".mbox,.zip">
       </div>
       
       <button id="mboxConvertBtn" class="btn"><i class="fas fa-exchange-alt"></i> Convert to EML</button>
@@ -459,12 +459,12 @@
       
       <div class="upload-area" id="removerUploadArea">
         <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--danger); margin-bottom: 1rem;"></i>
-        <p>Drag and drop multiple .eml files here</p>
+        <p>Drag and drop multiple .eml files or .zip archives here</p>
         <p>or</p>
         <label for="removerFileInput" class="file-label">
           <i class="fas fa-folder-open"></i> Select Files
         </label>
-        <input type="file" id="removerFileInput" class="file-input" multiple accept=".eml">
+        <input type="file" id="removerFileInput" class="file-input" multiple accept=".eml,.zip">
       </div>
       
       <div class="action-btns">
@@ -547,7 +547,6 @@
           break;
         case 'mbox-converter':
           document.getElementById('mboxFileInput').value = '';
-          document.getElementById('mboxContent').value = '';
           document.getElementById('mboxResults').innerHTML = '';
           document.getElementById('mboxDownloadAll').style.display = 'none';
           break;
@@ -708,7 +707,7 @@
     }
 
     // =============================================
-    // BULK EMAIL HEADER TRANSFORMER
+    // BULK EMAIL HEADER TRANSFORMER - FIXED VERSION
     // =============================================
     function initBulkTransformer() {
       const dropArea = document.getElementById('bulkUploadArea');
@@ -746,64 +745,80 @@
       );
 
       dropArea.addEventListener("drop", e => {
-        filesToProcess = [...e.dataTransfer.files].filter(f => f.name.endsWith(".eml"));
-        updateFileList();
-        showButtonFeedback(transformBtn, `${filesToProcess.length} files ready`);
+        e.preventDefault();
+        fileInput.files = e.dataTransfer.files;
+        handleFileSelection();
       });
 
-      fileInput.addEventListener("change", e => {
-        filesToProcess = [...e.target.files].filter(f => f.name.endsWith(".eml"));
-        updateFileList();
-        showButtonFeedback(transformBtn, `${filesToProcess.length} files ready`);
-      });
+      fileInput.addEventListener("change", handleFileSelection);
 
-      transformBtn.addEventListener('click', () => {
-        processFiles(false);
-        showButtonFeedback(transformBtn, "Processing...");
-      });
-      
-      ipBtn.addEventListener('click', () => {
-        processFiles(true);
-        showButtonFeedback(ipBtn, "Processing...");
-      });
-      
-      processTemplateBtn.addEventListener('click', () => {
-        processWithTemplate();
-        showButtonFeedback(processTemplateBtn, "Processing...");
-      });
+      async function handleFileSelection() {
+        filesToProcess = [];
+        const files = Array.from(fileInput.files);
+        
+        if (files.length === 0) {
+          resultsArea.innerHTML = '<p>No files selected</p>';
+          return;
+        }
+
+        resultsArea.innerHTML = '<p>Processing files...</p>';
+        
+        try {
+          for (const file of files) {
+            if (file.name.endsWith('.zip')) {
+              const zip = await JSZip.loadAsync(file);
+              for (const [relativePath, zipEntry] of Object.entries(zip.files)) {
+                if (!zipEntry.dir && zipEntry.name.endsWith('.eml')) {
+                  const content = await zipEntry.async('text');
+                  filesToProcess.push({
+                    name: zipEntry.name.split('/').pop(),
+                    content: content
+                  });
+                }
+              }
+            } else if (file.name.endsWith('.eml')) {
+              const content = await file.text();
+              filesToProcess.push({
+                name: file.name,
+                content: content
+              });
+            }
+          }
+
+          updateFileList();
+          showButtonFeedback(transformBtn, `${filesToProcess.length} files ready`);
+        } catch (error) {
+          resultsArea.innerHTML = `<p style="color:red;">Error processing files: ${error.message}</p>`;
+          console.error(error);
+        }
+      }
 
       function updateFileList() {
         if (filesToProcess.length === 0) {
-          resultsArea.innerHTML = '<p>No files selected</p>';
+          resultsArea.innerHTML = '<p>No valid EML files found</p>';
           return;
         }
 
         resultsArea.innerHTML = `
           <p><strong>Selected files:</strong> ${filesToProcess.length}</p>
           <ul style="margin-top: 0.5rem; max-height: 200px; overflow-y: auto;">
-            ${Array.from(filesToProcess).map(file => `<li>${file.name}</li>`).join('')}
+            ${filesToProcess.map(file => `<li>${file.name}</li>`).join('')}
           </ul>
         `;
       }
 
       function transformContent(content, addIP) {
-        let output = content;
-
-        output = output
-		
-		.replace(/^Delivered-To:.*\n?/gim, '');
-        output = output.replace(/^Return-Path:.*\n?/gim, '');
-
-        output = output.replace(/(From:\s*.*?<[^@<\s]+)@[^>\s]+/gi, '$1@[RDNS]');
-        output = output.replace(/(From:\s*[^<\s@]+)@([^\s]+)/gi, '$1@[RDNS]');
-
-        output = output.replace(/(Sender:\s*.*?<[^@<\s]+)@[^>\s]+/gi, '$1@[RDNS]');
-        output = output.replace(/(Sender:\s*[^<\s@]+)@([^\s]+)/gi, '$1@[RDNS]');
-
-        output = output.replace(/(Message-ID:\s*<)([^@]+)(@[^>]+>)/gi, (_, prefix, id, suffix) => {
-          const pos = Math.max(1, Math.floor(Math.random() * id.length));
-          return prefix + id.slice(0, pos) + '[EID]' + id.slice(pos) + suffix;
-        });
+        let output = content
+          .replace(/^Delivered-To:.*\n?/gim, '')
+          .replace(/^Return-Path:.*\n?/gim, '')
+          .replace(/(From:\s*.*?<[^@<\s]+)@[^>\s]+/gi, '$1@[RDNS]')
+          .replace(/(From:\s*[^<\s@]+)@([^\s]+)/gi, '$1@[RDNS]')
+          .replace(/(Sender:\s*.*?<[^@<\s]+)@[^>\s]+/gi, '$1@[RDNS]')
+          .replace(/(Sender:\s*[^<\s@]+)@([^\s]+)/gi, '$1@[RDNS]')
+          .replace(/(Message-ID:\s*<)([^@]+)(@[^>]+>)/gi, (_, prefix, id, suffix) => {
+            const pos = Math.max(1, Math.floor(Math.random() * id.length));
+            return prefix + id.slice(0, pos) + '[EID]' + id.slice(pos) + suffix;
+          });
 
         if (addIP) {
           output = output.replace(/^(Subject:.*?)$/im, (_, subject) =>
@@ -814,37 +829,36 @@
         return output;
       }
 
-      function processFiles(addIP) {
+      async function processFiles(addIP) {
         if (filesToProcess.length === 0) {
           showButtonFeedback(transformBtn, "Upload files first!");
           return;
         }
 
-        const zip = new JSZip();
-
-        Promise.all(filesToProcess.map(file => {
-          return file.text().then(content => {
-            const output = transformContent(content, addIP);
+        try {
+          const zip = new JSZip();
+          
+          for (const file of filesToProcess) {
+            const output = transformContent(file.content, addIP);
             zip.file(file.name, output);
-          });
-        })).then(() => {
-          zip.generateAsync({ type: "blob" }).then(content => {
-            const a = document.createElement("a");
-            a.href = URL.createObjectURL(content);
-            a.download = "transformed_headers.zip";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(a.href);
-            showButtonFeedback(transformBtn, "Downloaded!");
-          });
-        }).catch(error => {
+          }
+
+          const blob = await zip.generateAsync({ type: "blob" });
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = "transformed_headers.zip";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(a.href);
+          showButtonFeedback(transformBtn, "Downloaded!");
+        } catch (error) {
           showButtonFeedback(transformBtn, "Error occurred!");
           console.error(error);
-        });
+        }
       }
 
-      function processWithTemplate() {
+      async function processWithTemplate() {
         if (filesToProcess.length === 0) {
           showButtonFeedback(processTemplateBtn, "Upload files first!");
           return;
@@ -861,145 +875,171 @@
           return;
         }
 
-        const zip = new JSZip();
-
-        Promise.all(filesToProcess.map(file => {
-          return file.text().then(content => {
-            const transformedContent = transformContent(content, false);
+        try {
+          const zip = new JSZip();
+          
+          for (const file of filesToProcess) {
+            const transformedContent = transformContent(file.content, false);
             const finalContent = template.replace("[newsletter]", transformedContent);
             zip.file(file.name, finalContent);
-          });
-        })).then(() => {
-          zip.generateAsync({ type: "blob" }).then(content => {
-            const a = document.createElement("a");
-            a.href = URL.createObjectURL(content);
-            a.download = "templated_emails.zip";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(a.href);
-            showButtonFeedback(processTemplateBtn, "Downloaded!");
-          });
-        }).catch(error => {
+          }
+
+          const blob = await zip.generateAsync({ type: "blob" });
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = "templated_emails.zip";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(a.href);
+          showButtonFeedback(processTemplateBtn, "Downloaded!");
+        } catch (error) {
           showButtonFeedback(processTemplateBtn, "Error occurred!");
           console.error(error);
-        });
+        }
       }
-    }
 
-    // =============================================
-    // MBOX CONVERTER
+      transformBtn.addEventListener('click', () => processFiles(false));
+      ipBtn.addEventListener('click', () => processFiles(true));
+      processTemplateBtn.addEventListener('click', processWithTemplate);
+    }
+  // =============================================
+    // MBOX CONVERTER - FIXED VERSION
     // =============================================
     function initMboxConverter() {
       const fileInput = document.getElementById('mboxFileInput');
-      const mboxContent = document.getElementById('mboxContent');
       const convertBtn = document.getElementById('mboxConvertBtn');
       const progress = document.getElementById('progress');
       const progressCount = document.getElementById('progressCount');
       const resultsDiv = document.getElementById('mboxResults');
       const downloadAllBtn = document.getElementById('mboxDownloadAll');
 
-      convertBtn.addEventListener('click', () => {
-        convertMboxToEml();
+      convertBtn.addEventListener('click', async () => {
+        await convertMboxToEml();
         showButtonFeedback(convertBtn, "Processing...");
       });
       
-      downloadAllBtn.addEventListener('click', () => {
-        downloadAllAsZip();
+      downloadAllBtn.addEventListener('click', async () => {
+        await downloadAllAsZip();
         showButtonFeedback(downloadAllBtn, "Downloading...");
       });
 
-      function convertMboxToEml() {
+      async function convertMboxToEml() {
         resultsDiv.innerHTML = '';
         downloadAllBtn.style.display = 'none';
         
-        let contentPromise;
-        
-        if (fileInput.files.length > 0) {
-          contentPromise = fileInput.files[0].text();
-        } else if (mboxContent.value.trim() !== '') {
-          contentPromise = Promise.resolve(mboxContent.value);
-        } else {
+        if (fileInput.files.length === 0) {
           showButtonFeedback(convertBtn, "Add MBOX content!");
           return;
         }
         
         progress.style.display = 'block';
         
-        contentPromise.then(content => {
-          const messages = parseMbox(content);
-          progressCount.textContent = messages.length;
+        try {
+          const files = [];
+          const file = fileInput.files[0];
           
-          if (messages.length === 0) {
-            resultsDiv.innerHTML = '<p>No messages found in the MBOX file.</p>';
+          if (file.name.endsWith('.zip')) {
+            const zip = await JSZip.loadAsync(file);
+            for (const [relativePath, zipEntry] of Object.entries(zip.files)) {
+              if (!zipEntry.dir && zipEntry.name.endsWith('.mbox')) {
+                const content = await zipEntry.async('text');
+                files.push({
+                  name: zipEntry.name.split('/').pop(),
+                  content: content
+                });
+              }
+            }
+          } else if (file.name.endsWith('.mbox')) {
+            const content = await file.text();
+            files.push({
+              name: file.name,
+              content: content
+            });
+          }
+
+          if (files.length === 0) {
+            resultsDiv.innerHTML = '<p>No valid MBOX files found</p>';
             progress.style.display = 'none';
-            showButtonFeedback(convertBtn, "No messages!");
+            showButtonFeedback(convertBtn, "No files found!");
             return;
           }
-          
+
           const zip = new JSZip();
           let count = 0;
           
-          messages.forEach((message, index) => {
-            const emlContent = message.raw;
+          for (const file of files) {
+            const messages = parseMbox(file.content);
+            progressCount.textContent = messages.length;
             
-            // Extract subject from headers
-            let subject = extractHeader(emlContent, 'Subject') || `No_Subject_${index + 1}`;
+            if (messages.length === 0) {
+              resultsDiv.innerHTML = '<p>No messages found in the MBOX file.</p>';
+              progress.style.display = 'none';
+              showButtonFeedback(convertBtn, "No messages!");
+              return;
+            }
             
-            // Clean subject for filename
-            const cleanSubject = subject
-              .replace(/[^\w\s-]/g, '')
-              .replace(/\s+/g, ' ')
-              .trim()
-              .substring(0, 100)
-              .replace(/\s/g, '_');
-            
-            const filename = `${cleanSubject}.eml`;
-            
-            // Create download link for individual message
-            const blob = new Blob([emlContent], { type: 'message/rfc822' });
-            const url = URL.createObjectURL(blob);
-            
-            // Create message info display
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message-info';
-            
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.textContent = `Download: ${filename}`;
-            link.className = 'download-link';
-            
-            const details = document.createElement('div');
-            details.className = 'message-details';
-            details.textContent = `Subject: ${subject}`;
-            
-            messageDiv.appendChild(link);
-            messageDiv.appendChild(details);
-            resultsDiv.appendChild(messageDiv);
-            
-            // Add to ZIP
-            zip.file(filename, emlContent);
-            
-            count++;
-            progressCount.textContent = count;
-          });
+            for (const message of messages) {
+              const emlContent = message.raw;
+              
+              // Extract subject from headers
+              let subject = extractHeader(emlContent, 'Subject') || `No_Subject_${count + 1}`;
+              
+              // Clean subject for filename
+              const cleanSubject = subject
+                .replace(/[^\w\s-]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim()
+                .substring(0, 100)
+                .replace(/\s/g, '_');
+              
+              const filename = `${cleanSubject}_${count + 1}.eml`;
+              
+              // Create download link for individual message
+              const blob = new Blob([emlContent], { type: 'message/rfc822' });
+              const url = URL.createObjectURL(blob);
+              
+              // Create message info display
+              const messageDiv = document.createElement('div');
+              messageDiv.className = 'message-info';
+              
+              const link = document.createElement('a');
+              link.href = url;
+              link.download = filename;
+              link.textContent = `Download: ${filename}`;
+              link.className = 'download-link';
+              
+              const details = document.createElement('div');
+              details.className = 'message-details';
+              details.textContent = `Subject: ${subject}`;
+              
+              messageDiv.appendChild(link);
+              messageDiv.appendChild(details);
+              resultsDiv.appendChild(messageDiv);
+              
+              // Add to ZIP
+              zip.file(filename, emlContent);
+              
+              count++;
+              progressCount.textContent = count;
+            }
+          }
           
           progress.style.display = 'none';
           
-          if (messages.length > 1) {
+          if (count > 0) {
             // Store ZIP for download
             window.mboxZip = zip;
             downloadAllBtn.style.display = 'block';
           }
           
           showButtonFeedback(convertBtn, "Conversion done!");
-        }).catch(error => {
+        } catch (error) {
           console.error('Error:', error);
           resultsDiv.innerHTML = `<p style="color: red;">Error processing MBOX file: ${error.message}</p>`;
           progress.style.display = 'none';
           showButtonFeedback(convertBtn, "Error occurred!");
-        });
+        }
       }
       
       function parseMbox(content) {
@@ -1037,182 +1077,213 @@
         return match ? match[1].trim() : null;
       }
       
-      function downloadAllAsZip() {
+      async function downloadAllAsZip() {
         if (!window.mboxZip) {
           showButtonFeedback(downloadAllBtn, "Nothing to download!");
           return;
         }
         
-        window.mboxZip.generateAsync({ type: 'blob' }).then(content => {
-          const url = URL.createObjectURL(content);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = 'converted_emails.zip';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          URL.revokeObjectURL(url);
-          showButtonFeedback(downloadAllBtn, "Downloaded!");
-        });
+        const content = await window.mboxZip.generateAsync({ type: 'blob' });
+        const url = URL.createObjectURL(content);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'converted_emails.zip';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        showButtonFeedback(downloadAllBtn, "Downloaded!");
       }
     }
-
-   function initBulkRemover() {
-  const dropArea = document.getElementById('removerUploadArea');
-  const fileInput = document.getElementById('removerFileInput');
-  const transformBtn = document.getElementById('removerTransformBtn');
-  const templateBtn = document.getElementById('removerTemplateBtn');
-  const templateContainer = document.getElementById('removerTemplateContainer');
-  const processTemplateBtn = document.getElementById('removerProcessTemplateBtn');
-  const resultsArea = document.getElementById('removerResults');
-
-  let filesToProcess = [];
-
-  templateBtn.addEventListener('click', () => {
-    const show = templateContainer.style.display === 'block';
-    templateContainer.style.display = show ? 'none' : 'block';
-    showButtonFeedback(templateBtn, show ? "Template Hidden" : "Template Shown");
-  });
-
-  ["dragenter", "dragover"].forEach(event => {
-    dropArea.addEventListener(event, e => {
-      e.preventDefault();
-      dropArea.classList.add("dragover");
-    });
-  });
-
-  ["dragleave", "drop"].forEach(event => {
-    dropArea.addEventListener(event, e => {
-      e.preventDefault();
-      dropArea.classList.remove("dragover");
-    });
-  });
-
-  dropArea.addEventListener("drop", e => {
-    filesToProcess = Array.from(e.dataTransfer.files).filter(f => f.name.toLowerCase().endsWith(".eml"));
-    updateFileList();
-    showButtonFeedback(transformBtn, `${filesToProcess.length} files ready`);
-  });
-
-  fileInput.addEventListener("change", e => {
-    filesToProcess = Array.from(e.target.files).filter(f => f.name.toLowerCase().endsWith(".eml"));
-    updateFileList();
-    showButtonFeedback(transformBtn, `${filesToProcess.length} files ready`);
-  });
-
-  transformBtn.addEventListener('click', () => {
-    if (filesToProcess.length === 0) {
-      showButtonFeedback(transformBtn, "Upload files first!");
-    } else {
-      showButtonFeedback(transformBtn, "Processing...");
-      processFiles();
-    }
-  });
-
-  processTemplateBtn.addEventListener('click', () => {
-    const template = document.getElementById("removerTemplateInput").value;
-    if (filesToProcess.length === 0) {
-      showButtonFeedback(processTemplateBtn, "Upload files first!");
-    } else if (!template.includes("[newsletter]")) {
-      showButtonFeedback(processTemplateBtn, 'Add "[newsletter]"!');
-    } else {
-      showButtonFeedback(processTemplateBtn, "Processing...");
-      processWithTemplate(template);
-    }
-  });
-
-  function updateFileList() {
-    resultsArea.innerHTML = filesToProcess.length === 0
-      ? '<p>No files selected</p>'
-      : `<p><strong>Selected files:</strong> ${filesToProcess.length}</p>
-         <ul style="margin-top: 0.5rem; max-height: 200px; overflow-y: auto;">
-         ${filesToProcess.map(file => `<li>${file.name}</li>`).join('')}</ul>`;
-  }
-
-  function extractBody(content) {
-    let headerEnd = content.indexOf('\r\n\r\n');
-    if (headerEnd !== -1) return content.slice(headerEnd + 4).trim();
-    headerEnd = content.indexOf('\n\n');
-    if (headerEnd !== -1) return content.slice(headerEnd + 2).trim();
-    const htmlStart = content.indexOf('<');
-    if (htmlStart !== -1) return content.slice(htmlStart).trim();
-    return '';
-  }
-
-  function processFiles() {
-    const zip = new JSZip();
-    function processNext(index) {
-      if (index >= filesToProcess.length) {
-        zip.generateAsync({ type: "blob" }).then(content => {
-          const a = document.createElement("a");
-          a.href = URL.createObjectURL(content);
-          a.download = "email_bodies_only.zip";
-          a.click();
-          URL.revokeObjectURL(a.href);
-          showButtonFeedback(transformBtn, "Downloaded!");
-        });
-        return;
-      }
-      const file = filesToProcess[index];
-      const reader = new FileReader();
-      reader.onload = e => {
-        const body = extractBody(e.target.result);
-        if (body) {
-          const name = file.name.replace(/\.eml$/i, '_body.txt');
-          zip.file(name, body);
-        } else {
-          resultsArea.innerHTML += `<p style="color:red;">No body: ${file.name}</p>`;
-        }
-        processNext(index + 1);
-      };
-      reader.onerror = () => {
-        resultsArea.innerHTML += `<p style="color:red;">Error reading: ${file.name}</p>`;
-        processNext(index + 1);
-      };
-      reader.readAsText(file);
-    }
-    processNext(0);
-  }
-
-  function processWithTemplate(template) {
-    const zip = new JSZip();
-    function processNext(index) {
-      if (index >= filesToProcess.length) {
-        zip.generateAsync({ type: "blob" }).then(content => {
-          const a = document.createElement("a");
-          a.href = URL.createObjectURL(content);
-          a.download = "templated_emails.zip";
-          a.click();
-          URL.revokeObjectURL(a.href);
-          showButtonFeedback(processTemplateBtn, "Downloaded!");
-        });
-        return;
-      }
-      const file = filesToProcess[index];
-      const reader = new FileReader();
-      reader.onload = e => {
-        const body = extractBody(e.target.result);
-        const final = template.replace("[newsletter]", body);
-        zip.file(file.name, final);
-        processNext(index + 1);
-      };
-      reader.onerror = () => {
-        resultsArea.innerHTML += `<p style="color:red;">Error reading: ${file.name}</p>`;
-        processNext(index + 1);
-      };
-      reader.readAsText(file);
-    }
-    processNext(0);
-  }
-
-  function showButtonFeedback(button, msg) {
-    const original = button.innerHTML;
-    button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${msg}`;
-    setTimeout(() => { button.innerHTML = original; }, 2000);
-  }
-}
 
     // =============================================
+    // BULK HEADER REMOVER - FIXED VERSION
+    // =============================================
+    function initBulkRemover() {
+      const dropArea = document.getElementById('removerUploadArea');
+      const fileInput = document.getElementById('removerFileInput');
+      const transformBtn = document.getElementById('removerTransformBtn');
+      const templateBtn = document.getElementById('removerTemplateBtn');
+      const templateContainer = document.getElementById('removerTemplateContainer');
+      const processTemplateBtn = document.getElementById('removerProcessTemplateBtn');
+      const resultsArea = document.getElementById('removerResults');
+
+      let filesToProcess = [];
+
+      // Toggle template input visibility
+      templateBtn.addEventListener('click', () => {
+        const show = templateContainer.style.display === 'block';
+        templateContainer.style.display = show ? 'none' : 'block';
+        showButtonFeedback(templateBtn, show ? "Template Hidden" : "Template Shown");
+      });
+
+      // Drag and Drop support
+      ["dragenter", "dragover"].forEach(event => {
+        dropArea.addEventListener(event, e => {
+          e.preventDefault();
+          dropArea.classList.add("dragover");
+        });
+      });
+
+      ["dragleave", "drop"].forEach(event => {
+        dropArea.addEventListener(event, e => {
+          e.preventDefault();
+          dropArea.classList.remove("dragover");
+        });
+      });
+
+      dropArea.addEventListener("drop", e => {
+        e.preventDefault();
+        fileInput.files = e.dataTransfer.files;
+        handleFileSelection();
+      });
+
+      fileInput.addEventListener("change", handleFileSelection);
+
+      async function handleFileSelection() {
+        filesToProcess = [];
+        const files = Array.from(fileInput.files);
+        
+        if (files.length === 0) {
+          resultsArea.innerHTML = '<p>No files selected</p>';
+          return;
+        }
+
+        resultsArea.innerHTML = '<p>Processing files...</p>';
+        
+        try {
+          for (const file of files) {
+            if (file.name.endsWith('.zip')) {
+              const zip = await JSZip.loadAsync(file);
+              for (const [relativePath, zipEntry] of Object.entries(zip.files)) {
+                if (!zipEntry.dir && zipEntry.name.endsWith('.eml')) {
+                  const content = await zipEntry.async('text');
+                  filesToProcess.push({
+                    name: zipEntry.name.split('/').pop(),
+                    content: content
+                  });
+                }
+              }
+            } else if (file.name.endsWith('.eml')) {
+              const content = await file.text();
+              filesToProcess.push({
+                name: file.name,
+                content: content
+              });
+            }
+          }
+
+          updateFileList();
+          showButtonFeedback(transformBtn, `${filesToProcess.length} files ready`);
+        } catch (error) {
+          resultsArea.innerHTML = `<p style="color:red;">Error processing files: ${error.message}</p>`;
+          console.error(error);
+        }
+      }
+
+      function updateFileList() {
+        if (filesToProcess.length === 0) {
+          resultsArea.innerHTML = '<p>No valid EML files found</p>';
+          return;
+        }
+
+        resultsArea.innerHTML = `
+          <p><strong>Selected files:</strong> ${filesToProcess.length}</p>
+          <ul style="margin-top: 0.5rem; max-height: 200px; overflow-y: auto;">
+            ${filesToProcess.map(file => `<li>${file.name}</li>`).join('')}
+          </ul>
+        `;
+      }
+
+      function extractBody(content) {
+        let headerEnd = content.indexOf('\r\n\r\n');
+        if (headerEnd !== -1) return content.slice(headerEnd + 4).trim();
+        headerEnd = content.indexOf('\n\n');
+        if (headerEnd !== -1) return content.slice(headerEnd + 2).trim();
+        const htmlStart = content.indexOf('<');
+        if (htmlStart !== -1) return content.slice(htmlStart).trim();
+        return '';
+      }
+
+      async function processFiles() {
+        if (filesToProcess.length === 0) {
+          showButtonFeedback(transformBtn, "Upload files first!");
+          return;
+        }
+
+        try {
+          const zip = new JSZip();
+          
+          for (const file of filesToProcess) {
+            const body = extractBody(file.content);
+            if (body) {
+              const name = file.name.replace(/\.eml$/i, '_body.txt');
+              zip.file(name, body);
+            } else {
+              resultsArea.innerHTML += `<p style="color:red;">No body: ${file.name}</p>`;
+            }
+          }
+
+          const blob = await zip.generateAsync({ type: "blob" });
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = "email_bodies_only.zip";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(a.href);
+          showButtonFeedback(transformBtn, "Downloaded!");
+        } catch (error) {
+          showButtonFeedback(transformBtn, "Error occurred!");
+          console.error(error);
+        }
+      }
+
+      async function processWithTemplate() {
+        if (filesToProcess.length === 0) {
+          showButtonFeedback(processTemplateBtn, "Upload files first!");
+          return;
+        }
+
+        const template = document.getElementById("removerTemplateInput").value;
+        if (!template) {
+          showButtonFeedback(processTemplateBtn, "Enter template first!");
+          return;
+        }
+
+        if (!template.includes("[newsletter]")) {
+          showButtonFeedback(processTemplateBtn, 'Add "[newsletter]"!');
+          return;
+        }
+
+        try {
+          const zip = new JSZip();
+          
+          for (const file of filesToProcess) {
+            const body = extractBody(file.content);
+            const final = template.replace("[newsletter]", body);
+            zip.file(file.name, final);
+          }
+
+          const blob = await zip.generateAsync({ type: "blob" });
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = "templated_emails.zip";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(a.href);
+          showButtonFeedback(processTemplateBtn, "Downloaded!");
+        } catch (error) {
+          showButtonFeedback(processTemplateBtn, "Error occurred!");
+          console.error(error);
+        }
+      }
+
+      transformBtn.addEventListener('click', processFiles);
+      processTemplateBtn.addEventListener('click', processWithTemplate);
+    }
+	    // =============================================
     // SINGLE HEADER REMOVER
     // =============================================
     function initSingleRemover() {
