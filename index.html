@@ -613,7 +613,7 @@
       </div>
     </div>
     
-    <!-- Domain and IP Extractor -->
+   <!-- Domain and IP Extractor -->
 <div id="domain-extractor" class="tool-section">
   <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
   <h2 class="section-title"><i class="fas fa-globe"></i> Domain & IP Extractor</h2>
@@ -631,11 +631,11 @@
   
   <div class="input-group">
     <label for="domainExtractorOutput">Results:</label>
-    <textarea id="domainExtractorOutput" readonly></textarea>
+    <textarea id="domainExtractorOutput" placeholder="Extracted domains with their associated IPs will appear here..." readonly></textarea>
   </div>
 </div>
-	
-  </div>
+
+
 
 
 
@@ -1506,8 +1506,8 @@
       }
     }
 
- // =============================================
-// DOMAIN & IP EXTRACTOR - WORKING VERSION
+// =============================================
+// DOMAIN & IP EXTRACTOR - CLEAN LIST FORMAT
 // =============================================
 function initDomainExtractor() {
   const extractBtn = document.getElementById('domainExtractorBtn');
@@ -1516,87 +1516,54 @@ function initDomainExtractor() {
   const inputText = document.getElementById('domainExtractorInput');
   const outputText = document.getElementById('domainExtractorOutput');
 
-  // Event listeners
-  extractBtn.addEventListener('click', extractDomainsAndIPs);
-  copyBtn.addEventListener('click', copyOutput);
-  clearBtn.addEventListener('click', clearAll);
+  extractBtn.addEventListener('click', extractDomains);
+  copyBtn.addEventListener('click', copyContent);
+  clearBtn.addEventListener('click', clearContent);
 
-  function extractDomainsAndIPs() {
-    try {
-      const text = inputText.value.trim();
-      if (!text) {
-        showButtonFeedback(extractBtn, "Enter text first!");
-        return;
-      }
+  function extractDomains() {
+    const text = inputText.value.trim();
+    if (!text) {
+      showButtonFeedback(extractBtn, "Enter text first!");
+      return;
+    }
 
-      // Improved IP regex (matches real IP addresses)
-      const ipRegex = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/g;
-      const ips = [...new Set(text.match(ipRegex) || [])]; // Remove duplicates
+    // Extract IPs and domains
+    const ips = text.match(/\d+\.\d+\.\d+\.\d+/g) || [];
+    const domains = text.match(/[a-zA-Z0-9.-]+\.[a-z]+/g) || [];
 
-      // Improved domain regex
-      const domainRegex = /(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}\b/gi;
-      const domains = [...new Set(text.match(domainRegex) || [])]; // Remove duplicates
-
-      // Create mapping of domains to IPs
-      const domainToIps = {};
-      
-      // Associate IPs that appear near domains (within 100 characters)
-      domains.forEach(domain => {
-        const domainPos = text.indexOf(domain);
-        domainToIps[domain] = [];
-        
-        ips.forEach(ip => {
-          const ipPos = text.indexOf(ip);
-          if (Math.abs(ipPos - domainPos) < 100) {
-            domainToIps[domain].push(ip);
-          }
-        });
-        
-        // Remove duplicates and sort IPs numerically
-        domainToIps[domain] = [...new Set(domainToIps[domain])].sort((a, b) => {
-          const numA = a.split('.').map(Number);
-          const numB = b.split('.').map(Number);
-          return numA[0] - numB[0] || numA[1] - numB[1] || numA[2] - numB[2] || numA[3] - numB[3];
-        });
-      });
-
-      // Find IPs that weren't associated with any domain
-      const unassociatedIPs = ips.filter(ip => {
-        return !Object.values(domainToIps).some(ipList => ipList.includes(ip));
-      });
-
-      // Format the output exactly as requested
-      let output = '';
-      
-      // Add domains with their IPs
-      for (const [domain, ipList] of Object.entries(domainToIps)) {
-        if (ipList.length > 0) {
-          output += `${domain}\n`;
-          ipList.forEach(ip => {
-            output += `   ${ip}\n`;
-          });
-          output += '\n';
+    // Create mapping of domains to IPs
+    const domainToIps = {};
+    
+    // Associate IPs with domains (simple sequential matching)
+    ips.forEach((ip, index) => {
+      const domain = domains[index];
+      if (domain) {
+        if (!domainToIps[domain]) {
+          domainToIps[domain] = [];
+        }
+        if (!domainToIps[domain].includes(ip)) { // Prevent duplicate IPs
+          domainToIps[domain].push(ip);
         }
       }
-      
-      // Add unassociated IPs at the end
-      if (unassociatedIPs.length > 0) {
-        output += 'Unassociated IPs:\n';
-        unassociatedIPs.forEach(ip => {
-          output += `   ${ip}\n`;
-        });
-      }
+    });
 
-      outputText.value = output.trim() || 'No domains or IPs found in the input text.';
-      showButtonFeedback(extractBtn, "Extraction complete!");
-    } catch (error) {
-      console.error("Extraction error:", error);
-      outputText.value = "An error occurred during extraction. Please check the console.";
-      showButtonFeedback(extractBtn, "Error occurred!");
+    // Format the output as clean list (not JSON)
+    let output = '';
+    for (const [domain, ipList] of Object.entries(domainToIps)) {
+      if (ipList.length > 0) {
+        output += `${domain}\n`;
+        ipList.forEach(ip => {
+          output += `${ip}\n`;
+        });
+        output += '\n'; // Add extra space between domain groups
+      }
     }
+
+    outputText.value = output.trim(); // Remove any trailing whitespace
+    showButtonFeedback(extractBtn, "Extraction complete!");
   }
 
-  function copyOutput() {
+  function copyContent() {
     if (!outputText.value.trim()) {
       showButtonFeedback(copyBtn, "Nothing to copy!");
       return;
@@ -1606,17 +1573,12 @@ function initDomainExtractor() {
     showButtonFeedback(copyBtn, "Copied!");
   }
 
-  function clearAll() {
+  function clearContent() {
     inputText.value = '';
     outputText.value = '';
     showButtonFeedback(clearBtn, "Cleared!");
   }
 }
-
-// Make sure to call this function during initialization
-document.addEventListener('DOMContentLoaded', function() {
-  initDomainExtractor();
-});
 </script>
 <footer style="
   text-align: center;
