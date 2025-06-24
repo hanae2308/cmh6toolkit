@@ -529,35 +529,39 @@
       <div class="results-area" id="bulkResults"></div>
     </div>
     
-    <!-- MBOX Converter -->
-    <div id="mbox-converter" class="tool-section">
-      <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
-      <h2 class="section-title"><i class="fas fa-box-archive"></i> MBOX Converter</h2>
-      
-      <div class="upload-area" id="mboxUploadArea">
-        <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--warning); margin-bottom: 1rem;"></i>
-        <p>Drag and drop an MBOX file or .zip archive here</p>
-        <p>or</p>
-        <label for="mboxFileInput" class="file-label">
-          <i class="fas fa-folder-open"></i> Select File
-        </label>
-        <input type="file" id="mboxFileInput" class="file-input" accept=".mbox,.zip">
-      </div>
-      
-      <div class="action-btns">
-        <button id="mboxConvertBtn" class="btn"><i class="fas fa-exchange-alt"></i> Convert to EML</button>
-      </div>
-      
-      <div id="progress" style="text-align: center;">
-        Processing... <span id="progressCount">0</span> messages converted
-      </div>
-      
-      <div class="results-area" id="mboxResults"></div>
-      
-      <button id="mboxDownloadAll" class="btn" style="display: none; margin-top: 1rem;">
-        <i class="fas fa-file-archive"></i> Download All as ZIP
-      </button>
-    </div>
+   <!-- MBOX Converter -->
+<div id="mbox-converter" class="tool-section">
+  <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
+  <h2 class="section-title"><i class="fas fa-box-archive"></i> MBOX Converter</h2>
+  
+  <div class="info-message" style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--info);">
+    <i class="fas fa-info-circle"></i> Download your newsletters from <a href="https://takeout.google.com/" target="_blank">Google Takeout</a>
+  </div>
+  
+  <div class="upload-area" id="mboxUploadArea">
+    <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--warning); margin-bottom: 1rem;"></i>
+    <p>Drag and drop an MBOX file or .zip archive here</p>
+    <p>or</p>
+    <label for="mboxFileInput" class="file-label">
+      <i class="fas fa-folder-open"></i> Select File
+    </label>
+    <input type="file" id="mboxFileInput" class="file-input" accept=".mbox,.zip">
+  </div>
+  
+  <div class="action-btns">
+    <button id="mboxConvertBtn" class="btn"><i class="fas fa-exchange-alt"></i> Convert to EML</button>
+  </div>
+  
+  <div id="progress" style="text-align: center;">
+    Processing... <span id="progressCount">0</span> messages converted
+  </div>
+  
+  <div class="results-area" id="mboxResults"></div>
+  
+  <button id="mboxDownloadAll" class="btn" style="display: none; margin-top: 1rem;">
+    <i class="fas fa-file-archive"></i> Download All as ZIP
+  </button>
+</div>
     
     <!-- Bulk Header Remover -->
     <div id="bulk-remover" class="tool-section">
