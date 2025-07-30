@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>📤 CMH6 Newsletter Toolkit</title>
- <style>
+  <style>
     :root {
       --primary: #3a86ff;
       --secondary: #8338ec;
@@ -11,131 +11,125 @@
       --warning: #ffbe0b;
       --danger: #ff006e;
       --dark: #212529;
-      --light: #f8f9fa;
+      --gray: #6c757d;
+      --light-gray: #e9ecef;
+      --white: #ffffff;
     }
     
     body {
       font-family: 'Segoe UI', system-ui, sans-serif;
-      background: #f5f7ff;
+      background-color: #f8f9fa;
       margin: 0;
       padding: 0;
       color: var(--dark);
+      line-height: 1.4;
+      font-size: 14px;
     }
     
     .container {
-      max-width: 1200px;
+      max-width: 800px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 1rem;
     }
     
     header {
       text-align: center;
-      margin-bottom: 3rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
     }
     
     h1 {
       color: var(--primary);
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      margin: 0.5rem 0;
+      font-weight: 600;
     }
     
     .subtitle {
-      color: #6c757d;
-      font-size: 1.1rem;
-      max-width: 600px;
-      margin: 0 auto 2rem;
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin: 0;
+    }
+    
+    .section {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    
+    .section-title {
+      font-size: 1rem;
+      color: var(--primary);
+      margin: 0 0 1rem 0;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     
     .tool-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-      margin-bottom: 3rem;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0 rem;
+      justify-items: center;
+      margin: 0 auto;
+      max-width: 700px;
     }
     
     .tool-card {
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-      transition: transform 0.3s, box-shadow 0.3s;
+      background: var(--white);
+      border-radius: 6px;
+      padding: 0.8rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      transition: all 0.2s ease;
       cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
+      border: 1px solid var(--light-gray);
+      width: 100%;
+      max-width: 200px;
+      text-align: center;
     }
     
     .tool-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border-color: var(--primary);
     }
     
     .tool-icon {
-      color: white;
-      padding: 2rem;
-      text-align: center;
-      font-size: 2.5rem;
-    }
-    
-    .tool-content {
-      padding: 1.5rem;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      color: var(--primary);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
     }
     
     .tool-title {
-      font-size: 1.3rem;
-      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      margin: 0.3rem 0;
       color: var(--dark);
-      text-align: center;
+      font-weight: 500;
     }
     
     .tool-desc {
-      color: #6c757d;
-      margin-bottom: 1.5rem;
-      font-size: 0.95rem;
-      text-align: center;
-      flex-grow: 1;
+      color: var(--gray);
+      font-size: 0.8rem;
+      margin: 0;
     }
     
-    .btn {
-  display: inline-block;
-  padding: 0.8rem 1.5rem;
-  background: var(--primary);
-  color: white;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background 0.3s;
-  border: none;
-  cursor: pointer;
-  width: calc(100% - 3rem);
-  margin: 0 auto 1.5rem;
-  text-align: center;
-}
-    
-    .btn:hover {
-      background: #2a75e6;
-    }
-    
+    /* Tool Section Styles */
     .tool-section {
       display: none;
       background: white;
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-      margin-top: 2rem;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      margin: 1.5rem auto;
+      max-width: 700px;
+      border: 1px solid var(--light-gray);
     }
     
     .tool-section.active {
       display: block;
-      animation: fadeIn 0.5s ease;
+      animation: fadeIn 0.3s ease;
     }
     
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
     
@@ -143,26 +137,31 @@
       background: none;
       border: none;
       color: var(--primary);
-      font-size: 1rem;
+      font-size: 0.9rem;
       cursor: pointer;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.3rem;
+      padding: 0.3rem 0;
     }
     
     .section-title {
-      font-size: 1.8rem;
+      font-size: 1.2rem;
       color: var(--dark);
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      justify-content: center;
     }
     
     .upload-area {
       border: 2px dashed #ced4da;
       border-radius: 8px;
-      padding: 3rem 2rem;
+      padding: 2rem 1rem;
       text-align: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       transition: all 0.3s;
     }
     
@@ -172,14 +171,15 @@
     
     .file-label {
       display: inline-block;
-      padding: 0.8rem 1.5rem;
+      padding: 0.6rem 1rem;
       background: #f0f5ff;
-      border-radius: 8px;
+      border-radius: 6px;
       color: var(--primary);
       cursor: pointer;
-      margin-top: 1rem;
+      margin-top: 0.8rem;
       font-weight: 500;
       transition: all 0.3s;
+      font-size: 0.8rem;
     }
     
     .file-label:hover {
@@ -192,12 +192,34 @@
     
     .action-btns {
       display: flex;
-      gap: 1rem;
-      margin-top: 1.5rem;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1rem;
+      justify-content: center;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1rem;
+      background: var(--primary);
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.3s;
+      border: none;
+      cursor: pointer;
+      font-size: 0.8rem;
+      min-width: 120px;
+      text-align: center;
+    }
+    
+    .btn:hover {
+      background: #2a75e6;
     }
     
     .btn-secondary {
-      background: #6c757d;
+      background: var(--gray);
     }
     
     .btn-secondary:hover {
@@ -230,231 +252,337 @@
     
     textarea {
       width: 100%;
-      min-height: 200px;
-      padding: 1rem;
+      min-height: 150px;
+      padding: 0.8rem;
       border: 1px solid #ced4da;
-      border-radius: 8px;
+      border-radius: 6px;
       font-family: inherit;
       margin-bottom: 1rem;
+      font-size: 0.85rem;
     }
     
     .results-area {
-      margin-top: 2rem;
-      padding-top: 2rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
       border-top: 1px solid #eee;
     }
     
     .message-info {
-      margin: 10px 0;
-      padding: 10px;
+      margin: 0.5rem 0;
+      padding: 0.8rem;
       background: #fff;
       border: 1px solid #ddd;
       border-radius: 4px;
+      font-size: 0.85rem;
     }
     
     .download-link {
       display: block;
-      margin: 5px 0;
+      margin: 0.3rem 0;
       font-weight: bold;
       color: #0066cc;
       text-decoration: none;
+      font-size: 0.85rem;
     }
     
     .message-details {
-      font-size: 0.8em;
+      font-size: 0.75rem;
       color: #666;
-      margin-top: 5px;
+      margin-top: 0.3rem;
     }
     
     #progress {
-      margin: 10px 0;
+      margin: 0.5rem 0;
       display: none;
+      text-align: center;
+      font-size: 0.85rem;
     }
     
-    .single-remover-card .tool-icon {
-      background: linear-gradient(135deg, #8a2be2, #9932cc);
-    }
-    
-    .domain-extractor-card .tool-icon {
-      background: linear-gradient(135deg, #ff7b00, #ff9500);
-    }
-    
-    .input-group {
-      margin-bottom: 1.5rem;
-    }
-    
-    .input-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
-
-    /* NEW: Radio buttons matching theme */
     .radio-group {
       display: flex;
-      gap: 1.5rem;
-      margin: 1rem 0;
+      gap: 1rem;
+      margin: 0.8rem 0;
       justify-content: center;
+      flex-wrap: wrap;
     }
     
     .radio-option {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.3rem;
     }
     
     .radio-option input[type="radio"] {
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       border: 2px solid var(--primary);
       border-radius: 50%;
       outline: none;
       cursor: pointer;
-      position: relative;
     }
     
     .radio-option input[type="radio"]:checked {
       background-color: var(--primary);
     }
     
-    .radio-option input[type="radio"]:checked::after {
-      content: '';
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      background: white;
-      border-radius: 50%;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    
     .radio-option label {
-      font-size: 1rem;
+      font-size: 0.85rem;
       color: var(--dark);
       cursor: pointer;
     }
-	/* Floating Back to Top Button */
-.back-to-top {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 50px;
-  height: 50px;
-  background: var(--primary);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-  transition: all 0.3s;
-  z-index: 1000;
-  opacity: 0;
-  visibility: hidden;
-  border: none;
-}
+    
+    footer {
+      text-align: center;
+      padding: 1rem 0;
+      margin-top: 30rem;
+      color: var(--gray);
+      font-size: 0.7rem;
+      border-top: 1px solid var(--light-gray);
+    }
 
-.back-to-top:hover {
-  background: #2a75e6;
-  transform: translateY(-3px);
-}
+    @media (max-width: 600px) {
+      .tool-grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 420px;
+      }
+      
+      .tool-card {
+        max-width: 180px;
+      }
+      
+      .action-btns {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
 
-.back-to-top.visible {
-  opacity: 1;
-  visibility: visible;
+    @media (max-width: 400px) {
+      .tool-grid {
+        grid-template-columns: 1fr;
+        max-width: 220px;
+      }
+      
+      .tool-card {
+        max-width: 200px;
+      }
+    }
 
-}
-</style>
+    /* DNS Generator Specific Styles */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--light-gray);
+      margin-bottom: 1rem;
+    }
+    
+    .tab {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.85rem;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      color: var(--gray);
+    }
+    
+    .tab:hover {
+      color: var(--primary);
+    }
+    
+    .tab.active {
+      border-bottom-color: var(--primary);
+      color: var(--primary);
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .input-section {
+      margin-bottom: 1rem;
+    }
+    
+    .input-section label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .input-hint {
+      font-size: 0.75rem;
+      color: var(--gray);
+      margin-bottom: 0.5rem;
+    }
+    
+    .output-container {
+      border: 1px solid var(--light-gray);
+      border-radius: 6px;
+      margin-top: 1rem;
+    }
+    
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      background-color: var(--light-gray);
+      border-bottom: 1px solid var(--light-gray);
+    }
+    
+    .output-title {
+      font-weight: 500;
+      font-size: 0.85rem;
+    }
+    
+    .output-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .result {
+      padding: 1rem;
+      font-family: monospace;
+      font-size: 0.8rem;
+      white-space: pre-wrap;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+	 /* Back to Top Button Styles */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: #4361ee;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      border: none;
+    }
+    
+    .back-to-top:hover {
+      background: #3f37c9;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+    
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .back-to-top i {
+      transition: transform 0.3s;
+    }
+    
+    .back-to-top:hover i {
+      transform: translateY(-2px);
+    }
+    
+    .back-to-top::after {
+      content: "Refresh & Back to Top";
+      position: absolute;
+      right: 60px;
+      white-space: nowrap;
+      background: #4361ee;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .back-to-top:hover::after {
+      opacity: 1;
+    }
+  </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>📤 CMH6 Newsletter Toolkit</h1>
-      <p class="subtitle">Transform, convert, and optimize your newsletter files with our toolkit</p>
+      <h1>CMH6 Newsletter Toolkit</h1>
+      <p class="subtitle">Essential tools for newsletter processing</p>
     </header>
     
-    <div class="tool-grid">
-      <!-- Single Email Header Transformer -->
-      <div class="tool-card" data-tool="single-transformer">
-        <div class="tool-icon" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
-          <i class="fas fa-envelope"></i>
+    <!-- Warmup Section -->
+    <div class="section">
+      <div class="section-title">Warmup</div>
+      <div class="tool-grid">
+        <div class="tool-card" data-tool="single-transformer">
+          <div class="tool-icon"><i class="fas fa-envelope"></i></div>
+          <h3 class="tool-title">Single Header Transformer</h3>
+          <p class="tool-desc">Modify headers in individual newsletter source</p>
         </div>
-        <div class="tool-content">
-          <h3 class="tool-title">Single Newsletter Header Transformer</h3>
-          <p class="tool-desc">Modify headers in individual newsletter source with RDNS and EID </p>
-          <a class="btn">Use Tool</a>
-        </div>
-      </div>
-      
-      <!-- Bulk Email Header Transformer -->
-      <div class="tool-card" data-tool="bulk-transformer">
-        <div class="tool-icon" style="background: linear-gradient(135deg, var(--success), #05a181);">
-          <i class="fas fa-envelopes-bulk"></i>
-        </div>
-        <div class="tool-content">
-          <h3 class="tool-title">Bulk Newsletter Header Transformer</h3>
-          <p class="tool-desc">Process multiple newsletter sources simultaneously </p>
-          <a class="btn">Use Tool</a>
+        
+        <div class="tool-card" data-tool="bulk-transformer">
+          <div class="tool-icon"><i class="fas fa-envelopes-bulk"></i></div>
+          <h3 class="tool-title">Bulk Header Transformer</h3>
+          <p class="tool-desc">Modify headers across multiple newsletters</p>
         </div>
       </div>
-      
-      <!-- MBOX Converter -->
-      <div class="tool-card" data-tool="mbox-converter">
-        <div class="tool-icon" style="background: linear-gradient(135deg, var(--warning), #e6a700);">
-          <i class="fas fa-box-archive"></i>
-        </div>
-        <div class="tool-content">
-          <h3 class="tool-title">MBOX Converter</h3>
-          <p class="tool-desc">Convert MBOX files to individual EML files with clean headers</p>
-          <a class="btn">Use Tool</a>
-        </div>
-      </div>
-      
-      <!-- Bulk Header Remover -->
-      <div class="tool-card" data-tool="bulk-remover">
-        <div class="tool-icon" style="background: linear-gradient(135deg, var(--danger), #d0006e);">
-          <i class="fas fa-trash-alt"></i>
-        </div>
-        <div class="tool-content">
-          <h3 class="tool-title">Bulk Header Remover</h3>
-          <p class="tool-desc">Completely remove all headers from multiple newsletters, keeping only the body</p>
-          <a class="btn">Use Tool</a>
-        </div>
-      </div>
-      
-      <!-- Single Header Remover -->
-      <div class="tool-card single-remover-card" data-tool="single-remover">
-        <div class="tool-icon">
-          <i class="fas fa-envelope-open-text"></i>
-        </div>
-        <div class="tool-content">
+    </div>
+    
+    <!-- Fixation Section -->
+    <div class="section">
+      <div class="section-title">Fixation</div>
+      <div class="tool-grid">
+        <div class="tool-card" data-tool="single-remover">
+          <div class="tool-icon"><i class="fas fa-envelope-open-text"></i></div>
           <h3 class="tool-title">Single Header Remover</h3>
-          <p class="tool-desc">Remove all headers from a single newsletter source quickly and easily</p>
-          <a class="btn">Use Tool</a>
+          <p class="tool-desc">Remove headers from single newsletter</p>
+        </div>
+        
+        <div class="tool-card" data-tool="bulk-remover">
+          <div class="tool-icon"><i class="fas fa-trash-alt"></i></div>
+          <h3 class="tool-title">Bulk Header Remover</h3>
+          <p class="tool-desc">Remove multiple newsletter headers</p>
         </div>
       </div>
-      
-      <!-- Domain and IP Extractor -->
-      <div class="tool-card domain-extractor-card" data-tool="domain-extractor">
-        <div class="tool-icon">
-          <i class="fas fa-globe"></i>
+    </div>
+    
+    <!-- Other Tools Section -->
+    <div class="section">
+      <div class="section-title">Other Tools</div>
+      <div class="tool-grid">
+        <div class="tool-card" data-tool="mbox-converter">
+          <div class="tool-icon"><i class="fas fa-box-archive"></i></div>
+          <h3 class="tool-title">MBOX Converter</h3>
+          <p class="tool-desc">Convert MBOX to individual EML files</p>
         </div>
-        <div class="tool-content">
-          <h3 class="tool-title">Domain & IP Extractor</h3>
-          <p class="tool-desc">Extract domains and IPs from text and show their associations</p>
-          <a class="btn">Use Tool</a>
+        
+        <div class="tool-card" data-tool="domain-extractor">
+          <div class="tool-icon"><i class="fas fa-globe"></i></div>
+          <h3 class="tool-title">IP Domain Extractor</h3>
+          <p class="tool-desc">Extract domains and IPs  </p>
         </div>
-      </div>
-	  <button class="back-to-top" id="backToTopBtn" title="Back to Top">
-  <i class="fas fa-arrow-up"></i>
-</button>
+        
+     
     </div>
     
     <!-- Tool Sections -->
@@ -464,11 +592,9 @@
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
       <h2 class="section-title"><i class="fas fa-envelope"></i> Single Newsletter Header Transformer</h2>
       
-     
-      
       <textarea id="singleInput" placeholder="Paste your newsletter source here..."></textarea>
       
-	   <div class="radio-group">
+      <div class="radio-group">
         <div class="radio-option">
           <input type="radio" id="singleRdns" name="singleReplace" value="RDNS" checked>
           <label for="singleRdns">Use [RDNS]</label>
@@ -478,6 +604,7 @@
           <label for="singlePrpath">Use [P_RPATH]</label>
         </div>
       </div>
+      
       <div class="action-btns">
         <button id="singleTransformBtn" class="btn"><i class="fas fa-magic"></i> Transform Headers</button>
         <button id="singleIpBtn" class="btn btn-warning"><i class="fas fa-plus"></i> Add [IP] to Subject</button>
@@ -493,10 +620,8 @@
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
       <h2 class="section-title"><i class="fas fa-envelopes-bulk"></i> Bulk Newsletter Header Transformer</h2>
       
-      
-      
       <div class="upload-area" id="bulkUploadArea">
-        <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--success); margin-bottom: 1rem;"></i>
+        <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--success); margin-bottom: 0.8rem;"></i>
         <p>Drag and drop multiple .eml files or .zip archives here</p>
         <p>or</p>
         <label for="bulkFileInput" class="file-label">
@@ -505,7 +630,7 @@
         <input type="file" id="bulkFileInput" class="file-input" multiple accept=".eml,.zip">
       </div>
       
-	  <div class="radio-group">
+      <div class="radio-group">
         <div class="radio-option">
           <input type="radio" id="bulkRdns" name="bulkReplace" value="RDNS" checked>
           <label for="bulkRdns">Use [RDNS]</label>
@@ -515,6 +640,7 @@
           <label for="bulkPrpath">Use [P_RPATH]</label>
         </div>
       </div>
+      
       <div class="action-btns">
         <button id="bulkTransformBtn" class="btn"><i class="fas fa-magic"></i> Transform Headers</button>
         <button id="bulkIpBtn" class="btn btn-warning"><i class="fas fa-plus"></i> Add [IP] Tag</button>
@@ -529,39 +655,39 @@
       <div class="results-area" id="bulkResults"></div>
     </div>
     
-   <!-- MBOX Converter -->
-<div id="mbox-converter" class="tool-section">
-  <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
-  <h2 class="section-title"><i class="fas fa-box-archive"></i> MBOX Converter</h2>
-  
-  <div class="info-message" style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--info);">
-    <i class="fas fa-info-circle"></i> Download your newsletters from <a href="https://takeout.google.com/" target="_blank">Google Takeout</a>
-  </div>
-  
-  <div class="upload-area" id="mboxUploadArea">
-    <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--warning); margin-bottom: 1rem;"></i>
-    <p>Drag and drop an MBOX file or .zip archive here</p>
-    <p>or</p>
-    <label for="mboxFileInput" class="file-label">
-      <i class="fas fa-folder-open"></i> Select File
-    </label>
-    <input type="file" id="mboxFileInput" class="file-input" accept=".mbox,.zip">
-  </div>
-  
-  <div class="action-btns">
-    <button id="mboxConvertBtn" class="btn"><i class="fas fa-exchange-alt"></i> Convert to EML</button>
-  </div>
-  
-  <div id="progress" style="text-align: center;">
-    Processing... <span id="progressCount">0</span> messages converted
-  </div>
-  
-  <div class="results-area" id="mboxResults"></div>
-  
-  <button id="mboxDownloadAll" class="btn" style="display: none; margin-top: 1rem;">
-    <i class="fas fa-file-archive"></i> Download All as ZIP
-  </button>
-</div>
+    <!-- MBOX Converter -->
+    <div id="mbox-converter" class="tool-section">
+      <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
+      <h2 class="section-title"><i class="fas fa-box-archive"></i> MBOX Converter</h2>
+      
+      <div class="info-message" style="margin-bottom: 1rem; font-size: 0.85rem; color: var(--gray);">
+        <i class="fas fa-info-circle"></i> Download your newsletters from <a href="https://takeout.google.com/" target="_blank">Google Takeout</a>
+      </div>
+      
+      <div class="upload-area" id="mboxUploadArea">
+        <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--warning); margin-bottom: 0.8rem;"></i>
+        <p>Drag and drop an MBOX file or .zip archive here</p>
+        <p>or</p>
+        <label for="mboxFileInput" class="file-label">
+          <i class="fas fa-folder-open"></i> Select File
+        </label>
+        <input type="file" id="mboxFileInput" class="file-input" accept=".mbox,.zip">
+      </div>
+      
+      <div class="action-btns">
+        <button id="mboxConvertBtn" class="btn"><i class="fas fa-exchange-alt"></i> Convert to EML</button>
+      </div>
+      
+      <div id="progress" style="text-align: center;">
+        Processing... <span id="progressCount">0</span> messages converted
+      </div>
+      
+      <div class="results-area" id="mboxResults"></div>
+      
+      <button id="mboxDownloadAll" class="btn" style="display: none; margin-top: 1rem;">
+        <i class="fas fa-file-archive"></i> Download All as ZIP
+      </button>
+    </div>
     
     <!-- Bulk Header Remover -->
     <div id="bulk-remover" class="tool-section">
@@ -569,7 +695,7 @@
       <h2 class="section-title"><i class="fas fa-trash-alt"></i> Bulk Header Remover</h2>
       
       <div class="upload-area" id="removerUploadArea">
-        <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--danger); margin-bottom: 1rem;"></i>
+        <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--danger); margin-bottom: 0.8rem;"></i>
         <p>Drag and drop multiple .eml files or .zip archives here</p>
         <p>or</p>
         <label for="removerFileInput" class="file-label">
@@ -596,10 +722,7 @@
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
       <h2 class="section-title"><i class="fas fa-envelope-open-text"></i> Single Header Remover</h2>
       
-      <div class="input-group">
-        <label for="singleRemoverInput">Email Content:</label>
-        <textarea id="singleRemoverInput" placeholder="Paste your newsletter content here..."></textarea>
-      </div>
+      <textarea id="singleRemoverInput" placeholder="Paste your newsletter content here..."></textarea>
       
       <div class="action-btns">
         <button id="singleRemoverBtn" class="btn"><i class="fas fa-eraser"></i> Remove Headers</button>
@@ -607,37 +730,36 @@
         <button id="singleRemoverClearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear</button>
       </div>
       
-      <div class="input-group">
-        <label for="singleRemoverOutput">Processed Content:</label>
-        <textarea id="singleRemoverOutput" placeholder="Processed newsletter content will appear here..." readonly></textarea>
-      </div>
+      <textarea id="singleRemoverOutput" placeholder="Processed newsletter content will appear here..." readonly></textarea>
     </div>
     
-   <!-- Domain and IP Extractor -->
-<div id="domain-extractor" class="tool-section">
-  <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
-  <h2 class="section-title"><i class="fas fa-globe"></i> Domain & IP Extractor</h2>
+    <!-- Domain and IP Extractor -->
+    <div id="domain-extractor" class="tool-section">
+      <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
+      <h2 class="section-title"><i class="fas fa-globe"></i> Domain & IP Extractor</h2>
+      
+      <textarea id="domainExtractorInput" placeholder="Paste your text with domains and IPs here..."></textarea>
+      
+      <div class="action-btns">
+        <button id="domainExtractorBtn" class="btn"><i class="fas fa-search"></i> Extract</button>
+        <button id="domainExtractorCopyBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Copy</button>
+        <button id="domainExtractorClearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear</button>
+      </div>
+      
+      <textarea id="domainExtractorOutput" placeholder="Extracted domains with their associated IPs will appear here..." readonly></textarea>
+    </div>
+    
   
-  <div class="input-group">
-    <label for="domainExtractorInput">Text Content:</label>
-    <textarea id="domainExtractorInput" placeholder="Paste your text with domains and IPs here..."></textarea>
+     <!-- Back to Top Button with Refresh Functionality -->
+  <button class="back-to-top" id="backToTopBtn" title="Refresh & Back to Top">
+    <i class="fas fa-sync-alt"></i>
+  </button>
+
+    <footer>
+      <p><strong>CMH6 Newsletter Toolkit</strong></p>
+      <p>Created by Hanae HM & CMH6 Team</p>
+    </footer>
   </div>
-  
-  <div class="action-btns">
-    <button id="domainExtractorBtn" class="btn"><i class="fas fa-search"></i> Extract</button>
-    <button id="domainExtractorCopyBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Copy</button>
-    <button id="domainExtractorClearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear</button>
-  </div>
-  
-  <div class="input-group">
-    <label for="domainExtractorOutput">Results:</label>
-    <textarea id="domainExtractorOutput" placeholder="Extracted domains with their associated IPs will appear here..." readonly></textarea>
-  </div>
-</div>
-
-
-
-
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script>
@@ -677,6 +799,16 @@
         case 'domain-extractor':
           document.getElementById('domainExtractorInput').value = '';
           document.getElementById('domainExtractorOutput').value = '';
+          break;
+        case 'dns-generator':
+          document.getElementById('spf-domains').value = '';
+          document.getElementById('spf-ips').value = '';
+          document.getElementById('spf-result').innerHTML = '';
+          document.getElementById('spf-external-domains').value = '';
+          document.getElementById('spf-external-ips').value = '';
+          document.getElementById('spf-external-result').innerHTML = '';
+          document.getElementById('txt-input').value = '';
+          document.getElementById('txt-result').innerHTML = '';
           break;
       }
     }
@@ -723,29 +855,18 @@
       });
     });
 
-    // Back to Top Button
-    const backToTopBtn = document.getElementById('backToTopBtn');
-    
-    window.addEventListener('scroll', function() {
-      if (window.pageYOffset > 300) {
-        backToTopBtn.classList.add('visible');
-      } else {
-        backToTopBtn.classList.remove('visible');
-      }
-    });
-    
-    backToTopBtn.addEventListener('click', function() {
-      // Get the active tool section if any
-      const activeSection = document.querySelector('.tool-section.active');
-      if (activeSection) {
-        clearToolData(activeSection.id);
-        activeSection.classList.remove('active');
-      }
-      
-      // Scroll to top with smooth behavior
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+    // DNS Generator Tab functionality
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        const tabId = this.getAttribute('data-tab');
+        
+        // Remove active class from all tabs and content
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        // Add active class to clicked tab and corresponding content
+        this.classList.add('active');
+        document.getElementById(`${tabId}-tab`).classList.add('active');
       });
     });
 
@@ -757,6 +878,7 @@
       initBulkRemover();
       initSingleRemover();
       initDomainExtractor();
+      initDnsGenerator();
     });
 
     // Helper function for button feedback
@@ -1506,90 +1628,178 @@
       }
     }
 
-// =============================================
-// DOMAIN & IP EXTRACTOR - CLEAN LIST FORMAT
-// =============================================
-function initDomainExtractor() {
-  const extractBtn = document.getElementById('domainExtractorBtn');
-  const copyBtn = document.getElementById('domainExtractorCopyBtn');
-  const clearBtn = document.getElementById('domainExtractorClearBtn');
-  const inputText = document.getElementById('domainExtractorInput');
-  const outputText = document.getElementById('domainExtractorOutput');
+    // =============================================
+    // DOMAIN & IP EXTRACTOR
+    // =============================================
+    function initDomainExtractor() {
+      const extractBtn = document.getElementById('domainExtractorBtn');
+      const copyBtn = document.getElementById('domainExtractorCopyBtn');
+      const clearBtn = document.getElementById('domainExtractorClearBtn');
+      const inputText = document.getElementById('domainExtractorInput');
+      const outputText = document.getElementById('domainExtractorOutput');
 
-  extractBtn.addEventListener('click', extractDomains);
-  copyBtn.addEventListener('click', copyContent);
-  clearBtn.addEventListener('click', clearContent);
+      extractBtn.addEventListener('click', extractDomains);
+      copyBtn.addEventListener('click', copyContent);
+      clearBtn.addEventListener('click', clearContent);
 
-  function extractDomains() {
-    const text = inputText.value.trim();
-    if (!text) {
-      showButtonFeedback(extractBtn, "Enter text first!");
-      return;
-    }
-
-    // Extract IPs and domains
-    const ips = text.match(/\d+\.\d+\.\d+\.\d+/g) || [];
-    const domains = text.match(/[a-zA-Z0-9.-]+\.[a-z]+/g) || [];
-
-    // Create mapping of domains to IPs
-    const domainToIps = {};
-    
-    // Associate IPs with domains (simple sequential matching)
-    ips.forEach((ip, index) => {
-      const domain = domains[index];
-      if (domain) {
-        if (!domainToIps[domain]) {
-          domainToIps[domain] = [];
+      function extractDomains() {
+        const text = inputText.value.trim();
+        if (!text) {
+          showButtonFeedback(extractBtn, "Enter text first!");
+          return;
         }
-        if (!domainToIps[domain].includes(ip)) { // Prevent duplicate IPs
-          domainToIps[domain].push(ip);
-        }
-      }
-    });
 
-    // Format the output as clean list (not JSON)
-    let output = '';
-    for (const [domain, ipList] of Object.entries(domainToIps)) {
-      if (ipList.length > 0) {
-        output += `${domain}\n`;
-        ipList.forEach(ip => {
-          output += `${ip}\n`;
+        // Extract IPs and domains
+        const ips = text.match(/\d+\.\d+\.\d+\.\d+/g) || [];
+        const domains = text.match(/[a-zA-Z0-9.-]+\.[a-z]+/g) || [];
+
+        // Create mapping of domains to IPs
+        const domainToIps = {};
+        
+        // Associate IPs with domains (simple sequential matching)
+        ips.forEach((ip, index) => {
+          const domain = domains[index];
+          if (domain) {
+            if (!domainToIps[domain]) {
+              domainToIps[domain] = [];
+            }
+            if (!domainToIps[domain].includes(ip)) { // Prevent duplicate IPs
+              domainToIps[domain].push(ip);
+            }
+          }
         });
-        output += '\n'; // Add extra space between domain groups
+
+        // Format the output as clean list (not JSON)
+        let output = '';
+        for (const [domain, ipList] of Object.entries(domainToIps)) {
+          if (ipList.length > 0) {
+            output += `${domain}\n`;
+            ipList.forEach(ip => {
+              output += `${ip}\n`;
+            });
+            output += '\n'; // Add extra space between domain groups
+          }
+        }
+
+        outputText.value = output.trim(); // Remove any trailing whitespace
+        showButtonFeedback(extractBtn, "Extraction complete!");
+      }
+
+      function copyContent() {
+        if (!outputText.value.trim()) {
+          showButtonFeedback(copyBtn, "Nothing to copy!");
+          return;
+        }
+        outputText.select();
+        document.execCommand('copy');
+        showButtonFeedback(copyBtn, "Copied!");
+      }
+
+      function clearContent() {
+        inputText.value = '';
+        outputText.value = '';
+        showButtonFeedback(clearBtn, "Cleared!");
       }
     }
 
-    outputText.value = output.trim(); // Remove any trailing whitespace
-    showButtonFeedback(extractBtn, "Extraction complete!");
-  }
+// Back to Top Button with Tool Refresh
+const backToTopBtn = document.getElementById('backToTopBtn');
 
-  function copyContent() {
-    if (!outputText.value.trim()) {
-      showButtonFeedback(copyBtn, "Nothing to copy!");
-      return;
+window.addEventListener('scroll', function() {
+  if (window.pageYOffset > 300) {
+    backToTopBtn.classList.add('visible');
+  } else {
+    backToTopBtn.classList.remove('visible');
+  }
+});
+
+backToTopBtn.addEventListener('click', function() {
+  // Clear all active tool sections
+  const activeSection = document.querySelector('.tool-section.active');
+  if (activeSection) {
+    clearToolData(activeSection.id);
+    activeSection.classList.remove('active');
+  }
+  
+  // Reset all tool inputs
+  resetAllTools();
+  
+  // Scroll to top with smooth behavior
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+});
+
+function resetAllTools() {
+  // Clear all textareas
+  document.querySelectorAll('textarea').forEach(textarea => {
+    textarea.value = '';
+  });
+  
+  // Clear all file inputs
+  document.querySelectorAll('.file-input').forEach(input => {
+    input.value = '';
+  });
+  
+  // Clear all results areas
+  document.querySelectorAll('.results-area').forEach(area => {
+    area.innerHTML = '';
+  });
+  
+  // Hide all template containers
+  document.querySelectorAll('.template-container').forEach(container => {
+    container.style.display = 'none';
+  });
+  
+  // Reset radio buttons to default
+  document.querySelectorAll('input[type="radio"]').forEach(radio => {
+    if (radio.id.includes('Rdns')) {
+      radio.checked = true;
+    } else {
+      radio.checked = false;
     }
-    outputText.select();
-    document.execCommand('copy');
-    showButtonFeedback(copyBtn, "Copied!");
-  }
+  });
+  
+  // Hide progress indicator and download button for MBOX converter
+  document.getElementById('progress').style.display = 'none';
+  document.getElementById('mboxDownloadAll').style.display = 'none';
+}
 
-  function clearContent() {
-    inputText.value = '';
-    outputText.value = '';
-    showButtonFeedback(clearBtn, "Cleared!");
+function clearToolData(toolId) {
+  switch(toolId) {
+    case 'single-transformer':
+      document.getElementById('singleInput').value = '';
+      document.getElementById('singleOutput').value = '';
+      break;
+    case 'bulk-transformer':
+      document.getElementById('bulkFileInput').value = '';
+      document.getElementById('bulkResults').innerHTML = '';
+      document.getElementById('bulkTemplateInput').value = '';
+      document.getElementById('bulkTemplateContainer').style.display = 'none';
+      break;
+    case 'mbox-converter':
+      document.getElementById('mboxFileInput').value = '';
+      document.getElementById('mboxResults').innerHTML = '';
+      document.getElementById('mboxDownloadAll').style.display = 'none';
+      break;
+    case 'bulk-remover':
+      document.getElementById('removerFileInput').value = '';
+      document.getElementById('removerResults').innerHTML = '';
+      document.getElementById('removerTemplateInput').value = '';
+      document.getElementById('removerTemplateContainer').style.display = 'none';
+      break;
+    case 'single-remover':
+      document.getElementById('singleRemoverInput').value = '';
+      document.getElementById('singleRemoverOutput').value = '';
+      break;
+    case 'domain-extractor':
+      document.getElementById('domainExtractorInput').value = '';
+      document.getElementById('domainExtractorOutput').value = '';
+      break;
   }
 }
-</script>
-<footer style="
-  text-align: center;
-  padding: 0.5rem;
-  margin-top: 1rem;
-  border-top: 1px solid #eee;
-  color: #6c757d;
-  font-size: 0.6rem;
-">
-  <p><strong>CMH6 Newsletter Toolkit</strong></p>
-  <p>Created by Hanae HM & CMH6 Team</p>
-</footer>
+   
+    </script>
 </body>
 </html>
