@@ -455,7 +455,7 @@
       max-height: 300px;
       overflow-y: auto;
     }
-	 /* Back to Top Button Styles */
+	  /* Back to Top Button Styles */
     .back-to-top {
       position: fixed;
       bottom: 30px;
@@ -513,7 +513,6 @@
     
     .back-to-top:hover::after {
       opacity: 1;
-    }
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -1789,10 +1788,17 @@ function initSingleRemover() {
             showButtonFeedback(clearBtn, "Cleared!");
         }
     });
-// =============================================
-//backToTopBtn
 
-// =============================================
+// Back to Top Button with Tool Refresh
+const backToTopBtn = document.getElementById('backToTopBtn');
+
+window.addEventListener('scroll', function() {
+  if (window.pageYOffset > 300) {
+    backToTopBtn.classList.add('visible');
+  } else {
+    backToTopBtn.classList.remove('visible');
+  }
+});
 
 backToTopBtn.addEventListener('click', function() {
   // Clear all active tool sections
@@ -1802,28 +1808,14 @@ backToTopBtn.addEventListener('click', function() {
     activeSection.classList.remove('active');
   }
   
-  // Reset all tools
+  // Reset all tool inputs
   resetAllTools();
-  
-  // Clear any remaining inputs (double-check)
-  document.querySelectorAll('textarea, input[type="text"], input[type="file"]').forEach(input => {
-    if (input.type === 'file') {
-      input.value = '';
-    } else {
-      input.value = '';
-    }
-  });
   
   // Scroll to top with smooth behavior
   window.scrollTo({
     top: 0,
     behavior: 'smooth'
   });
-  
-  // Force a slight delay to ensure all clears are processed
-  setTimeout(() => {
-    location.reload();
-  }, 100);
 });
 
 function resetAllTools() {
@@ -1838,8 +1830,8 @@ function resetAllTools() {
   });
   
   // Clear all results areas
-  document.querySelectorAll('.results-area, .result').forEach(area => {
-    area.textContent = '';
+  document.querySelectorAll('.results-area').forEach(area => {
+    area.innerHTML = '';
   });
   
   // Hide all template containers
@@ -1859,12 +1851,8 @@ function resetAllTools() {
   // Hide progress indicator and download button for MBOX converter
   document.getElementById('progress').style.display = 'none';
   document.getElementById('mboxDownloadAll').style.display = 'none';
-  
-  // Reset all output divs (specific to Single Header Remover)
-  document.getElementById('singleRemoverOutput').textContent = '';
-  document.getElementById('singleRemoverTemplateOutput').textContent = '';
-
 }
+
 function clearToolData(toolId) {
   switch(toolId) {
     case 'single-transformer':
