@@ -371,13 +371,7 @@
       }
     }
 
-    /* DNS Generator Specific Styles */
-    .tabs {
-      display: flex;
-      border-bottom: 1px solid var(--light-gray);
-      margin-bottom: 1rem;
-    }
-    
+   
     .tab {
       padding: 0.5rem 1rem;
       cursor: pointer;
@@ -590,7 +584,7 @@
     <!-- Single Email Header Transformer -->
     <div id="single-transformer" class="tool-section">
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
-      <h2 class="section-title"><i class="fas fa-envelope"></i> Single Newsletter Header Transformer</h2>
+      <h2 class="section-title"><i class="fas fa-envelope"></i> Single Newsletter Header Modifier</h2>
       
       <textarea id="singleInput" placeholder="Paste your newsletter source here..."></textarea>
       
@@ -606,19 +600,19 @@
       </div>
       
       <div class="action-btns">
-        <button id="singleTransformBtn" class="btn"><i class="fas fa-magic"></i> Transform Headers</button>
+        <button id="singleTransformBtn" class="btn"><i class="fas fa-magic"></i> Modify Headers</button>
         <button id="singleIpBtn" class="btn btn-warning"><i class="fas fa-plus"></i> Add [IP] to Subject</button>
         <button id="singleCopyBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Copy Output</button>
         <button id="singleClearBtn" class="btn btn-danger"><i class="fas fa-trash"></i> Clear All</button>
       </div>
       
-      <textarea id="singleOutput" placeholder="Transformed headers will appear here..." readonly></textarea>
+      <textarea id="singleOutput" placeholder="Modified headers will appear here..." readonly></textarea>
     </div>
     
     <!-- Bulk Email Header Transformer -->
     <div id="bulk-transformer" class="tool-section">
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
-      <h2 class="section-title"><i class="fas fa-envelopes-bulk"></i> Bulk Newsletter Header Transformer</h2>
+      <h2 class="section-title"><i class="fas fa-envelopes-bulk"></i> Bulk Newsletter Header Modifier</h2>
       
       <div class="upload-area" id="bulkUploadArea">
         <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--success); margin-bottom: 0.8rem;"></i>
@@ -642,13 +636,13 @@
       </div>
       
       <div class="action-btns">
-        <button id="bulkTransformBtn" class="btn"><i class="fas fa-magic"></i> Transform Headers</button>
+        <button id="bulkTransformBtn" class="btn"><i class="fas fa-magic"></i> Modify Headers</button>
         <button id="bulkIpBtn" class="btn btn-warning"><i class="fas fa-plus"></i> Add [IP] Tag</button>
         <button id="bulkTemplateBtn" class="btn btn-success"><i class="fas fa-file-alt"></i> Use Template</button>
       </div>
       
       <div class="template-container" id="bulkTemplateContainer" style="display: none; margin-top: 1.5rem;">
-        <textarea id="bulkTemplateInput" placeholder="Enter your template text here. Use [newsletter] where you want the processed email content to appear."></textarea>
+        <textarea id="bulkTemplateInput" placeholder="Enter your config here. Use [newsletter] where you want the modified newsletter to appear."></textarea>
         <button id="bulkProcessTemplateBtn" class="btn" style="margin-top: 1rem;"><i class="fas fa-cogs"></i> Process with Template</button>
       </div>
       
@@ -710,7 +704,7 @@
       </div>
       
       <div class="template-container" id="removerTemplateContainer" style="display: none; margin-top: 1.5rem;">
-        <textarea id="removerTemplateInput" placeholder="Enter your template text here. Use [newsletter] where you want the processed email content to appear."></textarea>
+        <textarea id="removerTemplateInput" placeholder="Enter your config here. Use [newsletter] where you want the newsletter content to appear."></textarea>
         <button id="removerProcessTemplateBtn" class="btn" style="margin-top: 1rem;"><i class="fas fa-cogs"></i> Process with Template</button>
       </div>
       
@@ -718,37 +712,62 @@
     </div>
     
     <!-- Single Header Remover -->
-    <div id="single-remover" class="tool-section">
-      <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
-      <h2 class="section-title"><i class="fas fa-envelope-open-text"></i> Single Header Remover</h2>
-      
-      <textarea id="singleRemoverInput" placeholder="Paste your newsletter content here..."></textarea>
-      
-      <div class="action-btns">
-        <button id="singleRemoverBtn" class="btn"><i class="fas fa-eraser"></i> Remove Headers</button>
-        <button id="singleRemoverCopyBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Copy</button>
-        <button id="singleRemoverClearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear</button>
-      </div>
-      
-      <textarea id="singleRemoverOutput" placeholder="Processed newsletter content will appear here..." readonly></textarea>
-    </div>
+<div id="single-remover" class="tool-section">
+  <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
+  <h2 class="section-title"><i class="fas fa-envelope-open-text"></i> Single Header Remover</h2>
+  
+  <textarea id="singleRemoverInput" placeholder="Paste your newsletter content here..."></textarea>
+  
+  <div class="template-container" style="margin-bottom: 1rem;">
+    <textarea id="singleRemoverTemplate" placeholder="put [newsletter] in the middle of your config to remplace it with the body of the newsletter"></textarea>
+  </div>
+  
+  <div class="action-btns">
+    <button id="singleRemoverBtn" class="btn"><i class="fas fa-eraser"></i> Remove Headers</button>
     
-    <!-- Domain and IP Extractor -->
+    <button id="singleRemoverClearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear All</button>
+  </div>
+  
+  <div class="output-container" style="margin-top: 1.5rem;">
+    <div class="output-header">
+      <div class="output-title">Newsletter body </div>
+      <div class="output-actions">
+        <button class="btn btn-secondary" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" id="copyNormalOutput"><i class="fas fa-copy"></i></button>
+      </div>
+    </div>
+    <div class="result" id="singleRemoverOutput"></div>
+  </div>
+  
+  <div class="output-container" style="margin-top: 1rem;">
+    <div class="output-header">
+      <div class="output-title">Config + Newsletter body</div>
+      <div class="output-actions">
+        <button class="btn btn-secondary" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" id="copyTemplateOutput"><i class="fas fa-copy"></i></button>
+      </div>
+    </div>
+    <div class="result" id="singleRemoverTemplateOutput"></div>
+  </div>
+</div>
+  <!-- Domain & IP Extractor -->
     <div id="domain-extractor" class="tool-section">
-      <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
-      <h2 class="section-title"><i class="fas fa-globe"></i> Domain & IP Extractor</h2>
-      
-      <textarea id="domainExtractorInput" placeholder="Paste your text with domains and IPs here..."></textarea>
-      
-      <div class="action-btns">
-        <button id="domainExtractorBtn" class="btn"><i class="fas fa-search"></i> Extract</button>
-        <button id="domainExtractorCopyBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Copy</button>
-        <button id="domainExtractorClearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear</button>
-      </div>
-      
-      <textarea id="domainExtractorOutput" placeholder="Extracted domains with their associated IPs will appear here..." readonly></textarea>
+        <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
+        <h2 class="section-title"><i class="fas fa-globe"></i> Domain & IP Extractor</h2>
+        
+        <textarea id="domainExtractorInput" placeholder="Paste your text with domains and IPs here..."></textarea>
+        
+        <div class="action-btns">
+            <button id="domainExtractorBtn" class="btn"><i class="fas fa-search"></i> Extract</button>
+            <button id="domainExtractorCopyBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Copy</button>
+            <button id="domainExtractorClearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear</button>
+        </div>
+        
+        <div class="output-container" style="margin-top: 1.5rem;">
+            <div class="output-header">
+                <div class="output-title">Extracted Domains & IPs</div>
+            </div>
+            <div class="result" id="domainExtractorOutput"></div>
+        </div>
     </div>
-    
   
      <!-- Back to Top Button with Refresh Functionality -->
   <button class="back-to-top" id="backToTopBtn" title="Refresh & Back to Top">
@@ -769,49 +788,42 @@
     const backButtons = document.querySelectorAll('.back-btn');
     
     // Clear tool data when going back
-    function clearToolData(toolId) {
-      switch(toolId) {
-        case 'single-transformer':
-          document.getElementById('singleInput').value = '';
-          document.getElementById('singleOutput').value = '';
-          break;
-        case 'bulk-transformer':
-          document.getElementById('bulkFileInput').value = '';
-          document.getElementById('bulkResults').innerHTML = '';
-          document.getElementById('bulkTemplateInput').value = '';
-          document.getElementById('bulkTemplateContainer').style.display = 'none';
-          break;
-        case 'mbox-converter':
-          document.getElementById('mboxFileInput').value = '';
-          document.getElementById('mboxResults').innerHTML = '';
-          document.getElementById('mboxDownloadAll').style.display = 'none';
-          break;
-        case 'bulk-remover':
-          document.getElementById('removerFileInput').value = '';
-          document.getElementById('removerResults').innerHTML = '';
-          document.getElementById('removerTemplateInput').value = '';
-          document.getElementById('removerTemplateContainer').style.display = 'none';
-          break;
-        case 'single-remover':
-          document.getElementById('singleRemoverInput').value = '';
-          document.getElementById('singleRemoverOutput').value = '';
-          break;
-        case 'domain-extractor':
-          document.getElementById('domainExtractorInput').value = '';
-          document.getElementById('domainExtractorOutput').value = '';
-          break;
-        case 'dns-generator':
-          document.getElementById('spf-domains').value = '';
-          document.getElementById('spf-ips').value = '';
-          document.getElementById('spf-result').innerHTML = '';
-          document.getElementById('spf-external-domains').value = '';
-          document.getElementById('spf-external-ips').value = '';
-          document.getElementById('spf-external-result').innerHTML = '';
-          document.getElementById('txt-input').value = '';
-          document.getElementById('txt-result').innerHTML = '';
-          break;
-      }
-    }
+     function clearToolData(toolId) {
+  switch(toolId) {
+    case 'single-transformer':
+      document.getElementById('singleInput').value = '';
+      document.getElementById('singleOutput').value = '';
+      break;
+    case 'bulk-transformer':
+      document.getElementById('bulkFileInput').value = '';
+      document.getElementById('bulkResults').innerHTML = '';
+      document.getElementById('bulkTemplateInput').value = '';
+      document.getElementById('bulkTemplateContainer').style.display = 'none';
+      break;
+    case 'mbox-converter':
+      document.getElementById('mboxFileInput').value = '';
+      document.getElementById('mboxResults').innerHTML = '';
+      document.getElementById('mboxDownloadAll').style.display = 'none';
+      break;
+    case 'bulk-remover':
+      document.getElementById('removerFileInput').value = '';
+      document.getElementById('removerResults').innerHTML = '';
+      document.getElementById('removerTemplateInput').value = '';
+      document.getElementById('removerTemplateContainer').style.display = 'none';
+      break;
+    case 'single-remover':
+      document.getElementById('singleRemoverInput').value = '';
+      document.getElementById('singleRemoverTemplate').value = '';
+      document.getElementById('singleRemoverOutput').textContent = '';
+      document.getElementById('singleRemoverTemplateOutput').textContent = '';
+      break;
+    case 'domain-extractor':
+      document.getElementById('domainExtractorInput').value = '';
+      document.getElementById('domainExtractorOutput').value = '';
+      break;
+  }
+}
+
     
     // Show tool section when card is clicked
     toolCards.forEach(card => {
@@ -1562,156 +1574,225 @@
       processTemplateBtn.addEventListener('click', processWithTemplate);
     }
 
-    // =============================================
-    // SINGLE HEADER REMOVER
-    // =============================================
-    function initSingleRemover() {
-      const inputText = document.getElementById('singleRemoverInput');
-      const outputText = document.getElementById('singleRemoverOutput');
-      const removeBtn = document.getElementById('singleRemoverBtn');
-      const copyBtn = document.getElementById('singleRemoverCopyBtn');
-      const clearBtn = document.getElementById('singleRemoverClearBtn');
-      
-      removeBtn.addEventListener('click', removeHeaders);
-      copyBtn.addEventListener('click', copyOutput);
-      clearBtn.addEventListener('click', clearAll);
-      
-      function removeHeaders() {
-        if (!inputText.value.trim()) {
-          showButtonFeedback(removeBtn, "Paste content first!");
-          return;
-        }
-        
-        const content = inputText.value;
-        let output = content;
-        
-        // First try standard \r\n\r\n (Windows)
-        let headerEnd = output.indexOf('\r\n\r\n');
-        if (headerEnd !== -1) {
-          output = output.slice(headerEnd + 4).trim();
-        } else {
-          // Then try \n\n (Unix)
-          headerEnd = output.indexOf('\n\n');
-          if (headerEnd !== -1) {
-            output = output.slice(headerEnd + 2).trim();
-          } else {
-            // If no empty line found, try to find first HTML tag
-            const htmlStart = output.indexOf('<');
-            if (htmlStart !== -1) {
-              output = output.slice(htmlStart).trim();
-            } else {
-              showButtonFeedback(removeBtn, "No headers found!");
-              return;
-            }
-          }
-        }
-        
-        outputText.value = output;
-        showButtonFeedback(removeBtn, "Headers removed!");
-      }
-      
-      function copyOutput() {
-        if (!outputText.value.trim()) {
-          showButtonFeedback(copyBtn, "Nothing to copy!");
-          return;
-        }
-        
-        outputText.select();
-        document.execCommand('copy');
-        showButtonFeedback(copyBtn, "Copied!");
-      }
-      
-      function clearAll() {
-        inputText.value = '';
-        outputText.value = '';
-        showButtonFeedback(clearBtn, "Cleared!");
-      }
+// =============================================
+// SINGLE HEADER REMOVER 
+// =============================================
+function initSingleRemover() {
+  const inputText = document.getElementById('singleRemoverInput');
+  const templateInput = document.getElementById('singleRemoverTemplate');
+  const outputDiv = document.getElementById('singleRemoverOutput');
+  const templateOutputDiv = document.getElementById('singleRemoverTemplateOutput');
+  const removeBtn = document.getElementById('singleRemoverBtn');
+  const copyBtn = document.getElementById('copyNormalOutput');
+  const templateCopyBtn = document.getElementById('copyTemplateOutput');
+  const clearBtn = document.getElementById('singleRemoverClearBtn');
+  
+  removeBtn.addEventListener('click', removeHeaders);
+  copyBtn.addEventListener('click', () => handleCopy(outputDiv, copyBtn));
+  templateCopyBtn.addEventListener('click', () => handleCopy(templateOutputDiv, templateCopyBtn));
+  clearBtn.addEventListener('click', clearAll);
+  
+  function removeHeaders() {
+    if (!inputText.value.trim()) {
+      showButtonFeedback(removeBtn, "Paste content first!");
+      return;
     }
-
-    // =============================================
-    // DOMAIN & IP EXTRACTOR
-    // =============================================
-    function initDomainExtractor() {
-      const extractBtn = document.getElementById('domainExtractorBtn');
-      const copyBtn = document.getElementById('domainExtractorCopyBtn');
-      const clearBtn = document.getElementById('domainExtractorClearBtn');
-      const inputText = document.getElementById('domainExtractorInput');
-      const outputText = document.getElementById('domainExtractorOutput');
-
-      extractBtn.addEventListener('click', extractDomains);
-      copyBtn.addEventListener('click', copyContent);
-      clearBtn.addEventListener('click', clearContent);
-
-      function extractDomains() {
-        const text = inputText.value.trim();
-        if (!text) {
-          showButtonFeedback(extractBtn, "Enter text first!");
-          return;
-        }
-
-        // Extract IPs and domains
-        const ips = text.match(/\d+\.\d+\.\d+\.\d+/g) || [];
-        const domains = text.match(/[a-zA-Z0-9.-]+\.[a-z]+/g) || [];
-
-        // Create mapping of domains to IPs
-        const domainToIps = {};
-        
-        // Associate IPs with domains (simple sequential matching)
-        ips.forEach((ip, index) => {
-          const domain = domains[index];
-          if (domain) {
-            if (!domainToIps[domain]) {
-              domainToIps[domain] = [];
-            }
-            if (!domainToIps[domain].includes(ip)) { // Prevent duplicate IPs
-              domainToIps[domain].push(ip);
-            }
-          }
-        });
-
-        // Format the output as clean list (not JSON)
-        let output = '';
-        for (const [domain, ipList] of Object.entries(domainToIps)) {
-          if (ipList.length > 0) {
-            output += `${domain}\n`;
-            ipList.forEach(ip => {
-              output += `${ip}\n`;
-            });
-            output += '\n'; // Add extra space between domain groups
-          }
-        }
-
-        outputText.value = output.trim(); // Remove any trailing whitespace
-        showButtonFeedback(extractBtn, "Extraction complete!");
+    
+    const content = inputText.value;
+    let output = removeEmailHeaders(content);
+    
+    outputDiv.textContent = output;
+    
+    // Process template if provided
+    const template = templateInput.value.trim();
+    if (template) {
+      if (!template.includes("[newsletter]")) {
+        showButtonFeedback(removeBtn, 'Add "[newsletter]"!');
+        templateOutputDiv.textContent = "Template must contain [newsletter] placeholder";
+        return;
       }
-
-      function copyContent() {
-        if (!outputText.value.trim()) {
-          showButtonFeedback(copyBtn, "Nothing to copy!");
-          return;
-        }
-        outputText.select();
-        document.execCommand('copy');
-        showButtonFeedback(copyBtn, "Copied!");
-      }
-
-      function clearContent() {
-        inputText.value = '';
-        outputText.value = '';
-        showButtonFeedback(clearBtn, "Cleared!");
-      }
+      templateOutputDiv.textContent = template.replace("[newsletter]", output);
+    } else {
+      templateOutputDiv.textContent = "No template provided";
     }
-
-// Back to Top Button with Tool Refresh
-const backToTopBtn = document.getElementById('backToTopBtn');
-
-window.addEventListener('scroll', function() {
-  if (window.pageYOffset > 300) {
-    backToTopBtn.classList.add('visible');
-  } else {
-    backToTopBtn.classList.remove('visible');
+    
+    showButtonFeedback(removeBtn, "Headers removed!");
   }
-});
+  
+  function removeEmailHeaders(content) {
+    // First try standard \r\n\r\n (Windows)
+    let headerEnd = content.indexOf('\r\n\r\n');
+    if (headerEnd !== -1) {
+      return content.slice(headerEnd + 4).trim();
+    }
+    
+    // Then try \n\n (Unix)
+    headerEnd = content.indexOf('\n\n');
+    if (headerEnd !== -1) {
+      return content.slice(headerEnd + 2).trim();
+    }
+    
+    // If no empty line found, try to find first HTML tag
+    const htmlStart = content.indexOf('<');
+    if (htmlStart !== -1) {
+      return content.slice(htmlStart).trim();
+    }
+    
+    // If no headers found, return original content
+    return content;
+  }
+  
+  function handleCopy(outputElement, button) {
+    if (!outputElement.textContent.trim() || 
+        outputElement.textContent === "No template provided") {
+      showButtonFeedback(button, "Nothing to copy!");
+      return;
+    }
+    
+    // Create temporary textarea for copying
+    const tempTextarea = document.createElement('textarea');
+    tempTextarea.value = outputElement.textContent;
+    document.body.appendChild(tempTextarea);
+    tempTextarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempTextarea);
+    
+    // Show "Copied!" feedback on the button
+    const originalText = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+    button.disabled = true;
+    
+    // Reset button after 2 seconds
+    setTimeout(() => {
+      button.innerHTML = originalText;
+      button.disabled = false;
+    }, 2000);
+  }
+  
+  function clearAll() {
+    inputText.value = '';
+    templateInput.value = '';
+    outputDiv.textContent = '';
+    templateOutputDiv.textContent = '';
+    showButtonFeedback(clearBtn, "Cleared!");
+  }
+}
+ // =============================================
+    // DOMAIN & IP EXTRACTOR (Complete Working Version)
+    // =============================================
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all DOM elements
+        const extractBtn = document.getElementById('domainExtractorBtn');
+        const copyBtn = document.getElementById('domainExtractorCopyBtn');
+        const clearBtn = document.getElementById('domainExtractorClearBtn');
+        const inputText = document.getElementById('domainExtractorInput');
+        const outputDiv = document.getElementById('domainExtractorOutput');
+
+        // Event listeners
+        extractBtn.addEventListener('click', extractDomains);
+        copyBtn.addEventListener('click', copyContent);
+        clearBtn.addEventListener('click', clearContent);
+
+        function showButtonFeedback(button, message) {
+            const originalText = button.innerHTML;
+            const originalClass = button.className;
+            button.innerHTML = `<i class="fas fa-check"></i> ${message}`;
+            button.className = originalClass + ' success-feedback';
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.className = originalClass;
+            }, 2000);
+        }
+
+        function extractDomains() {
+            const text = inputText.value.trim();
+            if (!text) {
+                showButtonFeedback(extractBtn, "Enter text first!");
+                return;
+            }
+
+            // Strict IP and domain regex patterns
+            const ipPattern = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/g;
+            const domainPattern = /\b((?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,})\b/gi;
+
+            // Extract all unique IPs and domains
+            const allIPs = [...new Set(text.match(ipPattern) || [])];
+            const allDomains = [...new Set(text.match(domainPattern) || [])];
+
+            // Create domain to IPs mapping
+            const domainMap = {};
+            
+            // Find IPs associated with each domain
+            allDomains.forEach(domain => {
+                const domainRegex = new RegExp(`\\b${domain}\\b`, 'gi');
+                let match;
+                const domainIPs = new Set();
+                
+                // Find IPs near this domain in the text
+                while ((match = domainRegex.exec(text)) !== null) {
+                    const startPos = Math.max(0, match.index - 50);
+                    const endPos = Math.min(text.length, match.index + domain.length + 50);
+                    const context = text.slice(startPos, endPos);
+                    
+                    const ipsInContext = context.match(ipPattern) || [];
+                    ipsInContext.forEach(ip => domainIPs.add(ip));
+                }
+                
+                if (domainIPs.size > 0) {
+                    domainMap[domain] = Array.from(domainIPs);
+                }
+            });
+
+            // Find unassociated IPs
+            const usedIPs = Object.values(domainMap).flat();
+            const unassociatedIPs = allIPs.filter(ip => !usedIPs.includes(ip));
+
+            // Format the output
+            let output = '';
+            
+            // Add domains with their IPs
+            for (const [domain, ipList] of Object.entries(domainMap)) {
+                output += `${domain}\n`;
+                output += `${ipList.join('\n')}\n\n`;
+            }
+
+            // Add unassociated IPs if any exist
+            if (unassociatedIPs.length > 0) {
+                output += `Unassociated IPs:\n${unassociatedIPs.join('\n')}\n`;
+            }
+
+            outputDiv.textContent = output.trim();
+            showButtonFeedback(extractBtn, "Extracted!");
+        }
+
+        function copyContent() {
+            if (!outputDiv.textContent.trim()) {
+                showButtonFeedback(copyBtn, "Nothing to copy!");
+                return;
+            }
+            
+            // Create temporary element for copying
+            const tempInput = document.createElement('textarea');
+            tempInput.value = outputDiv.textContent;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            
+            showButtonFeedback(copyBtn, "Copied!");
+        }
+
+        function clearContent() {
+            inputText.value = '';
+            outputDiv.textContent = '';
+            showButtonFeedback(clearBtn, "Cleared!");
+        }
+    });
+// =============================================
+//backToTopBtn
+
+// =============================================
 
 backToTopBtn.addEventListener('click', function() {
   // Clear all active tool sections
@@ -1721,14 +1802,28 @@ backToTopBtn.addEventListener('click', function() {
     activeSection.classList.remove('active');
   }
   
-  // Reset all tool inputs
+  // Reset all tools
   resetAllTools();
+  
+  // Clear any remaining inputs (double-check)
+  document.querySelectorAll('textarea, input[type="text"], input[type="file"]').forEach(input => {
+    if (input.type === 'file') {
+      input.value = '';
+    } else {
+      input.value = '';
+    }
+  });
   
   // Scroll to top with smooth behavior
   window.scrollTo({
     top: 0,
     behavior: 'smooth'
   });
+  
+  // Force a slight delay to ensure all clears are processed
+  setTimeout(() => {
+    location.reload();
+  }, 100);
 });
 
 function resetAllTools() {
@@ -1743,8 +1838,8 @@ function resetAllTools() {
   });
   
   // Clear all results areas
-  document.querySelectorAll('.results-area').forEach(area => {
-    area.innerHTML = '';
+  document.querySelectorAll('.results-area, .result').forEach(area => {
+    area.textContent = '';
   });
   
   // Hide all template containers
@@ -1764,8 +1859,12 @@ function resetAllTools() {
   // Hide progress indicator and download button for MBOX converter
   document.getElementById('progress').style.display = 'none';
   document.getElementById('mboxDownloadAll').style.display = 'none';
-}
+  
+  // Reset all output divs (specific to Single Header Remover)
+  document.getElementById('singleRemoverOutput').textContent = '';
+  document.getElementById('singleRemoverTemplateOutput').textContent = '';
 
+}
 function clearToolData(toolId) {
   switch(toolId) {
     case 'single-transformer':
