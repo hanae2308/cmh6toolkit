@@ -455,7 +455,149 @@
       max-height: 300px;
       overflow-y: auto;
     }
-	  /* Back to Top Button Styles */
+    
+    /* DNS Record Generator Specific Styles */
+    .dns-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--light-gray);
+      background-color: #f8f9fa;
+      margin-bottom: 1rem;
+    }
+    
+    .dns-tab {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.85rem;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      color: var(--gray);
+    }
+    
+    .dns-tab:hover {
+      color: var(--primary);
+    }
+    
+    .dns-tab.active {
+      border-bottom-color: var(--primary);
+      color: var(--primary);
+    }
+    
+    .dns-tab-content {
+      display: none;
+    }
+    
+    .dns-tab-content.active {
+      display: block;
+    }
+    
+    .record-item {
+      padding: 0.5rem;
+      margin-bottom: 0.375rem;
+      background-color: white;
+      border-radius: 4px;
+      border-left: 2px solid var(--primary);
+      font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
+      font-size: 0.75rem;
+      word-break: break-all;
+    }
+    
+    .record-item.error {
+      border-left-color: var(--danger);
+      background-color: rgba(255, 0, 110, 0.05);
+    }
+    
+    .record-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.125rem;
+      font-size: 0.7rem;
+      color: var(--gray);
+    }
+    
+    .record-type {
+      font-weight: 500;
+      color: var(--primary);
+    }
+    
+    .record-type.error {
+      color: var(--danger);
+    }
+    
+    .record-domain {
+      font-weight: 500;
+    }
+    
+    .record-content {
+      margin-top: 0.25rem;
+    }
+    
+    .status {
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      padding: 0.5rem;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+    
+    .status i {
+      font-size: 0.8rem;
+    }
+    
+    .success {
+      background-color: rgba(6, 214, 160, 0.1);
+      color: var(--success);
+    }
+    
+    .error {
+      background-color: rgba(255, 0, 110, 0.1);
+      color: var(--danger);
+    }
+    
+    .warning {
+      background-color: rgba(255, 190, 11, 0.1);
+      color: var(--warning);
+    }
+    
+    .info {
+      background-color: rgba(58, 134, 255, 0.1);
+      color: var(--primary);
+    }
+    
+    .stats {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+    }
+    
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      color: var(--gray);
+    }
+    
+    .stat-value {
+      font-weight: 500;
+      color: var(--dark);
+    }
+    
+    .stat-success {
+      color: var(--success);
+    }
+    
+    .stat-error {
+      color: var(--danger);
+    }
+    
+    .stat-warning {
+      color: var(--warning);
+    }
+    
+    /* Back to Top Button Styles */
     .back-to-top {
       position: fixed;
       bottom: 30px;
@@ -513,6 +655,7 @@
     
     .back-to-top:hover::after {
       opacity: 1;
+    }
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -541,23 +684,36 @@
       </div>
     </div>
     
-    <!-- Fixation Section -->
-    <div class="section">
-      <div class="section-title">Fixation</div>
-      <div class="tool-grid">
-        <div class="tool-card" data-tool="single-remover">
-          <div class="tool-icon"><i class="fas fa-envelope-open-text"></i></div>
-          <h3 class="tool-title">Single Header Remover</h3>
-          <p class="tool-desc">Remove headers from single newsletter</p>
-        </div>
-        
-        <div class="tool-card" data-tool="bulk-remover">
-          <div class="tool-icon"><i class="fas fa-trash-alt"></i></div>
-          <h3 class="tool-title">Bulk Header Remover</h3>
-          <p class="tool-desc">Remove multiple newsletter headers</p>
-        </div>
-      </div>
+ <!-- Fixation Section -->
+<div class="section">
+  <div class="section-title">Fixation</div>
+  <div class="tool-grid">
+    <div class="tool-card" data-tool="single-remover">
+      <div class="tool-icon"><i class="fas fa-envelope-open-text"></i></div>
+      <h3 class="tool-title">Single Header Remover</h3>
+      <p class="tool-desc">Remove headers from single newsletter</p>
     </div>
+    
+    <div class="tool-card" data-tool="bulk-remover">
+      <div class="tool-icon"><i class="fas fa-trash-alt"></i></div>
+      <h3 class="tool-title">Bulk Header Remover</h3>
+      <p class="tool-desc">Remove multiple newsletter headers</p>
+    </div>
+    
+    <div class="tool-card" data-tool="single-received-extractor">
+      <div class="tool-icon"><i class="fas fa-code-branch"></i></div>
+      <h3 class="tool-title">Single Received Extractor</h3>
+      <p class="tool-desc">Extract Received headers from single email</p>
+    </div>
+    
+    <div class="tool-card" data-tool="bulk-received-extractor">
+      <div class="tool-icon"><i class="fas fa-network-wired"></i></div>
+      <h3 class="tool-title">Bulk Received Extractor</h3>
+      <p class="tool-desc">Extract Received headers from multiple emails</p>
+    </div>
+  </div>
+</div>
+
     
     <!-- Other Tools Section -->
     <div class="section">
@@ -572,10 +728,15 @@
         <div class="tool-card" data-tool="domain-extractor">
           <div class="tool-icon"><i class="fas fa-globe"></i></div>
           <h3 class="tool-title">IP Domain Extractor</h3>
-          <p class="tool-desc">Extract domains and IPs  </p>
+          <p class="tool-desc">Extract domains and IPs</p>
         </div>
         
-     
+        <div class="tool-card" data-tool="dns-generator">
+          <div class="tool-icon"><i class="fas fa-server"></i></div>
+          <h3 class="tool-title">DNS Record Generator</h3>
+          <p class="tool-desc">Generate SPF and TXT records</p>
+        </div>
+      </div>
     </div>
     
     <!-- Tool Sections -->
@@ -710,7 +871,7 @@
       <div class="results-area" id="removerResults"></div>
     </div>
     
-    <!-- Single Header Remover -->
+  <!-- Single Header Remover -->
 <div id="single-remover" class="tool-section">
   <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
   <h2 class="section-title"><i class="fas fa-envelope-open-text"></i> Single Header Remover</h2>
@@ -723,55 +884,274 @@
   
   <div class="action-btns">
     <button id="singleRemoverBtn" class="btn"><i class="fas fa-eraser"></i> Remove Headers</button>
-    
     <button id="singleRemoverClearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear All</button>
   </div>
-  
-  <div class="output-container" style="margin-top: 1.5rem;">
-    <div class="output-header">
-      <div class="output-title">Newsletter body </div>
-      <div class="output-actions">
-        <button class="btn btn-secondary" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" id="copyNormalOutput"><i class="fas fa-copy"></i></button>
+
+  <!--  Output Containers -->
+  <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+    <!-- Newsletter Body Output -->
+    <div style="flex: 1; min-width: 0;">
+      <div class="output-header">
+        <div class="output-title">Newsletter body</div>
+        <div class="output-actions">
+          <button class="btn btn-secondary" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" id="copyNormalOutput">
+            <i class="fas fa-copy"></i>
+          </button>
+        </div>
       </div>
+      <div class="result" id="singleRemoverOutput" style="min-height: 200px;"></div>
     </div>
-    <div class="result" id="singleRemoverOutput"></div>
+    
+    <!-- Config + Newsletter Body Output -->
+    <div style="flex: 1; min-width: 0;">
+      <div class="output-header">
+        <div class="output-title">Config + Newsletter body</div>
+        <div class="output-actions">
+          <button class="btn btn-secondary" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" id="copyTemplateOutput">
+            <i class="fas fa-copy"></i>
+          </button>
+        </div>
+      </div>
+      <div class="result" id="singleRemoverTemplateOutput" style="min-height: 200px;"></div>
+    </div>
+  </div>
+
+  <!-- Responsive behavior -->
+  <style>
+    @media (max-width: 768px) {
+      #single-remover > div[style*="display: flex"] {
+        flex-direction: column;
+      }
+    }
+  </style>
+</div>
+
+<!-- Single Received Extractor -->
+<div id="single-received-extractor" class="tool-section">
+  <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
+  <h2 class="section-title"><i class="fas fa-code-branch"></i> Single Received Extractor</h2>
+  
+  <textarea id="singleReceivedInput" placeholder="Paste your email content here..."></textarea>
+  
+  <div class="action-btns">
+    <button id="singleReceivedExtractBtn" class="btn"><i class="fas fa-code"></i> Extract Received Headers</button>
+    <button id="singleReceivedCopyBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Copy</button>
+    <button id="singleReceivedClearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear</button>
   </div>
   
-  <div class="output-container" style="margin-top: 1rem;">
+  <div class="output-container">
     <div class="output-header">
-      <div class="output-title">Config + Newsletter body</div>
-      <div class="output-actions">
-        <button class="btn btn-secondary" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" id="copyTemplateOutput"><i class="fas fa-copy"></i></button>
-      </div>
+      <span class="output-title">Extracted Received Headers</span>
     </div>
-    <div class="result" id="singleRemoverTemplateOutput"></div>
+    <div class="result" id="singleReceivedOutput"></div>
   </div>
 </div>
-  <!-- Domain & IP Extractor -->
+
+<!-- Bulk Received Extractor -->
+<div id="bulk-received-extractor" class="tool-section">
+  <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
+  <h2 class="section-title"><i class="fas fa-network-wired"></i> Bulk Received Extractor</h2>
+  
+  <div class="upload-area" id="bulkReceivedUploadArea">
+    <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--primary); margin-bottom: 0.8rem;"></i>
+    <p>Drag and drop multiple .eml files or .zip archives here</p>
+    <p>or</p>
+    <label for="bulkReceivedFileInput" class="file-label">
+      <i class="fas fa-folder-open"></i> Select Files
+    </label>
+    <input type="file" id="bulkReceivedFileInput" class="file-input" multiple accept=".eml,.zip">
+  </div>
+  
+  <div class="action-btns">
+    <button id="bulkReceivedExtractBtn" class="btn"><i class="fas fa-code"></i> Extract Received Headers</button>
+    <button id="bulkReceivedDownloadBtn" class="btn btn-success"><i class="fas fa-download"></i> Download All</button>
+    <button id="bulkReceivedClearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear</button>
+  </div>
+  
+  <div class="results-area" id="bulkReceivedResults"></div>
+</div>
+    
+    <!-- Domain & IP Extractor -->
     <div id="domain-extractor" class="tool-section">
-        <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
-        <h2 class="section-title"><i class="fas fa-globe"></i> Domain & IP Extractor</h2>
-        
-        <textarea id="domainExtractorInput" placeholder="Paste your text with domains and IPs here..."></textarea>
+      <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
+      <h2 class="section-title"><i class="fas fa-globe"></i> Domain & IP Extractor</h2>
+      
+      <textarea id="domainExtractorInput" placeholder="Paste your text with domains and IPs here..."></textarea>
+      
+      <div class="action-btns">
+        <button id="domainExtractorBtn" class="btn"><i class="fas fa-search"></i> Extract</button>
+        <button id="domainExtractorCopyBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Copy</button>
+        <button id="domainExtractorClearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear</button>
+      </div>
+      
+      <div class="output-container" style="margin-top: 1.5rem;">
+        <div class="output-header">
+          <div class="output-title">Extracted Domains & IPs</div>
+        </div>
+        <div class="result" id="domainExtractorOutput"></div>
+      </div>
+    </div>
+    
+    <!-- DNS Record Generator -->
+    <div id="dns-generator" class="tool-section">
+      <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
+      <h2 class="section-title"><i class="fas fa-server"></i> DNS Record Generator</h2>
+      
+      <div class="dns-tabs">
+        <div class="dns-tab active" data-tab="spf">SPF Intern</div>
+        <div class="dns-tab" data-tab="spf-external">SPF Extern</div>
+        <div class="dns-tab" data-tab="txt">TXT Generator</div>
+      </div>
+      
+      <!-- SPF Generator Tab -->
+      <div id="spf-tab" class="dns-tab-content active">
+        <div class="form-grid">
+          <div class="input-section">
+            <label for="spf-domains">Domains</label>
+            <textarea id="spf-domains" placeholder="example.com&#10;example.org&#10;example.net"></textarea>
+          </div>
+          
+          <div class="input-section">
+            <label for="spf-ips">IP Addresses</label>
+            <textarea id="spf-ips" placeholder="192.168.1.1 192.168.1.2 192.168.1.3"></textarea>
+          </div>
+        </div>
         
         <div class="action-btns">
-            <button id="domainExtractorBtn" class="btn"><i class="fas fa-search"></i> Extract</button>
-            <button id="domainExtractorCopyBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Copy</button>
-            <button id="domainExtractorClearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear</button>
+          <button class="btn" onclick="generateSpfRecords()">
+            <i class="fas fa-magic"></i>
+            Generate
+          </button>
+          <button class="btn btn-secondary" onclick="clearSpfInputs()">
+            <i class="fas fa-trash-alt"></i>
+            Clear
+          </button>
         </div>
         
-        <div class="output-container" style="margin-top: 1.5rem;">
+        <div class="output-section">
+          <div class="output-container">
             <div class="output-header">
-                <div class="output-title">Extracted Domains & IPs</div>
+              <span class="output-title">Generated SPF Records</span>
+              <div class="output-actions">
+                <button class="btn btn-secondary" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" onclick="copySpfToClipboard()">
+                  <i class="far fa-copy"></i>
+                  Copy
+                </button>
+                <button class="btn btn-secondary" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" onclick="downloadSpfRecords()">
+                  <i class="fas fa-download"></i>
+                  Save
+                </button>
+              </div>
             </div>
-            <div class="result" id="domainExtractorOutput"></div>
+            <div class="result" id="spf-result"></div>
+          </div>
+          <div id="spf-stats" class="stats"></div>
+          <div id="spf-statusMessage" class="status info">
+            <i class="fas fa-info-circle"></i>
+            <span>Ready to generate SPF records</span>
+          </div>
         </div>
+      </div>
+      
+      <!-- SPF External Generator Tab -->
+      <div id="spf-external-tab" class="dns-tab-content">
+        <div class="form-grid">
+          <div class="input-section">
+            <label for="spf-external-domains">Domains</label>
+            <textarea id="spf-external-domains" placeholder="example.com&#10;example.org&#10;example.net"></textarea>
+          </div>
+          
+          <div class="input-section">
+            <label for="spf-external-ips">IP Addresses</label>
+            <textarea id="spf-external-ips" placeholder="192.168.1.1 192.168.1.2 192.168.1.3"></textarea>
+          </div>
+        </div>
+        
+        <div class="action-btns">
+          <button class="btn" onclick="generateSpfExternalRecords()">
+            <i class="fas fa-magic"></i>
+            Generate
+          </button>
+          <button class="btn btn-secondary" onclick="clearSpfExternalInputs()">
+            <i class="fas fa-trash-alt"></i>
+            Clear
+          </button>
+        </div>
+        
+        <div class="output-section">
+          <div class="output-container">
+            <div class="output-header">
+              <span class="output-title">Generated SPF Records </span>
+              <div class="output-actions">
+                <button class="btn btn-secondary" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" onclick="copySpfExternalToClipboard()">
+                  <i class="far fa-copy"></i>
+                  Copy
+                </button>
+                <button class="btn btn-secondary" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" onclick="downloadSpfExternalRecords()">
+                  <i class="fas fa-download"></i>
+                  Save
+                </button>
+              </div>
+            </div>
+            <div class="result" id="spf-external-result"></div>
+          </div>
+          <div id="spf-external-stats" class="stats"></div>
+          <div id="spf-external-statusMessage" class="status info">
+            <i class="fas fa-info-circle"></i>
+            <span>Ready to generate Extern SPF records </span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- TXT Generator Tab -->
+      <div id="txt-tab" class="dns-tab-content">
+        <div class="input-section">
+          <label for="txt-input">Input Domains</label>
+          <p class="input-hint">Domain followed by verification data (one per line)</p>
+          <textarea id="txt-input" placeholder="example.com google-site-verification=WwDCrnKEvovHoV_V00sL02Vc__5ktTCx9SByZ1ciT0g"></textarea>
+        </div>
+        
+        <div class="action-btns">
+          <button class="btn" onclick="generateTxtRecords()">
+            <i class="fas fa-magic"></i>
+            Generate
+          </button>
+          <button class="btn btn-secondary" onclick="clearTxtInputs()">
+            <i class="fas fa-trash-alt"></i>
+            Clear
+          </button>
+        </div>
+        
+        <div class="output-section">
+          <div class="output-container">
+            <div class="output-header">
+              <span class="output-title">Generated TXT Records</span>
+              <div class="output-actions">
+                <button class="btn btn-secondary" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" onclick="copyTxtToClipboard()">
+                  <i class="far fa-copy"></i>
+                  Copy
+                </button>
+                <button class="btn btn-secondary" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" onclick="downloadTxtRecords()">
+                  <i class="fas fa-download"></i>
+                  Save
+                </button>
+              </div>
+            </div>
+            <div class="result" id="txt-result"></div>
+          </div>
+          <div id="txt-stats" class="stats"></div>
+          <div id="txt-statusMessage" class="status info">
+            <i class="fas fa-info-circle"></i>
+            <span>Ready to generate TXT records</span>
+          </div>
+        </div>
+      </div>
     </div>
-  
-     <!-- Back to Top Button with Refresh Functionality -->
-  <button class="back-to-top" id="backToTopBtn" title="Refresh & Back to Top">
-    <i class="fas fa-sync-alt"></i>
-  </button>
+    
+    <!-- Back to Top Button with Refresh Functionality -->
+    <button class="back-to-top" id="backToTopBtn" title="Refresh & Back to Top">
+      <i class="fas fa-sync-alt"></i>
+    </button>
 
     <footer>
       <p><strong>CMH6 Newsletter Toolkit</strong></p>
@@ -787,42 +1167,72 @@
     const backButtons = document.querySelectorAll('.back-btn');
     
     // Clear tool data when going back
-     function clearToolData(toolId) {
-  switch(toolId) {
-    case 'single-transformer':
-      document.getElementById('singleInput').value = '';
-      document.getElementById('singleOutput').value = '';
+    function clearToolData(toolId) {
+      switch(toolId) {
+        case 'single-transformer':
+          document.getElementById('singleInput').value = '';
+          document.getElementById('singleOutput').value = '';
+          break;
+        case 'bulk-transformer':
+          document.getElementById('bulkFileInput').value = '';
+          document.getElementById('bulkResults').innerHTML = '';
+          document.getElementById('bulkTemplateInput').value = '';
+          document.getElementById('bulkTemplateContainer').style.display = 'none';
+          break;
+        case 'mbox-converter':
+          document.getElementById('mboxFileInput').value = '';
+          document.getElementById('mboxResults').innerHTML = '';
+          document.getElementById('mboxDownloadAll').style.display = 'none';
+          break;
+        case 'bulk-remover':
+          document.getElementById('removerFileInput').value = '';
+          document.getElementById('removerResults').innerHTML = '';
+          document.getElementById('removerTemplateInput').value = '';
+          document.getElementById('removerTemplateContainer').style.display = 'none';
+          break;
+        case 'single-remover':
+          document.getElementById('singleRemoverInput').value = '';
+          document.getElementById('singleRemoverTemplate').value = '';
+          document.getElementById('singleRemoverOutput').textContent = '';
+          document.getElementById('singleRemoverTemplateOutput').textContent = '';
+          break;
+        case 'domain-extractor':
+          document.getElementById('domainExtractorInput').value = '';
+          document.getElementById('domainExtractorOutput').textContent = '';
+          break;
+        case 'dns-generator':
+          // Clear all DNS generator inputs and outputs
+          document.getElementById('spf-domains').value = '';
+          document.getElementById('spf-ips').value = '';
+          document.getElementById('spf-result').innerHTML = '';
+          document.getElementById('spf-stats').innerHTML = '';
+          document.getElementById('spf-statusMessage').innerHTML = '<i class="fas fa-info-circle"></i><span>Ready to generate SPF records</span>';
+          document.getElementById('spf-statusMessage').className = 'status info';
+          
+          document.getElementById('spf-external-domains').value = '';
+          document.getElementById('spf-external-ips').value = '';
+          document.getElementById('spf-external-result').innerHTML = '';
+          document.getElementById('spf-external-stats').innerHTML = '';
+          document.getElementById('spf-external-statusMessage').innerHTML = '<i class="fas fa-info-circle"></i><span>Ready to generate SPF records in external format</span>';
+          document.getElementById('spf-external-statusMessage').className = 'status info';
+          
+          document.getElementById('txt-input').value = '';
+          document.getElementById('txt-result').innerHTML = '';
+          document.getElementById('txt-stats').innerHTML = '';
+          document.getElementById('txt-statusMessage').innerHTML = '<i class="fas fa-info-circle"></i><span>Ready to generate TXT records</span>';
+          document.getElementById('txt-statusMessage').className = 'status info';
+		    case 'single-received-extractor':
+      document.getElementById('singleReceivedInput').value = '';
+      document.getElementById('singleReceivedOutput').textContent = '';
       break;
-    case 'bulk-transformer':
-      document.getElementById('bulkFileInput').value = '';
-      document.getElementById('bulkResults').innerHTML = '';
-      document.getElementById('bulkTemplateInput').value = '';
-      document.getElementById('bulkTemplateContainer').style.display = 'none';
+      
+    case 'bulk-received-extractor':
+      document.getElementById('bulkReceivedFileInput').value = '';
+      document.getElementById('bulkReceivedResults').innerHTML = '';
+      filesToProcess = [];
       break;
-    case 'mbox-converter':
-      document.getElementById('mboxFileInput').value = '';
-      document.getElementById('mboxResults').innerHTML = '';
-      document.getElementById('mboxDownloadAll').style.display = 'none';
-      break;
-    case 'bulk-remover':
-      document.getElementById('removerFileInput').value = '';
-      document.getElementById('removerResults').innerHTML = '';
-      document.getElementById('removerTemplateInput').value = '';
-      document.getElementById('removerTemplateContainer').style.display = 'none';
-      break;
-    case 'single-remover':
-      document.getElementById('singleRemoverInput').value = '';
-      document.getElementById('singleRemoverTemplate').value = '';
-      document.getElementById('singleRemoverOutput').textContent = '';
-      document.getElementById('singleRemoverTemplateOutput').textContent = '';
-      break;
-    case 'domain-extractor':
-      document.getElementById('domainExtractorInput').value = '';
-      document.getElementById('domainExtractorOutput').value = '';
-      break;
-  }
-}
-
+	  }
+    }
     
     // Show tool section when card is clicked
     toolCards.forEach(card => {
@@ -867,13 +1277,13 @@
     });
 
     // DNS Generator Tab functionality
-    document.querySelectorAll('.tab').forEach(tab => {
+    document.querySelectorAll('.dns-tab').forEach(tab => {
       tab.addEventListener('click', function() {
         const tabId = this.getAttribute('data-tab');
         
         // Remove active class from all tabs and content
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.dns-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.dns-tab-content').forEach(c => c.classList.remove('active'));
         
         // Add active class to clicked tab and corresponding content
         this.classList.add('active');
@@ -890,6 +1300,8 @@
       initSingleRemover();
       initDomainExtractor();
       initDnsGenerator();
+	  initSingleReceivedExtractor();  
+  initBulkReceivedExtractor();   
     });
 
     // Helper function for button feedback
@@ -1573,320 +1985,1031 @@
       processTemplateBtn.addEventListener('click', processWithTemplate);
     }
 
-// =============================================
-// SINGLE HEADER REMOVER 
-// =============================================
-function initSingleRemover() {
-  const inputText = document.getElementById('singleRemoverInput');
-  const templateInput = document.getElementById('singleRemoverTemplate');
-  const outputDiv = document.getElementById('singleRemoverOutput');
-  const templateOutputDiv = document.getElementById('singleRemoverTemplateOutput');
-  const removeBtn = document.getElementById('singleRemoverBtn');
-  const copyBtn = document.getElementById('copyNormalOutput');
-  const templateCopyBtn = document.getElementById('copyTemplateOutput');
-  const clearBtn = document.getElementById('singleRemoverClearBtn');
-  
-  removeBtn.addEventListener('click', removeHeaders);
-  copyBtn.addEventListener('click', () => handleCopy(outputDiv, copyBtn));
-  templateCopyBtn.addEventListener('click', () => handleCopy(templateOutputDiv, templateCopyBtn));
-  clearBtn.addEventListener('click', clearAll);
-  
-  function removeHeaders() {
-    if (!inputText.value.trim()) {
-      showButtonFeedback(removeBtn, "Paste content first!");
-      return;
-    }
-    
-    const content = inputText.value;
-    let output = removeEmailHeaders(content);
-    
-    outputDiv.textContent = output;
-    
-    // Process template if provided
-    const template = templateInput.value.trim();
-    if (template) {
-      if (!template.includes("[newsletter]")) {
-        showButtonFeedback(removeBtn, 'Add "[newsletter]"!');
-        templateOutputDiv.textContent = "Template must contain [newsletter] placeholder";
-        return;
+    // =============================================
+    // SINGLE HEADER REMOVER 
+    // =============================================
+    function initSingleRemover() {
+      const inputText = document.getElementById('singleRemoverInput');
+      const templateInput = document.getElementById('singleRemoverTemplate');
+      const outputDiv = document.getElementById('singleRemoverOutput');
+      const templateOutputDiv = document.getElementById('singleRemoverTemplateOutput');
+      const removeBtn = document.getElementById('singleRemoverBtn');
+      const copyBtn = document.getElementById('copyNormalOutput');
+      const templateCopyBtn = document.getElementById('copyTemplateOutput');
+      const clearBtn = document.getElementById('singleRemoverClearBtn');
+      
+      removeBtn.addEventListener('click', removeHeaders);
+      copyBtn.addEventListener('click', () => handleCopy(outputDiv, copyBtn));
+      templateCopyBtn.addEventListener('click', () => handleCopy(templateOutputDiv, templateCopyBtn));
+      clearBtn.addEventListener('click', clearAll);
+      
+      function removeHeaders() {
+        if (!inputText.value.trim()) {
+          showButtonFeedback(removeBtn, "Paste content first!");
+          return;
+        }
+        
+        const content = inputText.value;
+        let output = removeEmailHeaders(content);
+        
+        outputDiv.textContent = output;
+        
+        // Process template if provided
+        const template = templateInput.value.trim();
+        if (template) {
+          if (!template.includes("[newsletter]")) {
+            showButtonFeedback(removeBtn, 'Add "[newsletter]"!');
+            templateOutputDiv.textContent = "Template must contain [newsletter] placeholder";
+            return;
+          }
+          templateOutputDiv.textContent = template.replace("[newsletter]", output);
+        } else {
+          templateOutputDiv.textContent = "No template provided";
+        }
+        
+        showButtonFeedback(removeBtn, "Headers removed!");
       }
-      templateOutputDiv.textContent = template.replace("[newsletter]", output);
-    } else {
-      templateOutputDiv.textContent = "No template provided";
+      
+      function removeEmailHeaders(content) {
+        // First try standard \r\n\r\n (Windows)
+        let headerEnd = content.indexOf('\r\n\r\n');
+        if (headerEnd !== -1) {
+          return content.slice(headerEnd + 4).trim();
+        }
+        
+        // Then try \n\n (Unix)
+        headerEnd = content.indexOf('\n\n');
+        if (headerEnd !== -1) {
+          return content.slice(headerEnd + 2).trim();
+        }
+        
+        // If no empty line found, try to find first HTML tag
+        const htmlStart = content.indexOf('<');
+        if (htmlStart !== -1) {
+          return content.slice(htmlStart).trim();
+        }
+        
+        // If no headers found, return original content
+        return content;
+      }
+      
+      function handleCopy(outputElement, button) {
+        if (!outputElement.textContent.trim() || 
+            outputElement.textContent === "No template provided") {
+          showButtonFeedback(button, "Nothing to copy!");
+          return;
+        }
+        
+        // Create temporary textarea for copying
+        const tempTextarea = document.createElement('textarea');
+        tempTextarea.value = outputElement.textContent;
+        document.body.appendChild(tempTextarea);
+        tempTextarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempTextarea);
+        
+        // Show "Copied!" feedback on the button
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        button.disabled = true;
+        
+        // Reset button after 2 seconds
+        setTimeout(() => {
+          button.innerHTML = originalText;
+          button.disabled = false;
+        }, 2000);
+      }
+      
+      function clearAll() {
+        inputText.value = '';
+        templateInput.value = '';
+        outputDiv.textContent = '';
+        templateOutputDiv.textContent = '';
+        showButtonFeedback(clearBtn, "Cleared!");
+      }
     }
+
+    // =============================================
+    // DOMAIN & IP EXTRACTOR
+    // =============================================
+    function initDomainExtractor() {
+      const extractBtn = document.getElementById('domainExtractorBtn');
+      const copyBtn = document.getElementById('domainExtractorCopyBtn');
+      const clearBtn = document.getElementById('domainExtractorClearBtn');
+      const inputText = document.getElementById('domainExtractorInput');
+      const outputDiv = document.getElementById('domainExtractorOutput');
+
+      extractBtn.addEventListener('click', extractDomains);
+      copyBtn.addEventListener('click', copyContent);
+      clearBtn.addEventListener('click', clearContent);
+
+      function showButtonFeedback(button, message) {
+        const originalText = button.innerHTML;
+        const originalClass = button.className;
+        button.innerHTML = `<i class="fas fa-check"></i> ${message}`;
+        button.className = originalClass + ' success-feedback';
+        
+        setTimeout(() => {
+          button.innerHTML = originalText;
+          button.className = originalClass;
+        }, 2000);
+      }
+
+      function extractDomains() {
+        const text = inputText.value.trim();
+        if (!text) {
+          showButtonFeedback(extractBtn, "Enter text first!");
+          return;
+        }
+
+        // Strict IP and domain regex patterns
+        const ipPattern = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/g;
+        const domainPattern = /\b((?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,})\b/gi;
+
+        // Extract all unique IPs and domains
+        const allIPs = [...new Set(text.match(ipPattern) || [])];
+        const allDomains = [...new Set(text.match(domainPattern) || [])];
+
+        // Create domain to IPs mapping
+        const domainMap = {};
+        
+        // Find IPs associated with each domain
+        allDomains.forEach(domain => {
+          const domainRegex = new RegExp(`\\b${domain}\\b`, 'gi');
+          let match;
+          const domainIPs = new Set();
+          
+          // Find IPs near this domain in the text
+          while ((match = domainRegex.exec(text)) !== null) {
+            const startPos = Math.max(0, match.index - 50);
+            const endPos = Math.min(text.length, match.index + domain.length + 50);
+            const context = text.slice(startPos, endPos);
+            
+            const ipsInContext = context.match(ipPattern) || [];
+            ipsInContext.forEach(ip => domainIPs.add(ip));
+          }
+          
+          if (domainIPs.size > 0) {
+            domainMap[domain] = Array.from(domainIPs);
+          }
+        });
+
+        // Find unassociated IPs
+        const usedIPs = Object.values(domainMap).flat();
+        const unassociatedIPs = allIPs.filter(ip => !usedIPs.includes(ip));
+
+        // Format the output
+        let output = '';
+        
+        // Add domains with their IPs
+        for (const [domain, ipList] of Object.entries(domainMap)) {
+          output += `${domain}\n`;
+          output += `${ipList.join('\n')}\n\n`;
+        }
+
+        // Add unassociated IPs if any exist
+        if (unassociatedIPs.length > 0) {
+          output += `Unassociated IPs:\n${unassociatedIPs.join('\n')}\n`;
+        }
+
+        outputDiv.textContent = output.trim();
+        showButtonFeedback(extractBtn, "Extracted!");
+      }
+
+      function copyContent() {
+        if (!outputDiv.textContent.trim()) {
+          showButtonFeedback(copyBtn, "Nothing to copy!");
+          return;
+        }
+        
+        // Create temporary element for copying
+        const tempInput = document.createElement('textarea');
+        tempInput.value = outputDiv.textContent;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+        
+        showButtonFeedback(copyBtn, "Copied!");
+      }
+
+      function clearContent() {
+        inputText.value = '';
+        outputDiv.textContent = '';
+        showButtonFeedback(clearBtn, "Cleared!");
+      }
+    }
+
+    // =============================================
+    // DNS RECORD GENERATOR
+    // =============================================
+    function initDnsGenerator() {
+      // Tab functionality is already set up in the DOMContentLoaded event
+      // All DNS generator functions will be defined here
+      
+      // SPF Generator Functions
+      window.generateSpfRecords = function() {
+        const domains = document.getElementById('spf-domains').value.split('\n')
+          .map(domain => domain.trim())
+          .filter(domain => domain.length > 0);
+        
+        if (domains.length === 0) {
+          showSpfStatus('Please enter at least one domain', 'error');
+          updateSpfStats(0, 0);
+          return;
+        }
+        
+        // Get IPs and properly separate them
+        let ipInput = document.getElementById('spf-ips').value;
+        
+        // First, replace all commas with spaces
+        ipInput = ipInput.replace(/,/g, ' ');
+        
+        // Then replace any sequence of whitespace (including newlines) with spaces
+        ipInput = ipInput.replace(/\s+/g, ' ');
+        
+        // Trim and split into individual IPs
+        const ipArray = ipInput.trim().split(' ').filter(ip => ip.trim() !== '');
+        
+        if (ipArray.length === 0) {
+          showSpfStatus('Please enter at least one IP address', 'error');
+          updateSpfStats(0, 0);
+          return;
+        }
+        
+        // Validate IP addresses
+        const validIPs = [];
+        const invalidIPs = [];
+        
+        ipArray.forEach(ip => {
+          if (isValidIP(ip)) {
+            validIPs.push(ip);
+          } else {
+            invalidIPs.push(ip);
+          }
+        });
+        
+        if (validIPs.length === 0) {
+          showSpfStatus('No valid IP addresses found', 'error');
+          updateSpfStats(0, 0);
+          return;
+        }
+        
+        if (invalidIPs.length > 0) {
+          showSpfStatus(`Generated records with ${invalidIPs.length} invalid IP(s) ignored`, 'warning');
+        } else {
+          showSpfStatus(`Successfully generated ${domains.length} SPF records`, 'success');
+        }
+        
+        const formattedIPs = validIPs.join(';');
+        
+        let resultHTML = '';
+        domains.forEach(domain => {
+          const dnsEntry = `dns.${domain}`;
+          resultHTML += `
+            <div class="record-item">
+              <div class="record-content">${domain},${dnsEntry},TXT,Arecords:${formattedIPs}</div>
+            </div>
+          `;
+        });
+        
+        if (invalidIPs.length > 0) {
+          resultHTML += `
+            <div class="record-item error">
+              <div class="record-content">Invalid IPs: ${invalidIPs.join(', ')}</div>
+            </div>
+          `;
+        }
+        
+        document.getElementById('spf-result').innerHTML = resultHTML;
+        updateSpfStats(domains.length, invalidIPs.length);
+      };
+      
+      // SPF External Generator Functions
+      window.generateSpfExternalRecords = function() {
+        const domains = document.getElementById('spf-external-domains').value.split('\n')
+          .map(domain => domain.trim())
+          .filter(domain => domain.length > 0);
+        
+        if (domains.length === 0) {
+          showSpfExternalStatus('Please enter at least one domain', 'error');
+          updateSpfExternalStats(0, 0);
+          return;
+        }
+        
+        // Get IPs and properly separate them
+        let ipInput = document.getElementById('spf-external-ips').value;
+        
+        // First, replace all commas with spaces
+        ipInput = ipInput.replace(/,/g, ' ');
+        
+        // Then replace any sequence of whitespace (including newlines) with spaces
+        ipInput = ipInput.replace(/\s+/g, ' ');
+        
+        // Trim and split into individual IPs
+        const ipArray = ipInput.trim().split(' ').filter(ip => ip.trim() !== '');
+        
+        if (ipArray.length === 0) {
+          showSpfExternalStatus('Please enter at least one IP address', 'error');
+          updateSpfExternalStats(0, 0);
+          return;
+        }
+        
+        // Validate IP addresses
+        const validIPs = [];
+        const invalidIPs = [];
+        
+        ipArray.forEach(ip => {
+          if (isValidIP(ip)) {
+            validIPs.push(ip);
+          } else {
+            invalidIPs.push(ip);
+          }
+        });
+        
+        if (validIPs.length === 0) {
+          showSpfExternalStatus('No valid IP addresses found', 'error');
+          updateSpfExternalStats(0, 0);
+          return;
+        }
+        
+        if (invalidIPs.length > 0) {
+          showSpfExternalStatus(`Generated records with ${invalidIPs.length} invalid IP(s) ignored`, 'warning');
+        } else {
+          showSpfExternalStatus(`Successfully generated ${domains.length} SPF records`, 'success');
+        }
+        
+        // Format IPs with "ip4:" prefix
+        const formattedIPs = validIPs.map(ip => `ip4:${ip}`).join(' ');
+        
+        let resultHTML = '';
+        domains.forEach(domain => {
+          const spfRecord = `v=spf1 ${formattedIPs} ~all`;
+          resultHTML += `
+            <div class="record-item">
+              <div class="record-content">${domain},${domain},TXT,${spfRecord}</div>
+            </div>
+          `;
+        });
+        
+        if (invalidIPs.length > 0) {
+          resultHTML += `
+            <div class="record-item error">
+              <div class="record-content">Invalid IPs: ${invalidIPs.join(', ')}</div>
+            </div>
+          `;
+        }
+        
+        document.getElementById('spf-external-result').innerHTML = resultHTML;
+        updateSpfExternalStats(domains.length, invalidIPs.length);
+      };
+      
+      window.clearSpfExternalInputs = function() {
+        document.getElementById('spf-external-domains').value = '';
+        document.getElementById('spf-external-ips').value = '';
+        document.getElementById('spf-external-result').innerHTML = '';
+        document.getElementById('spf-external-stats').innerHTML = '';
+        showSpfExternalStatus('Ready to generate SPF records in external format', 'info');
+      };
+      
+      window.copySpfExternalToClipboard = function() {
+        const resultElements = document.querySelectorAll('#spf-external-result .record-content');
+        if (resultElements.length === 0) {
+          showSpfExternalStatus('Nothing to copy', 'error');
+          return;
+        }
+        
+        let textToCopy = '';
+        resultElements.forEach(el => {
+          if (!el.closest('.error')) {
+            textToCopy += el.textContent + '\n';
+          }
+        });
+        
+        navigator.clipboard.writeText(textToCopy.trim())
+          .then(() => showSpfExternalStatus('Records copied!', 'success'))
+          .catch(err => showSpfExternalStatus('Failed to copy: ' + err, 'error'));
+      };
+      
+      window.downloadSpfExternalRecords = function() {
+        const resultElements = document.querySelectorAll('#spf-external-result .record-content');
+        if (resultElements.length === 0) {
+          showSpfExternalStatus('Nothing to save', 'error');
+          return;
+        }
+        
+        let textToDownload = '';
+        resultElements.forEach(el => {
+          if (!el.closest('.error')) {
+            textToDownload += el.textContent + '\n';
+          }
+        });
+        
+        const blob = new Blob([textToDownload.trim()], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'spf-external-records.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        showSpfExternalStatus('Records saved!', 'success');
+      };
+      
+      window.showSpfExternalStatus = function(message, type) {
+        const statusElement = document.getElementById('spf-external-statusMessage');
+        statusElement.className = `status ${type}`;
+        statusElement.innerHTML = `
+          <i class="fas ${
+            type === 'success' ? 'fa-check-circle' : 
+            type === 'error' ? 'fa-times-circle' : 
+            type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle'
+          }"></i>
+          <span>${message}</span>
+        `;
+      };
+      
+      window.updateSpfExternalStats = function(successCount, errorCount) {
+        const statsElement = document.getElementById('spf-external-stats');
+        statsElement.innerHTML = `
+          <div class="stat-item">
+            <i class="fas fa-check-circle stat-success"></i>
+            <span>Valid: <span class="stat-value stat-success">${successCount}</span></span>
+          </div>
+          ${errorCount > 0 ? `
+          <div class="stat-item">
+            <i class="fas fa-exclamation-circle stat-error"></i>
+            <span>Invalid: <span class="stat-value stat-error">${errorCount}</span></span>
+          </div>
+          ` : ''}
+        `;
+      };
+      
+      window.isValidIP = function(ip) {
+        // Simple IPv4 validation
+        const ipv4Regex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+        return ipv4Regex.test(ip);
+      };
+      
+      window.updateSpfStats = function(successCount, errorCount) {
+        const statsElement = document.getElementById('spf-stats');
+        statsElement.innerHTML = `
+          <div class="stat-item">
+            <i class="fas fa-check-circle stat-success"></i>
+            <span>Valid: <span class="stat-value stat-success">${successCount}</span></span>
+          </div>
+          ${errorCount > 0 ? `
+          <div class="stat-item">
+            <i class="fas fa-exclamation-circle stat-error"></i>
+            <span>Invalid: <span class="stat-value stat-error">${errorCount}</span></span>
+          </div>
+          ` : ''}
+        `;
+      };
+      
+      window.clearSpfInputs = function() {
+        document.getElementById('spf-domains').value = '';
+        document.getElementById('spf-ips').value = '';
+        document.getElementById('spf-result').innerHTML = '';
+        document.getElementById('spf-stats').innerHTML = '';
+        showSpfStatus('Ready to generate SPF records', 'info');
+      };
+      
+      window.copySpfToClipboard = function() {
+        const resultElements = document.querySelectorAll('#spf-result .record-content');
+        if (resultElements.length === 0) {
+          showSpfStatus('Nothing to copy', 'error');
+          return;
+        }
+        
+        let textToCopy = '';
+        resultElements.forEach(el => {
+          if (!el.closest('.error')) {
+            textToCopy += el.textContent + '\n';
+          }
+        });
+        
+        navigator.clipboard.writeText(textToCopy.trim())
+          .then(() => showSpfStatus('Records copied!', 'success'))
+          .catch(err => showSpfStatus('Failed to copy: ' + err, 'error'));
+      };
+      
+      window.downloadSpfRecords = function() {
+        const resultElements = document.querySelectorAll('#spf-result .record-content');
+        if (resultElements.length === 0) {
+          showSpfStatus('Nothing to save', 'error');
+          return;
+        }
+        
+        let textToDownload = '';
+        resultElements.forEach(el => {
+          if (!el.closest('.error')) {
+            textToDownload += el.textContent + '\n';
+          }
+        });
+        
+        const blob = new Blob([textToDownload.trim()], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'spf-records.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        showSpfStatus('Records saved!', 'success');
+      };
+      
+      window.showSpfStatus = function(message, type) {
+        const statusElement = document.getElementById('spf-statusMessage');
+        statusElement.className = `status ${type}`;
+        statusElement.innerHTML = `
+          <i class="fas ${
+            type === 'success' ? 'fa-check-circle' : 
+            type === 'error' ? 'fa-times-circle' : 
+            type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle'
+          }"></i>
+          <span>${message}</span>
+        `;
+      };
+      
+      // TXT Generator Functions
+      window.generateTxtRecords = function() {
+        const inputText = document.getElementById('txt-input').value;
+        const lines = inputText.split('\n');
+        let successCount = 0;
+        let errorCount = 0;
+        let resultHTML = '';
+        
+        for (const line of lines) {
+          if (line.trim() === '') continue;
+          
+          try {
+            const normalized = line.replace(/,/g, ' ');
+            const parts = normalized.split(/\s+/).filter(part => part !== '');
+            
+            if (parts.length < 2) {
+              throw new Error('Invalid format - needs domain and verification data');
+            }
+            
+            const domain = parts[0];
+            let verificationParts = [];
+            let verificationStarted = false;
+            
+            for (const part of parts.slice(1)) {
+              if (part === domain && !verificationStarted) {
+                continue;
+              }
+              verificationStarted = true;
+              verificationParts.push(part);
+            }
+            
+            const verification = verificationParts.join(' ').trim();
+            
+            if (!verification) {
+              throw new Error('Missing verification phrase');
+            }
+            
+            const txtRecord = `${domain},${domain},TXT,${verification}`;
+            
+            resultHTML += `
+              <div class="record-item">
+                <div class="record-content">${txtRecord}</div>
+              </div>
+            `;
+            
+            successCount++;
+          } catch (e) {
+            resultHTML += `
+              <div class="record-item error">
+                <div class="record-content">Error: ${line}</div>
+              </div>
+            `;
+            errorCount++;
+          }
+        }
+        
+        const resultElement = document.getElementById('txt-result');
+        if (successCount === 0 && errorCount > 0) {
+          resultElement.innerHTML = resultHTML;
+          showTxtStatus('No valid records generated', 'error');
+        } else if (errorCount > 0) {
+          resultElement.innerHTML = resultHTML;
+          showTxtStatus(`Generated ${successCount} records with ${errorCount} errors`, 'warning');
+        } else if (successCount > 0) {
+          resultElement.innerHTML = resultHTML;
+          showTxtStatus(`Successfully generated ${successCount} TXT records`, 'success');
+        } else {
+          resultElement.innerHTML = '<div class="record-item">No valid input found</div>';
+          showTxtStatus('Ready to generate TXT records', 'info');
+        }
+        
+        updateTxtStats(successCount, errorCount);
+      };
+      
+      window.updateTxtStats = function(successCount, errorCount) {
+        const statsElement = document.getElementById('txt-stats');
+        statsElement.innerHTML = `
+          <div class="stat-item">
+            <i class="fas fa-check-circle stat-success"></i>
+            <span>Valid: <span class="stat-value stat-success">${successCount}</span></span>
+          </div>
+          ${errorCount > 0 ? `
+          <div class="stat-item">
+            <i class="fas fa-exclamation-circle stat-error"></i>
+            <span>Errors: <span class="stat-value stat-error">${errorCount}</span></span>
+          </div>
+          ` : ''}
+        `;
+      };
+      
+      window.clearTxtInputs = function() {
+        document.getElementById('txt-input').value = '';
+        document.getElementById('txt-result').innerHTML = '';
+        document.getElementById('txt-stats').innerHTML = '';
+        showTxtStatus('Ready to generate TXT records', 'info');
+      };
+      
+      window.copyTxtToClipboard = function() {
+        const resultElements = document.querySelectorAll('#txt-result .record-content');
+        if (resultElements.length === 0) {
+          showTxtStatus('Nothing to copy', 'error');
+          return;
+        }
+        
+        let textToCopy = '';
+        resultElements.forEach(el => {
+          if (!el.closest('.error')) {
+            textToCopy += el.textContent + '\n';
+          }
+        });
+        
+        if (textToCopy.trim() === '') {
+          showTxtStatus('No valid records to copy', 'error');
+          return;
+        }
+        
+        navigator.clipboard.writeText(textToCopy.trim())
+          .then(() => showTxtStatus('Records copied!', 'success'))
+          .catch(err => showTxtStatus('Failed to copy: ' + err, 'error'));
+      };
+      
+      window.downloadTxtRecords = function() {
+        const resultElements = document.querySelectorAll('#txt-result .record-content');
+        if (resultElements.length === 0) {
+          showTxtStatus('Nothing to save', 'error');
+          return;
+        }
+        
+        let textToDownload = '';
+        resultElements.forEach(el => {
+          if (!el.closest('.error')) {
+            textToDownload += el.textContent + '\n';
+          }
+        });
+        
+        if (textToDownload.trim() === '') {
+          showTxtStatus('No valid records to save', 'error');
+          return;
+        }
+        
+        const blob = new Blob([textToDownload.trim()], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'txt-records.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        showTxtStatus('Records saved!', 'success');
+      };
+      
+      window.showTxtStatus = function(message, type) {
+        const statusElement = document.getElementById('txt-statusMessage');
+        statusElement.className = `status ${type}`;
+        statusElement.innerHTML = `
+          <i class="fas ${
+            type === 'success' ? 'fa-check-circle' : 
+            type === 'error' ? 'fa-times-circle' : 
+            type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle'
+          }"></i>
+          <span>${message}</span>
+        `;
+      };
+    }
+
+    // Back to Top Button with Tool Refresh
+    const backToTopBtn = document.getElementById('backToTopBtn');
+
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
+    });
+
+    backToTopBtn.addEventListener('click', function() {
+      // Clear all active tool sections
+      const activeSection = document.querySelector('.tool-section.active');
+      if (activeSection) {
+        clearToolData(activeSection.id);
+        activeSection.classList.remove('active');
+      }
+      
+      // Reset all tool inputs
+      resetAllTools();
+      
+      // Scroll to top with smooth behavior
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    function resetAllTools() {
+      // Clear all textareas
+      document.querySelectorAll('textarea').forEach(textarea => {
+        textarea.value = '';
+      });
+      
+      // Clear all file inputs
+      document.querySelectorAll('.file-input').forEach(input => {
+        input.value = '';
+      });
+      
+      // Clear all results areas
+      document.querySelectorAll('.results-area').forEach(area => {
+        area.innerHTML = '';
+      });
+      
+      // Hide all template containers
+      document.querySelectorAll('.template-container').forEach(container => {
+        container.style.display = 'none';
+      });
+      
+      // Reset radio buttons to default
+      document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        if (radio.id.includes('Rdns')) {
+          radio.checked = true;
+        } else {
+          radio.checked = false;
+        }
+      });
+      
+      // Hide progress indicator and download button for MBOX converter
+      document.getElementById('progress').style.display = 'none';
+      document.getElementById('mboxDownloadAll').style.display = 'none';
+    }
+// =============================================
+// SINGLE RECEIVED EXTRACTOR
+// =============================================
+function initSingleReceivedExtractor() {
+  const extractBtn = document.getElementById('singleReceivedExtractBtn');
+  const copyBtn = document.getElementById('singleReceivedCopyBtn');
+  const clearBtn = document.getElementById('singleReceivedClearBtn');
+  const inputText = document.getElementById('singleReceivedInput');
+  const outputDiv = document.getElementById('singleReceivedOutput');
+
+  extractBtn.addEventListener('click', extractReceivedHeaders);
+  copyBtn.addEventListener('click', copyReceivedHeaders);
+  clearBtn.addEventListener('click', clearAll);
+
+  function extractReceivedHeaders() {
+    const content = inputText.value.trim();
+    if (!content) {
+      showButtonFeedback(extractBtn, "Paste content first!");
+      return;
+    }
+
+    // Extract all Received headers with their continuation lines
+    const receivedHeaders = content.match(/^Received:[^\n]*(\n\s+[^\n]*)*/gmi);
     
-    showButtonFeedback(removeBtn, "Headers removed!");
+    if (!receivedHeaders || receivedHeaders.length === 0) {
+      outputDiv.textContent = "No Received headers found";
+      return;
+    }
+
+    // Format with proper indentation and no blank lines between headers
+    const formattedHeaders = receivedHeaders.map(header => {
+      // Remove the "Received:" prefix and trim whitespace
+      const cleanedHeader = header.replace(/^Received:\s*/i, '');
+      // Add "Received:" prefix and proper indentation
+      return `Received:${cleanedHeader.replace(/\n/g, '\n        ')}`;
+    }).join('\n');
+
+    outputDiv.textContent = formattedHeaders;
+    showButtonFeedback(extractBtn, "Received headers extracted!");
   }
-  
-  function removeEmailHeaders(content) {
-    // First try standard \r\n\r\n (Windows)
-    let headerEnd = content.indexOf('\r\n\r\n');
-    if (headerEnd !== -1) {
-      return content.slice(headerEnd + 4).trim();
-    }
-    
-    // Then try \n\n (Unix)
-    headerEnd = content.indexOf('\n\n');
-    if (headerEnd !== -1) {
-      return content.slice(headerEnd + 2).trim();
-    }
-    
-    // If no empty line found, try to find first HTML tag
-    const htmlStart = content.indexOf('<');
-    if (htmlStart !== -1) {
-      return content.slice(htmlStart).trim();
-    }
-    
-    // If no headers found, return original content
-    return content;
-  }
-  
-  function handleCopy(outputElement, button) {
-    if (!outputElement.textContent.trim() || 
-        outputElement.textContent === "No template provided") {
-      showButtonFeedback(button, "Nothing to copy!");
+
+  function copyReceivedHeaders() {
+    if (!outputDiv.textContent.trim() || outputDiv.textContent === "No Received headers found") {
+      showButtonFeedback(copyBtn, "Nothing to copy!");
       return;
     }
     
-    // Create temporary textarea for copying
     const tempTextarea = document.createElement('textarea');
-    tempTextarea.value = outputElement.textContent;
+    tempTextarea.value = outputDiv.textContent;
     document.body.appendChild(tempTextarea);
     tempTextarea.select();
     document.execCommand('copy');
     document.body.removeChild(tempTextarea);
-    
-    // Show "Copied!" feedback on the button
-    const originalText = button.innerHTML;
-    button.innerHTML = '<i class="fas fa-check"></i> Copied!';
-    button.disabled = true;
-    
-    // Reset button after 2 seconds
-    setTimeout(() => {
-      button.innerHTML = originalText;
-      button.disabled = false;
-    }, 2000);
+    showButtonFeedback(copyBtn, "Copied!");
   }
-  
+
   function clearAll() {
     inputText.value = '';
-    templateInput.value = '';
     outputDiv.textContent = '';
-    templateOutputDiv.textContent = '';
     showButtonFeedback(clearBtn, "Cleared!");
   }
 }
- // =============================================
-    // DOMAIN & IP EXTRACTOR (Complete Working Version)
-    // =============================================
-    document.addEventListener('DOMContentLoaded', function() {
-        // Get all DOM elements
-        const extractBtn = document.getElementById('domainExtractorBtn');
-        const copyBtn = document.getElementById('domainExtractorCopyBtn');
-        const clearBtn = document.getElementById('domainExtractorClearBtn');
-        const inputText = document.getElementById('domainExtractorInput');
-        const outputDiv = document.getElementById('domainExtractorOutput');
 
-        // Event listeners
-        extractBtn.addEventListener('click', extractDomains);
-        copyBtn.addEventListener('click', copyContent);
-        clearBtn.addEventListener('click', clearContent);
+// =============================================
+// BULK RECEIVED EXTRACTOR
+// =============================================
+function initBulkReceivedExtractor() {
+  const dropArea = document.getElementById('bulkReceivedUploadArea');
+  const fileInput = document.getElementById('bulkReceivedFileInput');
+  const extractBtn = document.getElementById('bulkReceivedExtractBtn');
+  const downloadBtn = document.getElementById('bulkReceivedDownloadBtn');
+  const clearBtn = document.getElementById('bulkReceivedClearBtn');
+  const resultsArea = document.getElementById('bulkReceivedResults');
 
-        function showButtonFeedback(button, message) {
-            const originalText = button.innerHTML;
-            const originalClass = button.className;
-            button.innerHTML = `<i class="fas fa-check"></i> ${message}`;
-            button.className = originalClass + ' success-feedback';
-            
-            setTimeout(() => {
-                button.innerHTML = originalText;
-                button.className = originalClass;
-            }, 2000);
-        }
+  let filesToProcess = [];
 
-        function extractDomains() {
-            const text = inputText.value.trim();
-            if (!text) {
-                showButtonFeedback(extractBtn, "Enter text first!");
-                return;
-            }
-
-            // Strict IP and domain regex patterns
-            const ipPattern = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/g;
-            const domainPattern = /\b((?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,})\b/gi;
-
-            // Extract all unique IPs and domains
-            const allIPs = [...new Set(text.match(ipPattern) || [])];
-            const allDomains = [...new Set(text.match(domainPattern) || [])];
-
-            // Create domain to IPs mapping
-            const domainMap = {};
-            
-            // Find IPs associated with each domain
-            allDomains.forEach(domain => {
-                const domainRegex = new RegExp(`\\b${domain}\\b`, 'gi');
-                let match;
-                const domainIPs = new Set();
-                
-                // Find IPs near this domain in the text
-                while ((match = domainRegex.exec(text)) !== null) {
-                    const startPos = Math.max(0, match.index - 50);
-                    const endPos = Math.min(text.length, match.index + domain.length + 50);
-                    const context = text.slice(startPos, endPos);
-                    
-                    const ipsInContext = context.match(ipPattern) || [];
-                    ipsInContext.forEach(ip => domainIPs.add(ip));
-                }
-                
-                if (domainIPs.size > 0) {
-                    domainMap[domain] = Array.from(domainIPs);
-                }
-            });
-
-            // Find unassociated IPs
-            const usedIPs = Object.values(domainMap).flat();
-            const unassociatedIPs = allIPs.filter(ip => !usedIPs.includes(ip));
-
-            // Format the output
-            let output = '';
-            
-            // Add domains with their IPs
-            for (const [domain, ipList] of Object.entries(domainMap)) {
-                output += `${domain}\n`;
-                output += `${ipList.join('\n')}\n\n`;
-            }
-
-            // Add unassociated IPs if any exist
-            if (unassociatedIPs.length > 0) {
-                output += `Unassociated IPs:\n${unassociatedIPs.join('\n')}\n`;
-            }
-
-            outputDiv.textContent = output.trim();
-            showButtonFeedback(extractBtn, "Extracted!");
-        }
-
-        function copyContent() {
-            if (!outputDiv.textContent.trim()) {
-                showButtonFeedback(copyBtn, "Nothing to copy!");
-                return;
-            }
-            
-            // Create temporary element for copying
-            const tempInput = document.createElement('textarea');
-            tempInput.value = outputDiv.textContent;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-            
-            showButtonFeedback(copyBtn, "Copied!");
-        }
-
-        function clearContent() {
-            inputText.value = '';
-            outputDiv.textContent = '';
-            showButtonFeedback(clearBtn, "Cleared!");
-        }
+  // Drag and Drop support
+  ["dragenter", "dragover"].forEach(event => {
+    dropArea.addEventListener(event, e => {
+      e.preventDefault();
+      dropArea.classList.add("dragover");
     });
+  });
 
-// Back to Top Button with Tool Refresh
-const backToTopBtn = document.getElementById('backToTopBtn');
+  ["dragleave", "drop"].forEach(event => {
+    dropArea.addEventListener(event, e => {
+      e.preventDefault();
+      dropArea.classList.remove("dragover");
+    });
+  });
 
-window.addEventListener('scroll', function() {
-  if (window.pageYOffset > 300) {
-    backToTopBtn.classList.add('visible');
-  } else {
-    backToTopBtn.classList.remove('visible');
-  }
-});
+  dropArea.addEventListener("drop", e => {
+    e.preventDefault();
+    fileInput.files = e.dataTransfer.files;
+    handleFileSelection();
+  });
 
-backToTopBtn.addEventListener('click', function() {
-  // Clear all active tool sections
-  const activeSection = document.querySelector('.tool-section.active');
-  if (activeSection) {
-    clearToolData(activeSection.id);
-    activeSection.classList.remove('active');
-  }
-  
-  // Reset all tool inputs
-  resetAllTools();
-  
-  // Scroll to top with smooth behavior
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
-});
+  fileInput.addEventListener("change", handleFileSelection);
 
-function resetAllTools() {
-  // Clear all textareas
-  document.querySelectorAll('textarea').forEach(textarea => {
-    textarea.value = '';
-  });
-  
-  // Clear all file inputs
-  document.querySelectorAll('.file-input').forEach(input => {
-    input.value = '';
-  });
-  
-  // Clear all results areas
-  document.querySelectorAll('.results-area').forEach(area => {
-    area.innerHTML = '';
-  });
-  
-  // Hide all template containers
-  document.querySelectorAll('.template-container').forEach(container => {
-    container.style.display = 'none';
-  });
-  
-  // Reset radio buttons to default
-  document.querySelectorAll('input[type="radio"]').forEach(radio => {
-    if (radio.id.includes('Rdns')) {
-      radio.checked = true;
-    } else {
-      radio.checked = false;
+  async function handleFileSelection() {
+    filesToProcess = [];
+    const files = Array.from(fileInput.files);
+    
+    if (files.length === 0) {
+      resultsArea.innerHTML = '<p>No files selected</p>';
+      return;
     }
-  });
-  
-  // Hide progress indicator and download button for MBOX converter
-  document.getElementById('progress').style.display = 'none';
-  document.getElementById('mboxDownloadAll').style.display = 'none';
-}
 
-function clearToolData(toolId) {
-  switch(toolId) {
-    case 'single-transformer':
-      document.getElementById('singleInput').value = '';
-      document.getElementById('singleOutput').value = '';
-      break;
-    case 'bulk-transformer':
-      document.getElementById('bulkFileInput').value = '';
-      document.getElementById('bulkResults').innerHTML = '';
-      document.getElementById('bulkTemplateInput').value = '';
-      document.getElementById('bulkTemplateContainer').style.display = 'none';
-      break;
-    case 'mbox-converter':
-      document.getElementById('mboxFileInput').value = '';
-      document.getElementById('mboxResults').innerHTML = '';
-      document.getElementById('mboxDownloadAll').style.display = 'none';
-      break;
-    case 'bulk-remover':
-      document.getElementById('removerFileInput').value = '';
-      document.getElementById('removerResults').innerHTML = '';
-      document.getElementById('removerTemplateInput').value = '';
-      document.getElementById('removerTemplateContainer').style.display = 'none';
-      break;
-    case 'single-remover':
-      document.getElementById('singleRemoverInput').value = '';
-      document.getElementById('singleRemoverOutput').value = '';
-      break;
-    case 'domain-extractor':
-      document.getElementById('domainExtractorInput').value = '';
-      document.getElementById('domainExtractorOutput').value = '';
-      break;
+    resultsArea.innerHTML = '<p>Processing files...</p>';
+    
+    try {
+      for (const file of files) {
+        if (file.name.endsWith('.zip')) {
+          const zip = await JSZip.loadAsync(file);
+          for (const [relativePath, zipEntry] of Object.entries(zip.files)) {
+            if (!zipEntry.dir && zipEntry.name.endsWith('.eml')) {
+              const content = await zipEntry.async('text');
+              filesToProcess.push({
+                name: zipEntry.name.split('/').pop(),
+                content: content
+              });
+            }
+          }
+        } else if (file.name.endsWith('.eml')) {
+          const content = await file.text();
+          filesToProcess.push({
+            name: file.name,
+            content: content
+          });
+        }
+      }
+
+      updateFileList();
+      showButtonFeedback(extractBtn, `${filesToProcess.length} files ready`);
+    } catch (error) {
+      resultsArea.innerHTML = `<p style="color:red;">Error processing files: ${error.message}</p>`;
+      console.error(error);
+    }
   }
+
+  function updateFileList() {
+    if (filesToProcess.length === 0) {
+      resultsArea.innerHTML = '<p>No valid EML files found</p>';
+      return;
+    }
+
+    resultsArea.innerHTML = `
+      <p><strong>Selected files:</strong> ${filesToProcess.length}</p>
+      <ul style="margin-top: 0.5rem; max-height: 200px; overflow-y: auto;">
+        ${filesToProcess.map(file => `<li>${file.name}</li>`).join('')}
+      </ul>
+    `;
+  }
+
+  function extractReceivedHeaders(content) {
+    // Extract all Received headers with their continuation lines
+    const receivedHeaders = content.match(/^Received:[^\n]*(\n\s+[^\n]*)*/gmi);
+    
+    if (!receivedHeaders || receivedHeaders.length === 0) {
+      return null;
+    }
+
+    // Format with proper indentation and no blank lines between headers
+    return receivedHeaders.map(header => {
+      // Remove the "Received:" prefix and trim whitespace
+      const cleanedHeader = header.replace(/^Received:\s*/i, '');
+      // Add "Received:" prefix and proper indentation
+      return `Received:${cleanedHeader.replace(/\n/g, '\n        ')}`;
+    }).join('\n');
+  }
+
+  function extractEmailInfo(content) {
+    // Try to extract From header
+    const fromMatch = content.match(/^From:.*?<([^>]+)>/mi) || content.match(/^From:\s*([^\s@]+@[^\s]+)/mi);
+    const fromEmail = fromMatch ? fromMatch[1] : 'unknown';
+    
+    // Try to extract subject
+    const subjectMatch = content.match(/^Subject:\s*(.*)/mi);
+    const subject = subjectMatch ? subjectMatch[1].replace(/[^\w\s-]/g, '').substring(0, 50) : 'no subject';
+    
+    // Try to extract date
+    const dateMatch = content.match(/^Date:\s*(.*)/mi);
+    const date = dateMatch ? new Date(dateMatch[1]).toISOString().split('T')[0] : 'no date';
+    
+    return {
+      from: fromEmail,
+      subject: subject,
+      date: date
+    };
+  }
+
+  async function processFiles() {
+    if (filesToProcess.length === 0) {
+      showButtonFeedback(extractBtn, "Upload files first!");
+      return;
+    }
+
+    try {
+      // Create one big string with all Received headers from all files
+      let allHeaders = '';
+      
+      for (const file of filesToProcess) {
+        const headers = extractReceivedHeaders(file.content);
+        if (headers) {
+          const info = extractEmailInfo(file.content);
+          const fileName = `${info.subject} (${info.from}) - ${info.date}.eml`;
+          
+          allHeaders += `=== ${fileName} ===\n${headers}\n\n`;
+        }
+      }
+
+      if (!allHeaders.trim()) {
+        showButtonFeedback(extractBtn, "No Received headers found!");
+        return;
+      }
+
+      // Create and download the file
+      const blob = new Blob([allHeaders], { type: "text/plain" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "all_received_headers.txt";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+      showButtonFeedback(extractBtn, "Downloaded!");
+    } catch (error) {
+      showButtonFeedback(extractBtn, "Error occurred!");
+      console.error(error);
+    }
+  }
+
+  function clearAll() {
+    fileInput.value = '';
+    filesToProcess = [];
+    resultsArea.innerHTML = '';
+    showButtonFeedback(clearBtn, "Cleared!");
+  }
+
+  extractBtn.addEventListener('click', processFiles);
+  downloadBtn.addEventListener('click', processFiles);
+  clearBtn.addEventListener('click', clearAll);
 }
-   
-    </script>
+  </script>
+  
 </body>
 </html>
