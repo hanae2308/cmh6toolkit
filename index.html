@@ -57,6 +57,7 @@
     }
     
     .section-title {
+	  padding-top: 30px;
       font-size: 1rem;
       color: var(--primary);
       margin: 0 0 1rem 0;
@@ -711,7 +712,11 @@
       <h3 class="tool-title">Bulk Received Extractor</h3>
       <p class="tool-desc">Extract Received headers from multiple emails</p>
     </div>
-  </div>
+<div class="tool-card" data-tool="text-combiner">
+  <div class="tool-icon"><i class="fas fa-file-alt"></i></div>
+  <h3 class="tool-title">Text Combiner</h3>
+  <p class="tool-desc">Combine multiple text files with SEP separators</p>
+</div>
 </div>
 
     
@@ -888,6 +893,7 @@
   
   <div class="action-btns">
     <button id="singleRemoverBtn" class="btn"><i class="fas fa-eraser"></i> Remove Headers</button>
+    <button id="singleRemoverCopyBtn" class="btn btn-secondary"><i class="fas fa-copy"></i> Copy Output</button>
     <button id="singleRemoverClearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear All</button>
   </div>
 
@@ -974,7 +980,28 @@
   
   <div class="results-area" id="bulkReceivedResults"></div>
 </div>
-    
+    <!-- Add this with the other tool sections -->
+<div id="text-combiner" class="tool-section">
+  <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
+  <h2 class="section-title"><i class="fas fa-file-alt"></i> Text Combiner</h2>
+  
+  <div class="upload-area" id="combinerUploadArea">
+    <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--primary); margin-bottom: 0.8rem;"></i>
+    <p>Drag and drop multiple text files or .zip archive here</p>
+    <p>or</p>
+    <label for="combinerFileInput" class="file-label">
+      <i class="fas fa-folder-open"></i> Select Files
+    </label>
+    <input type="file" id="combinerFileInput" class="file-input" multiple accept=".txt,.zip">
+  </div>
+  
+  <div class="action-btns">
+    <button id="combineBtn" class="btn"><i class="fas fa-object-group"></i> Combine Files</button>
+    <button id="combinerClearBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear</button>
+  </div>
+  
+  <div class="results-area" id="combinerResults"></div>
+</div>
     <!-- Domain & IP Extractor -->
     <div id="domain-extractor" class="tool-section">
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
@@ -1233,6 +1260,11 @@
     case 'bulk-received-extractor':
       document.getElementById('bulkReceivedFileInput').value = '';
       document.getElementById('bulkReceivedResults').innerHTML = '';
+      filesToProcess = [];
+      break;
+	   case 'text-combiner':
+      document.getElementById('combinerFileInput').value = '';
+      document.getElementById('combinerResults').innerHTML = '';
       filesToProcess = [];
       break;
 	  }
@@ -3013,6 +3045,144 @@ function initBulkReceivedExtractor() {
   downloadBtn.addEventListener('click', processFiles);
   clearBtn.addEventListener('click', clearAll);
 }
+// =============================================
+// TEXT COMBINER TOOL
+// =============================================
+function initTextCombiner() {
+  const dropArea = document.getElementById('combinerUploadArea');
+  const fileInput = document.getElementById('combinerFileInput');
+  const combineBtn = document.getElementById('combineBtn');
+  const clearBtn = document.getElementById('combinerClearBtn');
+  const resultsArea = document.getElementById('combinerResults');
+
+  let filesToProcess = [];
+
+  // Drag and Drop support
+  ["dragenter", "dragover"].forEach(event => {
+    dropArea.addEventListener(event, e => {
+      e.preventDefault();
+      dropArea.classList.add("dragover");
+    });
+  });
+
+  ["dragleave", "drop"].forEach(event => {
+    dropArea.addEventListener(event, e => {
+      e.preventDefault();
+      dropArea.classList.remove("dragover");
+    });
+  });
+
+  dropArea.addEventListener("drop", e => {
+    e.preventDefault();
+    fileInput.files = e.dataTransfer.files;
+    handleFileSelection();
+  });
+
+  fileInput.addEventListener("change", handleFileSelection);
+
+  async function handleFileSelection() {
+    filesToProcess = [];
+    const files = Array.from(fileInput.files);
+    
+    if (files.length === 0) {
+      resultsArea.innerHTML = '<p>No files selected</p>';
+      return;
+    }
+
+    resultsArea.innerHTML = '<p>Processing files...</p>';
+    
+    try {
+      for (const file of files) {
+        if (file.name.endsWith('.zip')) {
+          const zip = await JSZip.loadAsync(file);
+          for (const [relativePath, zipEntry] of Object.entries(zip.files)) {
+            if (!zipEntry.dir && (zipEntry.name.endsWith('.txt') || !zipEntry.name.includes('.'))) {
+              const content = await zipEntry.async('text');
+              filesToProcess.push({
+                name: zipEntry.name.split('/').pop(),
+                content: content.trim()
+              });
+            }
+          }
+        } else if (file.name.endsWith('.txt') || !file.name.includes('.')) {
+          const content = await file.text();
+          filesToProcess.push({
+            name: file.name,
+            content: content.trim()
+          });
+        }
+      }
+
+      updateFileList();
+      showButtonFeedback(combineBtn, `${filesToProcess.length} files ready`);
+    } catch (error) {
+      resultsArea.innerHTML = `<p style="color:red;">Error processing files: ${error.message}</p>`;
+      console.error(error);
+    }
+  }
+
+  function updateFileList() {
+    if (filesToProcess.length === 0) {
+      resultsArea.innerHTML = '<p>No valid text files found</p>';
+      return;
+    }
+
+    resultsArea.innerHTML = `
+      <p><strong>Selected files:</strong> ${filesToProcess.length}</p>
+      <ul style="margin-top: 0.5rem; max-height: 200px; overflow-y: auto;">
+        ${filesToProcess.map(file => `<li>${file.name}</li>`).join('')}
+      </ul>
+    `;
+  }
+
+  async function combineFiles() {
+    if (filesToProcess.length === 0) {
+      showButtonFeedback(combineBtn, "Upload files first!");
+      return;
+    }
+
+    try {
+      // Combine all files with __SEP__ separator
+      let combinedContent = '';
+      filesToProcess.forEach((file, index) => {
+        combinedContent += file.content;
+        if (index < filesToProcess.length - 1) {
+          combinedContent += '\n\n__SEP__\n\n';
+        }
+      });
+
+      // Create and download the combined file
+      const blob = new Blob([combinedContent], { type: "text/plain" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "combined_files.txt";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+      showButtonFeedback(combineBtn, "Downloaded!");
+    } catch (error) {
+      showButtonFeedback(combineBtn, "Error occurred!");
+      console.error(error);
+    }
+  }
+
+  function clearAll() {
+    fileInput.value = '';
+    filesToProcess = [];
+    resultsArea.innerHTML = '';
+    showButtonFeedback(clearBtn, "Cleared!");
+  }
+
+  combineBtn.addEventListener('click', combineFiles);
+  clearBtn.addEventListener('click', clearAll);
+}
+
+// Add this to your DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', function() {
+  // Other init functions...
+  initTextCombiner();
+});
   </script>
   
 </body>
