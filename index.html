@@ -876,10 +876,14 @@
   <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
   <h2 class="section-title"><i class="fas fa-envelope-open-text"></i> Single Header Remover</h2>
   
-  <textarea id="singleRemoverInput" placeholder="Paste your newsletter content here..."></textarea>
+  <div class="input-section">
+    <label for="singleRemoverInput">Newsletter Content</label>
+    <textarea id="singleRemoverInput" placeholder="Paste your newsletter content here..."></textarea>
+  </div>
   
-  <div class="template-container" style="margin-bottom: 1rem;">
-    <textarea id="singleRemoverTemplate" placeholder="put [newsletter] in the middle of your config to remplace it with the body of the newsletter"></textarea>
+  <div class="input-section">
+    <label for="singleRemoverTemplate">Template (use [newsletter] where content should go)</label>
+    <textarea id="singleRemoverTemplate" placeholder="Put your template here. Use [newsletter] where you want the newsletter body to appear."></textarea>
   </div>
   
   <div class="action-btns">
