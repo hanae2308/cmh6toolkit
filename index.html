@@ -2664,7 +2664,7 @@ function initDnsGenerator() {
     
     let resultHTML = '';
     domains.forEach(domain => {
-      const spfRecord = `v=spf1 ${formattedIPs} ~all`;
+      const spfRecord = `v=spf1 ${formattedIPs} -all`;
       resultHTML += `
         <div class="record-item">
           <div class="record-content">${domain},${domain},TXT,${spfRecord}</div>
@@ -3098,3 +3098,4 @@ document.addEventListener('DOMContentLoaded', function() {
   
 </body>
 </html>
+
