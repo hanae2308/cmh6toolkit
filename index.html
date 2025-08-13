@@ -1031,6 +1031,7 @@
         <div class="dns-tab active" data-tab="spf">SPF Intern</div>
         <div class="dns-tab" data-tab="spf-external">SPF Extern</div>
         <div class="dns-tab" data-tab="txt">TXT Generator</div>
+		 <div class="dns-tab" data-tab="dmarc">DMARC Generator</div>
       </div>
       
       <!-- SPF Generator Tab -->
@@ -1176,6 +1177,47 @@
           </div>
         </div>
       </div>
+	  <!-- DMARC Generator Tab -->
+<div id="dmarc-tab" class="dns-tab-content">
+  <div class="input-section">
+    <label for="dmarc-domains">Domains</label>
+    <textarea id="dmarc-domains" placeholder="example.com&#10;example.org&#10;example.net"></textarea>
+  </div>
+  
+  <div class="action-btns">
+    <button class="btn" onclick="generateDmarcRecords()">
+      <i class="fas fa-magic"></i>
+      Generate
+    </button>
+    <button class="btn btn-secondary" onclick="clearDmarcInputs()">
+      <i class="fas fa-trash-alt"></i>
+      Clear
+    </button>
+  </div>
+  
+  <div class="output-section">
+    <div class="output-container">
+      <div class="output-header">
+        <span class="output-title">Generated DMARC Records</span>
+        <div class="output-actions">
+          <button class="btn btn-secondary" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" onclick="copyDmarcToClipboard()">
+            <i class="far fa-copy"></i>
+            Copy
+          </button>
+          <button class="btn btn-secondary" style="padding: 0.3rem 0.5rem; font-size: 0.7rem;" onclick="downloadDmarcRecords()">
+            <i class="fas fa-download"></i>
+            Save
+          </button>
+        </div>
+      </div>
+      <div class="result" id="dmarc-result"></div>
+    </div>
+    <div id="dmarc-stats" class="stats"></div>
+    <div id="dmarc-statusMessage" class="status info">
+      <i class="fas fa-info-circle"></i>
+      <span>Ready to generate DMARC records</span>
+    </div>
+  </div>
     </div>
     
     <!-- Back to Top Button with Refresh Functionality -->
@@ -3020,6 +3062,104 @@ function initDnsGenerator() {
       <span>${message}</span>
     `;
   };
+// DMARC Generator Functions
+window.generateDmarcRecords = function() {
+  const domains = document.getElementById('dmarc-domains').value.split('\n')
+    .map(domain => domain.trim())
+    .filter(domain => domain.length > 0);
+  
+  if (domains.length === 0) {
+    showDmarcStatus('Please enter at least one domain', 'error');
+    updateDmarcStats(0, 0);
+    return;
+  }
+  
+  let resultHTML = '';
+  domains.forEach(domain => {
+    const dmarcRecord = `${domain},_dmarc.${domain},TXT,v=DMARC1; p=none;`;
+    resultHTML += `
+      <div class="record-item">
+        <div class="record-content">${dmarcRecord}</div>
+      </div>
+    `;
+  });
+  
+  document.getElementById('dmarc-result').innerHTML = resultHTML;
+  updateDmarcStats(domains.length, 0);
+  showDmarcStatus(`Successfully generated ${domains.length} DMARC records`, 'success');
+};
+
+window.updateDmarcStats = function(successCount, errorCount) {
+  const statsElement = document.getElementById('dmarc-stats');
+  statsElement.innerHTML = `
+    <div class="stat-item">
+      <i class="fas fa-check-circle stat-success"></i>
+      <span>Valid: <span class="stat-value stat-success">${successCount}</span></span>
+    </div>
+  `;
+};
+
+window.clearDmarcInputs = function() {
+  document.getElementById('dmarc-domains').value = '';
+  document.getElementById('dmarc-result').innerHTML = '';
+  document.getElementById('dmarc-stats').innerHTML = '';
+  showDmarcStatus('Ready to generate DMARC records', 'info');
+};
+
+window.copyDmarcToClipboard = function() {
+  const resultElements = document.querySelectorAll('#dmarc-result .record-content');
+  if (resultElements.length === 0) {
+    showDmarcStatus('Nothing to copy', 'error');
+    return;
+  }
+  
+  let textToCopy = '';
+  resultElements.forEach(el => {
+    textToCopy += el.textContent + '\n';
+  });
+  
+  navigator.clipboard.writeText(textToCopy.trim())
+    .then(() => showDmarcStatus('Records copied!', 'success'))
+    .catch(err => showDmarcStatus('Failed to copy: ' + err, 'error'));
+};
+
+window.downloadDmarcRecords = function() {
+  const resultElements = document.querySelectorAll('#dmarc-result .record-content');
+  if (resultElements.length === 0) {
+    showDmarcStatus('Nothing to save', 'error');
+    return;
+  }
+  
+  let textToDownload = '';
+  resultElements.forEach(el => {
+    textToDownload += el.textContent + '\n';
+  });
+  
+  const blob = new Blob([textToDownload.trim()], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'dmarc-records.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  
+  showDmarcStatus('Records saved!', 'success');
+};
+
+window.showDmarcStatus = function(message, type) {
+  const statusElement = document.getElementById('dmarc-statusMessage');
+  statusElement.className = `status ${type}`;
+  statusElement.innerHTML = `
+    <i class="fas ${
+      type === 'success' ? 'fa-check-circle' : 
+      type === 'error' ? 'fa-times-circle' : 
+      type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle'
+    }"></i>
+    <span>${message}</span>
+  `;
+};
 }
 
 // =============================================
