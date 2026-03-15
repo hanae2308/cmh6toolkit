@@ -2637,12 +2637,11 @@ function initDnsGenerator() {
     
     let resultHTML = '';
     domains.forEach(domain => {
-      const dnsEntry = `dns.${domain}`;
-      resultHTML += `
-        <div class="record-item">
-          <div class="record-content">${domain},${dnsEntry},TXT,Arecords:${formattedIPs}</div>
-        </div>
-      `;
+     resultHTML += `
+      <div class="record-item">
+        <div class="record-content">${domain},${domain},TXT,Arecords:${formattedIPs}</div>
+      </div>
+    `;
     });
     
     if (invalidIPs.length > 0) {
