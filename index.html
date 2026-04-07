@@ -764,6 +764,14 @@
         </div>
       </div>
       
+      <!-- NEW CHECKBOX: Auto-add missing Sender header -->
+      <div class="checkbox-group" style="display: flex; align-items: center; justify-content: center; gap: 0.6rem; margin: 1rem 0 0.5rem 0; background: #f1f5f9; padding: 0.5rem 1rem; border-radius: 40px; width: fit-content; margin-left: auto; margin-right: auto;">
+        <input type="checkbox" id="singleInjectSenderCheckbox" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary);">
+        <label for="singleInjectSenderCheckbox" style="font-size: 0.85rem; font-weight: 500; color: var(--dark); cursor: pointer;">
+          <i class="fas fa-user-plus"></i> Auto-add missing Sender header (support[5LAN]@[RDNS])
+        </label>
+      </div>
+      
       <div class="action-btns">
         <button id="singleTransformBtn" class="btn"><i class="fas fa-magic"></i> Modify Headers</button>
         <button id="singleIpBtn" class="btn btn-warning"><i class="fas fa-plus"></i> Add [IP] to Subject</button>
@@ -1354,7 +1362,7 @@ function showButtonFeedback(button, message, duration = 2000) {
 }
 
 // =============================================
-// SINGLE EMAIL HEADER TRANSFORMER
+// SINGLE EMAIL HEADER TRANSFORMER (UPDATED WITH SENDER INJECTION)
 // =============================================
 function initSingleTransformer() {
   const transformBtn = document.getElementById('singleTransformBtn');
@@ -1363,6 +1371,7 @@ function initSingleTransformer() {
   const clearBtn = document.getElementById('singleClearBtn');
   const inputText = document.getElementById('singleInput');
   const outputText = document.getElementById('singleOutput');
+  const injectSenderCheckbox = document.getElementById('singleInjectSenderCheckbox');
 
   transformBtn.addEventListener('click', () => {
     transformHeaders(false);
@@ -1387,6 +1396,7 @@ function initSingleTransformer() {
   clearBtn.addEventListener('click', () => {
     inputText.value = '';
     outputText.value = '';
+    if(injectSenderCheckbox) injectSenderCheckbox.checked = false;
     showButtonFeedback(clearBtn, "Cleared!");
   });
 
@@ -1421,6 +1431,27 @@ function initSingleTransformer() {
       output = output.replace(/^(Subject:.*?)$/im, function(_, subject) {
         return subject.includes('[IP]') ? subject : subject + ' [IP]';
       });
+    }
+    
+    // NEW: Auto-inject missing Sender header if checkbox is checked
+    if (injectSenderCheckbox && injectSenderCheckbox.checked) {
+      // Check if Sender header already exists
+      const senderExists = /^Sender:/im.test(output);
+      if (!senderExists) {
+        const senderValue = `support[5LAN]@[${replacement}]`;
+        // Find appropriate insertion point (after From: header)
+        let lines = output.split(/\r?\n/);
+        let insertIndex = -1;
+        for (let i = 0; i < lines.length; i++) {
+          if (/^From:/i.test(lines[i])) {
+            insertIndex = i + 1;
+            break;
+          }
+        }
+        if (insertIndex === -1) insertIndex = 1;
+        lines.splice(insertIndex, 0, `Sender: ${senderValue}`);
+        output = lines.join('\n');
+      }
     }
 
     outputText.value = output;
@@ -3237,4 +3268,3 @@ document.addEventListener('DOMContentLoaded', function() {
   
 </body>
 </html>
-
