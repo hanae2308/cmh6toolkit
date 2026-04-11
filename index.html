@@ -811,7 +811,7 @@
     
     <!-- Tool Sections -->
     
-    <!-- SINGLE HEADER TRANSFORMER - MODIFIED with TWO checkboxes -->
+    <!-- MODIFIED: Single Email Header Transformer with TWO checkboxes -->
     <div id="single-transformer" class="tool-section">
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
       <h2 class="section-title"><i class="fas fa-envelope"></i> Single Newsletter Header Modifier</h2>
@@ -859,7 +859,7 @@
       <textarea id="singleOutput" placeholder="Modified headers will appear here..." readonly></textarea>
     </div>
     
-    <!-- Bulk Email Header Transformer (ORIGINAL - UNCHANGED) -->
+    <!-- Bulk Email Header Transformer -->
     <div id="bulk-transformer" class="tool-section">
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
       <h2 class="section-title"><i class="fas fa-envelopes-bulk"></i> Bulk Newsletter Header Modifier</h2>
@@ -899,7 +899,7 @@
       <div class="results-area" id="bulkResults"></div>
     </div>
     
-    <!-- MBOX Converter (ORIGINAL - UNCHANGED) -->
+    <!-- MBOX Converter -->
     <div id="mbox-converter" class="tool-section">
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
       <h2 class="section-title"><i class="fas fa-box-archive"></i> MBOX Converter</h2>
@@ -933,7 +933,7 @@
       </button>
     </div>
     
-    <!-- Bulk Header Remover (ORIGINAL - UNCHANGED) -->
+    <!-- Bulk Header Remover -->
     <div id="bulk-remover" class="tool-section">
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
       <h2 class="section-title"><i class="fas fa-trash-alt"></i> Bulk Header Remover</h2>
@@ -961,7 +961,7 @@
       <div class="results-area" id="removerResults"></div>
     </div>
     
-    <!-- Single Header Remover (ORIGINAL - UNCHANGED) -->
+    <!-- Single Header Remover -->
     <div id="single-remover" class="tool-section">
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
       <h2 class="section-title"><i class="fas fa-envelope-open-text"></i> Single Header Remover</h2>
@@ -1016,7 +1016,7 @@
       </style>
     </div>
 
-    <!-- Single Received Extractor (ORIGINAL - UNCHANGED) -->
+    <!-- Single Received Extractor -->
     <div id="single-received-extractor" class="tool-section">
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
       <h2 class="section-title"><i class="fas fa-code-branch"></i> Single Received Extractor</h2>
@@ -1037,7 +1037,7 @@
       </div>
     </div>
 
-    <!-- Bulk Received Extractor (ORIGINAL - UNCHANGED) -->
+    <!-- Bulk Received Extractor -->
     <div id="bulk-received-extractor" class="tool-section">
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
       <h2 class="section-title"><i class="fas fa-network-wired"></i> Bulk Received Extractor</h2>
@@ -1061,7 +1061,7 @@
       <div class="results-area" id="bulkReceivedResults"></div>
     </div>
     
-    <!-- Text Combiner (ORIGINAL - UNCHANGED) -->
+    <!-- Text Combiner -->
     <div id="text-combiner" class="tool-section">
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
       <h2 class="section-title"><i class="fas fa-file-alt"></i> Text Combiner</h2>
@@ -1084,7 +1084,7 @@
       <div class="results-area" id="combinerResults"></div>
     </div>
     
-    <!-- Domain & IP Extractor (ORIGINAL - UNCHANGED) -->
+    <!-- Domain & IP Extractor -->
     <div id="domain-extractor" class="tool-section">
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
       <h2 class="section-title"><i class="fas fa-globe"></i> Domain & IP Extractor</h2>
@@ -1105,7 +1105,7 @@
       </div>
     </div>
     
-    <!-- DNS Record Generator (ORIGINAL - UNCHANGED) -->
+    <!-- DNS Record Generator -->
     <div id="dns-generator" class="tool-section">
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
       <h2 class="section-title"><i class="fas fa-server"></i> DNS Record Generator</h2>
@@ -1251,6 +1251,75 @@
     const toolSections = document.querySelectorAll('.tool-section');
     const backButtons = document.querySelectorAll('.back-btn');
 
+    function clearToolData(toolId) {
+      switch(toolId) {
+        case 'single-transformer':
+          document.getElementById('singleInput').value = '';
+          document.getElementById('singleOutput').value = '';
+          break;
+        case 'bulk-transformer':
+          document.getElementById('bulkFileInput').value = '';
+          document.getElementById('bulkResults').innerHTML = '';
+          document.getElementById('bulkTemplateInput').value = '';
+          document.getElementById('bulkTemplateContainer').style.display = 'none';
+          break;
+        case 'mbox-converter':
+          document.getElementById('mboxFileInput').value = '';
+          document.getElementById('mboxResults').innerHTML = '';
+          document.getElementById('mboxDownloadAll').style.display = 'none';
+          break;
+        case 'bulk-remover':
+          document.getElementById('removerFileInput').value = '';
+          document.getElementById('removerResults').innerHTML = '';
+          document.getElementById('removerTemplateInput').value = '';
+          document.getElementById('removerTemplateContainer').style.display = 'none';
+          break;
+        case 'single-remover':
+          document.getElementById('singleRemoverInput').value = '';
+          document.getElementById('singleRemoverTemplate').value = '';
+          document.getElementById('singleRemoverOutput').textContent = '';
+          document.getElementById('singleRemoverTemplateOutput').textContent = '';
+          break;
+        case 'domain-extractor':
+          document.getElementById('domainExtractorInput').value = '';
+          document.getElementById('domainExtractorOutput').textContent = '';
+          break;
+        case 'dns-generator':
+          document.getElementById('spf-domains').value = '';
+          document.getElementById('spf-ips').value = '';
+          document.getElementById('spf-result').innerHTML = '';
+          document.getElementById('spf-stats').innerHTML = '';
+          document.getElementById('spf-statusMessage').innerHTML = '<i class="fas fa-info-circle"></i><span>Ready to generate SPF records</span>';
+          document.getElementById('spf-statusMessage').className = 'status info';
+          
+          document.getElementById('spf-external-domains').value = '';
+          document.getElementById('spf-external-ips').value = '';
+          document.getElementById('spf-external-result').innerHTML = '';
+          document.getElementById('spf-external-stats').innerHTML = '';
+          document.getElementById('spf-external-statusMessage').innerHTML = '<i class="fas fa-info-circle"></i><span>Ready to generate SPF records in external format</span>';
+          document.getElementById('spf-external-statusMessage').className = 'status info';
+          
+          document.getElementById('txt-input').value = '';
+          document.getElementById('txt-result').innerHTML = '';
+          document.getElementById('txt-stats').innerHTML = '';
+          document.getElementById('txt-statusMessage').innerHTML = '<i class="fas fa-info-circle"></i><span>Ready to generate TXT records</span>';
+          document.getElementById('txt-statusMessage').className = 'status info';
+          break;
+        case 'single-received-extractor':
+          document.getElementById('singleReceivedInput').value = '';
+          document.getElementById('singleReceivedOutput').textContent = '';
+          break;
+        case 'bulk-received-extractor':
+          document.getElementById('bulkReceivedFileInput').value = '';
+          document.getElementById('bulkReceivedResults').innerHTML = '';
+          break;
+        case 'text-combiner':
+          document.getElementById('combinerFileInput').value = '';
+          document.getElementById('combinerResults').innerHTML = '';
+          break;
+      }
+    }
+
     toolCards.forEach(card => {
       card.addEventListener('click', function() {
         const toolId = this.getAttribute('data-tool');
@@ -1262,6 +1331,8 @@
 
     backButtons.forEach(button => {
       button.addEventListener('click', function() {
+        const activeSection = document.querySelector('.tool-section.active');
+        if (activeSection) { clearToolData(activeSection.id); }
         toolSections.forEach(section => { section.classList.remove('active'); });
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
@@ -1275,7 +1346,7 @@
     }
 
     // =============================================
-    // SINGLE HEADER TRANSFORMER - MODIFIED with TWO checkboxes
+    // MODIFIED: SINGLE EMAIL HEADER TRANSFORMER with TWO checkboxes
     // =============================================
     const defaultOpt = document.getElementById('senderDefault');
     const customOpt = document.getElementById('senderCustom');
@@ -1395,11 +1466,1799 @@
       document.getElementById('customSenderValue').value = 'support[5LAN]@[RDNS]';
       showButtonFeedback(document.getElementById('singleClearBtn'), "Cleared!");
     });
-    
-    // The rest of your original JavaScript functions remain unchanged
-    // (initBulkTransformer, initMboxConverter, initBulkRemover, initSingleRemover, etc.)
-    // They are not included here for brevity but would be present in your original file.
-    // This is just the modified Single Header Transformer portion.
+
+    // =============================================
+    // BULK EMAIL HEADER TRANSFORMER (ORIGINAL)
+    // =============================================
+    function initBulkTransformer() {
+      const dropArea = document.getElementById('bulkUploadArea');
+      const fileInput = document.getElementById('bulkFileInput');
+      const transformBtn = document.getElementById('bulkTransformBtn');
+      const ipBtn = document.getElementById('bulkIpBtn');
+      const templateBtn = document.getElementById('bulkTemplateBtn');
+      const templateContainer = document.getElementById('bulkTemplateContainer');
+      const processTemplateBtn = document.getElementById('bulkProcessTemplateBtn');
+      const resultsArea = document.getElementById('bulkResults');
+
+      let filesToProcess = [];
+
+      templateBtn.addEventListener('click', () => {
+        templateContainer.style.display = templateContainer.style.display === 'block' ? 'none' : 'block';
+        showButtonFeedback(templateBtn, templateContainer.style.display === 'block' ? "Template Shown" : "Template Hidden");
+      });
+
+      ["dragenter", "dragover"].forEach(event => {
+        dropArea.addEventListener(event, e => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropArea.classList.add("dragover");
+        });
+      });
+
+      ["dragleave", "drop"].forEach(event => {
+        dropArea.addEventListener(event, e => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropArea.classList.remove("dragover");
+        });
+      });
+
+      dropArea.addEventListener("drop", e => {
+        e.preventDefault();
+        e.stopPropagation();
+        fileInput.files = e.dataTransfer.files;
+        handleFileSelection();
+      });
+
+      fileInput.addEventListener("change", handleFileSelection);
+
+      async function handleFileSelection() {
+        filesToProcess = [];
+        const files = Array.from(fileInput.files);
+        
+        if (files.length === 0) {
+          resultsArea.innerHTML = '<p>No files selected</p>';
+          return;
+        }
+
+        resultsArea.innerHTML = '<p>Processing files...</p>';
+        
+        try {
+          for (const file of files) {
+            if (file.name.endsWith('.zip')) {
+              const zip = await JSZip.loadAsync(file);
+              for (const [relativePath, zipEntry] of Object.entries(zip.files)) {
+                if (!zipEntry.dir && (zipEntry.name.endsWith('.eml') || zipEntry.name.endsWith('.txt'))) {
+                  const content = await zipEntry.async('text');
+                  filesToProcess.push({
+                    name: zipEntry.name.split('/').pop(),
+                    content: content
+                  });
+                }
+              }
+            } else if (file.name.endsWith('.eml') || file.name.endsWith('.txt')) {
+              const content = await file.text();
+              filesToProcess.push({
+                name: file.name,
+                content: content
+              });
+            }
+          }
+
+          updateFileList();
+          showButtonFeedback(transformBtn, `${filesToProcess.length} files ready`);
+        } catch (error) {
+          resultsArea.innerHTML = `<p style="color:red;">Error processing files: ${error.message}</p>`;
+          console.error(error);
+        }
+      }
+
+      function updateFileList() {
+        if (filesToProcess.length === 0) {
+          resultsArea.innerHTML = '<p>No valid EML or TXT files found</p>';
+          return;
+        }
+
+        resultsArea.innerHTML = `
+          <p><strong>Selected files:</strong> ${filesToProcess.length}</p>
+          <ul style="margin-top: 0.5rem; max-height: 200px; overflow-y: auto;">
+            ${filesToProcess.map(file => `<li>${file.name}</li>`).join('')}
+          </ul>
+        `;
+      }
+
+      function transformContent(content, addIP) {
+        const replacement = document.querySelector('input[name="bulkReplace"]:checked').value;
+        
+        if (!content.includes('Return-Path:') && !content.includes('From:')) {
+          return content;
+        }
+
+        const returnPathIndex = content.indexOf('Return-Path:');
+        if (returnPathIndex !== -1) {
+          const nextNewLine = content.indexOf('\n', returnPathIndex);
+          content = content.substring(nextNewLine + 1);
+        }
+
+        let output = content;
+
+        output = output.replace(/(From:\s*.*?<[^@<\s]+)@[^>\s]+/gi, `$1@[${replacement}]`);
+        output = output.replace(/(From:\s*[^<\s@]+)@([^\s]+)/gi, `$1@[${replacement}]`);
+        output = output.replace(/(Sender:\s*.*?<[^@<\s]+)@[^>\s]+/gi, `$1@[${replacement}]`);
+        output = output.replace(/(Sender:\s*[^<\s@]+)@([^\s]+)/gi, `$1@[${replacement}]`);
+
+        if (output.includes('Message-ID:')) {
+          output = output.replace(/(Message-ID:\s*<)([^@]+)(@[^>]+>)/gi, (_, prefix, id, suffix) => {
+            const pos = Math.max(1, Math.floor(Math.random() * id.length));
+            return prefix + id.slice(0, pos) + '[EID]' + id.slice(pos) + suffix;
+          });
+        }
+
+        if (addIP && output.includes('Subject:')) {
+          output = output.replace(/^(Subject:.*?)$/im, (_, subject) =>
+            subject.includes('[IP]') ? subject : subject + ' [IP]'
+          );
+        }
+
+        return output;
+      }
+
+      async function processFiles(addIP) {
+        if (filesToProcess.length === 0) {
+          showButtonFeedback(transformBtn, "Upload files first!");
+          return;
+        }
+
+        try {
+          const zip = new JSZip();
+          
+          for (const file of filesToProcess) {
+            const output = transformContent(file.content, addIP);
+            zip.file(file.name, output);
+          }
+
+          const blob = await zip.generateAsync({ type: "blob" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "transformed_headers.zip";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          showButtonFeedback(transformBtn, "Downloaded!");
+        } catch (error) {
+          showButtonFeedback(transformBtn, "Error occurred!");
+          console.error(error);
+        }
+      }
+
+      async function processWithTemplate() {
+        if (filesToProcess.length === 0) {
+          showButtonFeedback(processTemplateBtn, "Upload files first!");
+          return;
+        }
+
+        const template = document.getElementById("bulkTemplateInput").value;
+        if (!template) {
+          showButtonFeedback(processTemplateBtn, "Enter template first!");
+          return;
+        }
+
+        if (!template.includes("[newsletter]")) {
+          showButtonFeedback(processTemplateBtn, 'Add "[newsletter]"!');
+          return;
+        }
+
+        try {
+          const zip = new JSZip();
+          
+          for (const file of filesToProcess) {
+            const transformedContent = transformContent(file.content, false);
+            const finalContent = template.replace("[newsletter]", transformedContent);
+            zip.file(file.name, finalContent);
+          }
+
+          const blob = await zip.generateAsync({ type: "blob" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "templated_emails.zip";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          showButtonFeedback(processTemplateBtn, "Downloaded!");
+        } catch (error) {
+          showButtonFeedback(processTemplateBtn, "Error occurred!");
+          console.error(error);
+        }
+      }
+
+      transformBtn.addEventListener('click', () => processFiles(false));
+      ipBtn.addEventListener('click', () => processFiles(true));
+      processTemplateBtn.addEventListener('click', processWithTemplate);
+    }
+
+    // =============================================
+    // MBOX CONVERTER (ORIGINAL)
+    // =============================================
+    function initMboxConverter() {
+      const fileInput = document.getElementById('mboxFileInput');
+      const convertBtn = document.getElementById('mboxConvertBtn');
+      const progress = document.getElementById('progress');
+      const progressCount = document.getElementById('progressCount');
+      const resultsDiv = document.getElementById('mboxResults');
+      const downloadAllBtn = document.getElementById('mboxDownloadAll');
+
+      convertBtn.addEventListener('click', async () => {
+        await convertMboxToEml();
+        showButtonFeedback(convertBtn, "Processing...");
+      });
+      
+      downloadAllBtn.addEventListener('click', async () => {
+        await downloadAllAsZip();
+        showButtonFeedback(downloadAllBtn, "Downloading...");
+      });
+
+      async function convertMboxToEml() {
+        resultsDiv.innerHTML = '';
+        downloadAllBtn.style.display = 'none';
+        
+        if (fileInput.files.length === 0) {
+          showButtonFeedback(convertBtn, "Add MBOX content!");
+          return;
+        }
+        
+        progress.style.display = 'block';
+        
+        try {
+          const files = [];
+          const file = fileInput.files[0];
+          
+          if (file.name.endsWith('.zip')) {
+            const zip = await JSZip.loadAsync(file);
+            for (const [relativePath, zipEntry] of Object.entries(zip.files)) {
+              if (!zipEntry.dir && zipEntry.name.endsWith('.mbox')) {
+                const content = await zipEntry.async('text');
+                files.push({
+                  name: zipEntry.name.split('/').pop(),
+                  content: content
+                });
+              }
+            }
+          } else if (file.name.endsWith('.mbox')) {
+            const content = await file.text();
+            files.push({
+              name: file.name,
+              content: content
+            });
+          }
+
+          if (files.length === 0) {
+            resultsDiv.innerHTML = '<p>No valid MBOX files found</p>';
+            progress.style.display = 'none';
+            showButtonFeedback(convertBtn, "No files found!");
+            return;
+          }
+
+          const zip = new JSZip();
+          let count = 0;
+          
+          for (const file of files) {
+            const messages = parseMbox(file.content);
+            progressCount.textContent = messages.length;
+            
+            if (messages.length === 0) {
+              resultsDiv.innerHTML = '<p>No messages found in the MBOX file.</p>';
+              progress.style.display = 'none';
+              showButtonFeedback(convertBtn, "No messages!");
+              return;
+            }
+            
+            for (const message of messages) {
+              const emlContent = message.raw;
+              
+              let subject = extractHeader(emlContent, 'Subject') || `No_Subject_${count + 1}`;
+              
+              const cleanSubject = subject
+                .replace(/[^\w\s-]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim()
+                .substring(0, 100)
+                .replace(/\s/g, '_');
+              
+              const filename = `${cleanSubject}_${count + 1}.eml`;
+              
+              const blob = new Blob([emlContent], { type: 'message/rfc822' });
+              const url = URL.createObjectURL(blob);
+              
+              const messageDiv = document.createElement('div');
+              messageDiv.className = 'message-info';
+              
+              const link = document.createElement('a');
+              link.href = url;
+              link.download = filename;
+              link.textContent = `Download: ${filename}`;
+              link.className = 'download-link';
+              
+              const details = document.createElement('div');
+              details.className = 'message-details';
+              details.textContent = `Subject: ${subject}`;
+              
+              messageDiv.appendChild(link);
+              messageDiv.appendChild(details);
+              resultsDiv.appendChild(messageDiv);
+              
+              zip.file(filename, emlContent);
+              
+              count++;
+              progressCount.textContent = count;
+            }
+          }
+          
+          progress.style.display = 'none';
+          
+          if (count > 0) {
+            window.mboxZip = zip;
+            downloadAllBtn.style.display = 'block';
+          }
+          
+          showButtonFeedback(convertBtn, "Conversion done!");
+        } catch (error) {
+          console.error('Error:', error);
+          resultsDiv.innerHTML = `<p style="color: red;">Error processing MBOX file: ${error.message}</p>`;
+          progress.style.display = 'none';
+          showButtonFeedback(convertBtn, "Error occurred!");
+        }
+      }
+      
+      function parseMbox(content) {
+        const messages = [];
+        const lines = content.split(/\r?\n/);
+        let currentMessage = [];
+        let inMessage = false;
+        
+        for (const line of lines) {
+          if (line.startsWith('From ') && currentMessage.length > 0) {
+            messages.push({ raw: currentMessage.join('\n') });
+            currentMessage = [line];
+            inMessage = true;
+          } else if (line.startsWith('From ') && !inMessage) {
+            currentMessage = [line];
+            inMessage = true;
+          } else if (inMessage) {
+            currentMessage.push(line);
+          }
+        }
+        
+        if (currentMessage.length > 0) {
+          messages.push({ raw: currentMessage.join('\n') });
+        }
+        
+        return messages;
+      }
+      
+      function extractHeader(emailContent, headerName) {
+        const headerRegex = new RegExp(`^${headerName}:\\s*(.*)$`, 'im');
+        const match = emailContent.match(headerRegex);
+        return match ? match[1].trim() : null;
+      }
+      
+      async function downloadAllAsZip() {
+        if (!window.mboxZip) {
+          showButtonFeedback(downloadAllBtn, "Nothing to download!");
+          return;
+        }
+        
+        const content = await window.mboxZip.generateAsync({ type: 'blob' });
+        const url = URL.createObjectURL(content);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'converted_emails.zip';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        showButtonFeedback(downloadAllBtn, "Downloaded!");
+      }
+    }
+
+    // =============================================
+    // BULK HEADER REMOVER (ORIGINAL)
+    // =============================================
+    function initBulkRemover() {
+      const dropArea = document.getElementById('removerUploadArea');
+      const fileInput = document.getElementById('removerFileInput');
+      const transformBtn = document.getElementById('removerTransformBtn');
+      const templateBtn = document.getElementById('removerTemplateBtn');
+      const templateContainer = document.getElementById('removerTemplateContainer');
+      const processTemplateBtn = document.getElementById('removerProcessTemplateBtn');
+      const resultsArea = document.getElementById('removerResults');
+
+      let filesToProcess = [];
+
+      templateBtn.addEventListener('click', () => {
+        const show = templateContainer.style.display === 'block';
+        templateContainer.style.display = show ? 'none' : 'block';
+        showButtonFeedback(templateBtn, show ? "Template Hidden" : "Template Shown");
+      });
+
+      ["dragenter", "dragover"].forEach(event => {
+        dropArea.addEventListener(event, e => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropArea.classList.add("dragover");
+        });
+      });
+
+      ["dragleave", "drop"].forEach(event => {
+        dropArea.addEventListener(event, e => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropArea.classList.remove("dragover");
+        });
+      });
+
+      dropArea.addEventListener("drop", e => {
+        e.preventDefault();
+        e.stopPropagation();
+        fileInput.files = e.dataTransfer.files;
+        handleFileSelection();
+      });
+
+      fileInput.addEventListener("change", handleFileSelection);
+
+      async function handleFileSelection() {
+        filesToProcess = [];
+        const files = Array.from(fileInput.files);
+        
+        if (files.length === 0) {
+          resultsArea.innerHTML = '<p>No files selected</p>';
+          return;
+        }
+
+        resultsArea.innerHTML = '<p>Processing files...</p>';
+        
+        try {
+          for (const file of files) {
+            if (file.name.endsWith('.zip')) {
+              const zip = await JSZip.loadAsync(file);
+              for (const [relativePath, zipEntry] of Object.entries(zip.files)) {
+                if (!zipEntry.dir && (zipEntry.name.endsWith('.eml') || zipEntry.name.endsWith('.txt'))) {
+                  const content = await zipEntry.async('text');
+                  filesToProcess.push({
+                    name: zipEntry.name.split('/').pop(),
+                    content: content
+                  });
+                }
+              }
+            } else if (file.name.endsWith('.eml') || file.name.endsWith('.txt')) {
+              const content = await file.text();
+              filesToProcess.push({
+                name: file.name,
+                content: content
+              });
+            }
+          }
+
+          updateFileList();
+          showButtonFeedback(transformBtn, `${filesToProcess.length} files ready`);
+        } catch (error) {
+          resultsArea.innerHTML = `<p style="color:red;">Error processing files: ${error.message}</p>`;
+          console.error(error);
+        }
+      }
+
+      function updateFileList() {
+        if (filesToProcess.length === 0) {
+          resultsArea.innerHTML = '<p>No valid EML or TXT files found</p>';
+          return;
+        }
+
+        resultsArea.innerHTML = `
+          <p><strong>Selected files:</strong> ${filesToProcess.length}</p>
+          <ul style="margin-top: 0.5rem; max-height: 200px; overflow-y: auto;">
+            ${filesToProcess.map(file => `<li>${file.name}</li>`).join('')}
+          </ul>
+        `;
+      }
+
+      function extractBody(content) {
+        if (content.includes('Return-Path:') || content.includes('From:')) {
+          let headerEnd = content.indexOf('\r\n\r\n');
+          if (headerEnd !== -1) return content.slice(headerEnd + 4).trim();
+          headerEnd = content.indexOf('\n\n');
+          if (headerEnd !== -1) return content.slice(headerEnd + 2).trim();
+        }
+        
+        const htmlStart = content.indexOf('<');
+        if (htmlStart !== -1) return content.slice(htmlStart).trim();
+        
+        return content;
+      }
+
+      async function processFiles() {
+        if (filesToProcess.length === 0) {
+          showButtonFeedback(transformBtn, "Upload files first!");
+          return;
+        }
+
+        try {
+          const zip = new JSZip();
+          
+          for (const file of filesToProcess) {
+            const body = extractBody(file.content);
+            if (body) {
+              const name = file.name.replace(/\.(eml|txt)$/i, '_body.txt');
+              zip.file(name, body);
+            } else {
+              resultsArea.innerHTML += `<p style="color:red;">No body content: ${file.name}</p>`;
+            }
+          }
+
+          const blob = await zip.generateAsync({ type: "blob" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "email_bodies_only.zip";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          showButtonFeedback(transformBtn, "Downloaded!");
+        } catch (error) {
+          showButtonFeedback(transformBtn, "Error occurred!");
+          console.error(error);
+        }
+      }
+
+      async function processWithTemplate() {
+        if (filesToProcess.length === 0) {
+          showButtonFeedback(processTemplateBtn, "Upload files first!");
+          return;
+        }
+
+        const template = document.getElementById("removerTemplateInput").value;
+        if (!template) {
+          showButtonFeedback(processTemplateBtn, "Enter template first!");
+          return;
+        }
+
+        if (!template.includes("[newsletter]")) {
+          showButtonFeedback(processTemplateBtn, 'Add "[newsletter]"!');
+          return;
+        }
+
+        try {
+          const zip = new JSZip();
+          
+          for (const file of filesToProcess) {
+            const body = extractBody(file.content);
+            const final = template.replace("[newsletter]", body);
+            zip.file(file.name, final);
+          }
+
+          const blob = await zip.generateAsync({ type: "blob" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "templated_emails.zip";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          showButtonFeedback(processTemplateBtn, "Downloaded!");
+        } catch (error) {
+          showButtonFeedback(processTemplateBtn, "Error occurred!");
+          console.error(error);
+        }
+      }
+
+      transformBtn.addEventListener('click', processFiles);
+      processTemplateBtn.addEventListener('click', processWithTemplate);
+    }
+
+    // =============================================
+    // SINGLE HEADER REMOVER (ORIGINAL)
+    // =============================================
+    function initSingleRemover() {
+      const inputText = document.getElementById('singleRemoverInput');
+      const templateInput = document.getElementById('singleRemoverTemplate');
+      const outputDiv = document.getElementById('singleRemoverOutput');
+      const templateOutputDiv = document.getElementById('singleRemoverTemplateOutput');
+      const removeBtn = document.getElementById('singleRemoverBtn');
+      const copyBtn = document.getElementById('copyNormalOutput');
+      const templateCopyBtn = document.getElementById('copyTemplateOutput');
+      const clearBtn = document.getElementById('singleRemoverClearBtn');
+      
+      removeBtn.addEventListener('click', removeHeaders);
+      copyBtn.addEventListener('click', () => handleCopy(outputDiv, copyBtn));
+      templateCopyBtn.addEventListener('click', () => handleCopy(templateOutputDiv, templateCopyBtn));
+      clearBtn.addEventListener('click', clearAll);
+      
+      function removeHeaders() {
+        if (!inputText.value.trim()) {
+          showButtonFeedback(removeBtn, "Paste content first!");
+          return;
+        }
+        
+        const content = inputText.value;
+        let output = removeEmailHeaders(content);
+        
+        outputDiv.textContent = output;
+        
+        const template = templateInput.value.trim();
+        if (template) {
+          if (!template.includes("[newsletter]")) {
+            showButtonFeedback(removeBtn, 'Add "[newsletter]"!');
+            templateOutputDiv.textContent = "Template must contain [newsletter] placeholder";
+            return;
+          }
+          templateOutputDiv.textContent = template.replace("[newsletter]", output);
+        } else {
+          templateOutputDiv.textContent = "No template provided";
+        }
+        
+        showButtonFeedback(removeBtn, "Headers removed!");
+      }
+      
+      function removeEmailHeaders(content) {
+        let headerEnd = content.indexOf('\r\n\r\n');
+        if (headerEnd !== -1) {
+          return content.slice(headerEnd + 4).trim();
+        }
+        headerEnd = content.indexOf('\n\n');
+        if (headerEnd !== -1) {
+          return content.slice(headerEnd + 2).trim();
+        }
+        const htmlStart = content.indexOf('<');
+        if (htmlStart !== -1) {
+          return content.slice(htmlStart).trim();
+        }
+        return content;
+      }
+      
+      function handleCopy(outputElement, button) {
+        if (!outputElement.textContent.trim() || 
+            outputElement.textContent === "No template provided") {
+          showButtonFeedback(button, "Nothing to copy!");
+          return;
+        }
+        
+        const tempTextarea = document.createElement('textarea');
+        tempTextarea.value = outputElement.textContent;
+        document.body.appendChild(tempTextarea);
+        tempTextarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempTextarea);
+        showButtonFeedback(button, "Copied!");
+      }
+      
+      function clearAll() {
+        inputText.value = '';
+        templateInput.value = '';
+        outputDiv.textContent = '';
+        templateOutputDiv.textContent = '';
+        showButtonFeedback(clearBtn, "Cleared!");
+      }
+    }
+
+    // =============================================
+    // SINGLE RECEIVED EXTRACTOR (ORIGINAL)
+    // =============================================
+    function initSingleReceivedExtractor() {
+      const extractBtn = document.getElementById('singleReceivedExtractBtn');
+      const copyBtn = document.getElementById('singleReceivedCopyBtn');
+      const clearBtn = document.getElementById('singleReceivedClearBtn');
+      const inputText = document.getElementById('singleReceivedInput');
+      const outputDiv = document.getElementById('singleReceivedOutput');
+
+      extractBtn.addEventListener('click', extractReceivedHeaders);
+      copyBtn.addEventListener('click', copyReceivedHeaders);
+      clearBtn.addEventListener('click', clearAll);
+
+      function extractReceivedHeaders() {
+        const content = inputText.value.trim();
+        if (!content) {
+          showButtonFeedback(extractBtn, "Paste content first!");
+          return;
+        }
+
+        const receivedHeaders = content.match(/^Received:[^\n]*(\n\s+[^\n]*)*/gmi);
+        
+        if (!receivedHeaders || receivedHeaders.length === 0) {
+          outputDiv.textContent = "No Received headers found";
+          return;
+        }
+
+        const formattedHeaders = receivedHeaders.map(header => {
+          const cleanedHeader = header.replace(/^Received:\s*/i, '');
+          return `Received:${cleanedHeader.replace(/\n/g, '\n        ')}`;
+        }).join('\n');
+
+        outputDiv.textContent = formattedHeaders;
+        showButtonFeedback(extractBtn, "Received headers extracted!");
+      }
+
+      function copyReceivedHeaders() {
+        if (!outputDiv.textContent.trim() || outputDiv.textContent === "No Received headers found") {
+          showButtonFeedback(copyBtn, "Nothing to copy!");
+          return;
+        }
+        
+        const tempTextarea = document.createElement('textarea');
+        tempTextarea.value = outputDiv.textContent;
+        document.body.appendChild(tempTextarea);
+        tempTextarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempTextarea);
+        showButtonFeedback(copyBtn, "Copied!");
+      }
+
+      function clearAll() {
+        inputText.value = '';
+        outputDiv.textContent = '';
+        showButtonFeedback(clearBtn, "Cleared!");
+      }
+    }
+
+    // =============================================
+    // BULK RECEIVED EXTRACTOR (ORIGINAL)
+    // =============================================
+    function initBulkReceivedExtractor() {
+      const dropArea = document.getElementById('bulkReceivedUploadArea');
+      const fileInput = document.getElementById('bulkReceivedFileInput');
+      const extractBtn = document.getElementById('bulkReceivedExtractBtn');
+      const downloadBtn = document.getElementById('bulkReceivedDownloadBtn');
+      const clearBtn = document.getElementById('bulkReceivedClearBtn');
+      const resultsArea = document.getElementById('bulkReceivedResults');
+
+      let filesToProcess = [];
+
+      ["dragenter", "dragover"].forEach(event => {
+        dropArea.addEventListener(event, e => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropArea.classList.add("dragover");
+        });
+      });
+
+      ["dragleave", "drop"].forEach(event => {
+        dropArea.addEventListener(event, e => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropArea.classList.remove("dragover");
+        });
+      });
+
+      dropArea.addEventListener("drop", e => {
+        e.preventDefault();
+        e.stopPropagation();
+        fileInput.files = e.dataTransfer.files;
+        handleFileSelection();
+      });
+
+      fileInput.addEventListener("change", handleFileSelection);
+
+      async function handleFileSelection() {
+        filesToProcess = [];
+        const files = Array.from(fileInput.files);
+        
+        if (files.length === 0) {
+          resultsArea.innerHTML = '<p>No files selected</p>';
+          return;
+        }
+
+        resultsArea.innerHTML = '<p>Processing files...</p>';
+        
+        try {
+          for (const file of files) {
+            if (file.name.endsWith('.zip')) {
+              const zip = await JSZip.loadAsync(file);
+              for (const [relativePath, zipEntry] of Object.entries(zip.files)) {
+                if (!zipEntry.dir && (zipEntry.name.endsWith('.eml') || zipEntry.name.endsWith('.txt'))) {
+                  const content = await zipEntry.async('text');
+                  filesToProcess.push({
+                    name: zipEntry.name.split('/').pop(),
+                    content: content
+                  });
+                }
+              }
+            } else if (file.name.endsWith('.eml') || file.name.endsWith('.txt')) {
+              const content = await file.text();
+              filesToProcess.push({
+                name: file.name,
+                content: content
+              });
+            }
+          }
+
+          updateFileList();
+          showButtonFeedback(extractBtn, `${filesToProcess.length} files ready`);
+        } catch (error) {
+          resultsArea.innerHTML = `<p style="color:red;">Error processing files: ${error.message}</p>`;
+          console.error(error);
+        }
+      }
+
+      function updateFileList() {
+        if (filesToProcess.length === 0) {
+          resultsArea.innerHTML = '<p>No valid EML or TXT files found</p>';
+          return;
+        }
+
+        resultsArea.innerHTML = `
+          <p><strong>Selected files:</strong> ${filesToProcess.length}</p>
+          <ul style="margin-top: 0.5rem; max-height: 200px; overflow-y: auto;">
+            ${filesToProcess.map(file => `<li>${file.name}</li>`).join('')}
+          </ul>
+        `;
+      }
+
+      function extractReceivedHeaders(content) {
+        const receivedHeaders = content.match(/^Received:[^\n]*(\n\s+[^\n]*)*/gmi);
+        
+        if (!receivedHeaders || receivedHeaders.length === 0) {
+          return null;
+        }
+
+        return receivedHeaders.map(header => {
+          const cleanedHeader = header.replace(/^Received:\s*/i, '');
+          return `Received:${cleanedHeader.replace(/\n/g, '\n        ')}`;
+        }).join('\n');
+      }
+
+      function extractEmailInfo(content) {
+        const fromMatch = content.match(/^From:.*?<([^>]+)>/mi) || content.match(/^From:\s*([^\s@]+@[^\s]+)/mi);
+        const fromEmail = fromMatch ? fromMatch[1] : 'unknown';
+        
+        const subjectMatch = content.match(/^Subject:\s*(.*)/mi);
+        const subject = subjectMatch ? subjectMatch[1].replace(/[^\w\s-]/g, '').substring(0, 50) : 'no subject';
+        
+        const dateMatch = content.match(/^Date:\s*(.*)/mi);
+        const date = dateMatch ? new Date(dateMatch[1]).toISOString().split('T')[0] : 'no date';
+        
+        return {
+          from: fromEmail,
+          subject: subject,
+          date: date
+        };
+      }
+
+      async function processFiles() {
+        if (filesToProcess.length === 0) {
+          showButtonFeedback(extractBtn, "Upload files first!");
+          return;
+        }
+
+        try {
+          let allHeaders = '';
+          
+          for (const file of filesToProcess) {
+            const headers = extractReceivedHeaders(file.content);
+            if (headers) {
+              const info = extractEmailInfo(file.content);
+              const fileName = `${info.subject} (${info.from}) - ${info.date}.eml`;
+              
+              allHeaders += `=== ${fileName} ===\n${headers}\n\n`;
+            }
+          }
+
+          if (!allHeaders.trim()) {
+            showButtonFeedback(extractBtn, "No Received headers found!");
+            return;
+          }
+
+          const blob = new Blob([allHeaders], { type: "text/plain" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "all_received_headers.txt";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          showButtonFeedback(extractBtn, "Downloaded!");
+        } catch (error) {
+          showButtonFeedback(extractBtn, "Error occurred!");
+          console.error(error);
+        }
+      }
+
+      function clearAll() {
+        fileInput.value = '';
+        filesToProcess = [];
+        resultsArea.innerHTML = '';
+        showButtonFeedback(clearBtn, "Cleared!");
+      }
+
+      extractBtn.addEventListener('click', processFiles);
+      downloadBtn.addEventListener('click', processFiles);
+      clearBtn.addEventListener('click', clearAll);
+    }
+
+    // =============================================
+    // TEXT COMBINER (ORIGINAL)
+    // =============================================
+    function initTextCombiner() {
+      const dropArea = document.getElementById('combinerUploadArea');
+      const fileInput = document.getElementById('combinerFileInput');
+      const combineBtn = document.getElementById('combineBtn');
+      const clearBtn = document.getElementById('combinerClearBtn');
+      const resultsArea = document.getElementById('combinerResults');
+
+      let filesToProcess = [];
+
+      ["dragenter", "dragover"].forEach(event => {
+        dropArea.addEventListener(event, e => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropArea.classList.add("dragover");
+        });
+      });
+
+      ["dragleave", "drop"].forEach(event => {
+        dropArea.addEventListener(event, e => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropArea.classList.remove("dragover");
+        });
+      });
+
+      dropArea.addEventListener("drop", e => {
+        e.preventDefault();
+        e.stopPropagation();
+        fileInput.files = e.dataTransfer.files;
+        handleFileSelection();
+      });
+
+      fileInput.addEventListener("change", handleFileSelection);
+
+      async function handleFileSelection() {
+        filesToProcess = [];
+        const files = Array.from(fileInput.files);
+        
+        if (files.length === 0) {
+          resultsArea.innerHTML = '<p>No files selected</p>';
+          return;
+        }
+
+        resultsArea.innerHTML = '<p>Processing files...</p>';
+        
+        try {
+          for (const file of files) {
+            if (file.name.endsWith('.zip')) {
+              const zip = await JSZip.loadAsync(file);
+              for (const [relativePath, zipEntry] of Object.entries(zip.files)) {
+                if (!zipEntry.dir && (zipEntry.name.endsWith('.txt') || !zipEntry.name.includes('.'))) {
+                  const content = await zipEntry.async('text');
+                  filesToProcess.push({
+                    name: zipEntry.name.split('/').pop(),
+                    content: content.trim()
+                  });
+                }
+              }
+            } else if (file.name.endsWith('.txt') || !file.name.includes('.')) {
+              const content = await file.text();
+              filesToProcess.push({
+                name: file.name,
+                content: content.trim()
+              });
+            }
+          }
+
+          updateFileList();
+          showButtonFeedback(combineBtn, `${filesToProcess.length} files ready`);
+        } catch (error) {
+          resultsArea.innerHTML = `<p style="color:red;">Error processing files: ${error.message}</p>`;
+          console.error(error);
+        }
+      }
+
+      function updateFileList() {
+        if (filesToProcess.length === 0) {
+          resultsArea.innerHTML = '<p>No valid text files found</p>';
+          return;
+        }
+
+        resultsArea.innerHTML = `
+          <p><strong>Selected files:</strong> ${filesToProcess.length}</p>
+          <ul style="margin-top: 0.5rem; max-height: 200px; overflow-y: auto;">
+            ${filesToProcess.map(file => `<li>${file.name}</li>`).join('')}
+          </ul>
+        `;
+      }
+
+      async function combineFiles() {
+        if (filesToProcess.length === 0) {
+          showButtonFeedback(combineBtn, "Upload files first!");
+          return;
+        }
+
+        try {
+          let combinedContent = '';
+          filesToProcess.forEach((file, index) => {
+            combinedContent += file.content;
+            if (index < filesToProcess.length - 1) {
+              combinedContent += '\n\n__SEP__\n\n';
+            }
+          });
+
+          const blob = new Blob([combinedContent], { type: "text/plain" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "combined_files.txt";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          showButtonFeedback(combineBtn, "Downloaded!");
+        } catch (error) {
+          showButtonFeedback(combineBtn, "Error occurred!");
+          console.error(error);
+        }
+      }
+
+      function clearAll() {
+        fileInput.value = '';
+        filesToProcess = [];
+        resultsArea.innerHTML = '';
+        showButtonFeedback(clearBtn, "Cleared!");
+      }
+
+      combineBtn.addEventListener('click', combineFiles);
+      clearBtn.addEventListener('click', clearAll);
+    }
+
+    // =============================================
+    // DOMAIN & IP EXTRACTOR (ORIGINAL)
+    // =============================================
+    function initDomainExtractor() {
+      const extractBtn = document.getElementById('domainExtractorBtn');
+      const copyBtn = document.getElementById('domainExtractorCopyBtn');
+      const clearBtn = document.getElementById('domainExtractorClearBtn');
+      const inputText = document.getElementById('domainExtractorInput');
+      const outputDiv = document.getElementById('domainExtractorOutput');
+
+      extractBtn.addEventListener('click', extractDomains);
+      copyBtn.addEventListener('click', copyContent);
+      clearBtn.addEventListener('click', clearContent);
+
+      function extractDomains() {
+        const text = inputText.value.trim();
+        if (!text) {
+          showButtonFeedback(extractBtn, "Enter text first!");
+          return;
+        }
+
+        const ipPattern = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/g;
+        const domainPattern = /\b((?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,})\b/gi;
+
+        const allIPs = [...new Set(text.match(ipPattern) || [])];
+        const allDomains = [...new Set(text.match(domainPattern) || [])];
+
+        const domainMap = {};
+        
+        allDomains.forEach(domain => {
+          const domainRegex = new RegExp(`\\b${domain}\\b`, 'gi');
+          let match;
+          const domainIPs = new Set();
+          
+          while ((match = domainRegex.exec(text)) !== null) {
+            const startPos = Math.max(0, match.index - 50);
+            const endPos = Math.min(text.length, match.index + domain.length + 50);
+            const context = text.slice(startPos, endPos);
+            
+            const ipsInContext = context.match(ipPattern) || [];
+            ipsInContext.forEach(ip => domainIPs.add(ip));
+          }
+          
+          if (domainIPs.size > 0) {
+            domainMap[domain] = Array.from(domainIPs);
+          }
+        });
+
+        const usedIPs = Object.values(domainMap).flat();
+        const unassociatedIPs = allIPs.filter(ip => !usedIPs.includes(ip));
+
+        let output = '';
+        
+        for (const [domain, ipList] of Object.entries(domainMap)) {
+          output += `${domain}\n`;
+          output += `${ipList.join('\n')}\n\n`;
+        }
+
+        if (unassociatedIPs.length > 0) {
+          output += `Unassociated IPs:\n${unassociatedIPs.join('\n')}\n`;
+        }
+
+        outputDiv.textContent = output.trim();
+        showButtonFeedback(extractBtn, "Extracted!");
+      }
+
+      function copyContent() {
+        if (!outputDiv.textContent.trim()) {
+          showButtonFeedback(copyBtn, "Nothing to copy!");
+          return;
+        }
+        
+        const tempInput = document.createElement('textarea');
+        tempInput.value = outputDiv.textContent;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+        showButtonFeedback(copyBtn, "Copied!");
+      }
+
+      function clearContent() {
+        inputText.value = '';
+        outputDiv.textContent = '';
+        showButtonFeedback(clearBtn, "Cleared!");
+      }
+    }
+
+    // =============================================
+    // DNS RECORD GENERATOR (ORIGINAL)
+    // =============================================
+    function initDnsGenerator() {
+      document.querySelectorAll('.dns-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          const tabId = this.getAttribute('data-tab');
+          
+          document.querySelectorAll('.dns-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.dns-tab-content').forEach(c => c.classList.remove('active'));
+          
+          this.classList.add('active');
+          document.getElementById(`${tabId}-tab`).classList.add('active');
+        });
+      });
+
+      window.generateSpfRecords = function() {
+        const domains = document.getElementById('spf-domains').value.split('\n')
+          .map(domain => domain.trim())
+          .filter(domain => domain.length > 0);
+        
+        if (domains.length === 0) {
+          showSpfStatus('Please enter at least one domain', 'error');
+          updateSpfStats(0, 0);
+          return;
+        }
+        
+        let ipInput = document.getElementById('spf-ips').value;
+        ipInput = ipInput.replace(/,/g, ' ');
+        ipInput = ipInput.replace(/\s+/g, ' ');
+        const ipArray = ipInput.trim().split(' ').filter(ip => ip.trim() !== '');
+        
+        if (ipArray.length === 0) {
+          showSpfStatus('Please enter at least one IP address', 'error');
+          updateSpfStats(0, 0);
+          return;
+        }
+        
+        const validIPs = [];
+        const invalidIPs = [];
+        
+        ipArray.forEach(ip => {
+          if (isValidIP(ip)) {
+            validIPs.push(ip);
+          } else {
+            invalidIPs.push(ip);
+          }
+        });
+        
+        if (validIPs.length === 0) {
+          showSpfStatus('No valid IP addresses found', 'error');
+          updateSpfStats(0, 0);
+          return;
+        }
+        
+        if (invalidIPs.length > 0) {
+          showSpfStatus(`Generated records with ${invalidIPs.length} invalid IP(s) ignored`, 'warning');
+        } else {
+          showSpfStatus(`Successfully generated ${domains.length} SPF records`, 'success');
+        }
+        
+        const formattedIPs = validIPs.join(';');
+        
+        let resultHTML = '';
+        domains.forEach(domain => {
+          resultHTML += `
+            <div class="record-item">
+              <div class="record-content">${domain},${domain},TXT,Arecords:${formattedIPs}</div>
+            </div>
+          `;
+        });
+        
+        if (invalidIPs.length > 0) {
+          resultHTML += `
+            <div class="record-item error">
+              <div class="record-content">Invalid IPs: ${invalidIPs.join(', ')}</div>
+            </div>
+          `;
+        }
+        
+        document.getElementById('spf-result').innerHTML = resultHTML;
+        updateSpfStats(domains.length, invalidIPs.length);
+      };
+      
+      window.generateSpfExternalRecords = function() {
+        const domains = document.getElementById('spf-external-domains').value.split('\n')
+          .map(domain => domain.trim())
+          .filter(domain => domain.length > 0);
+        
+        if (domains.length === 0) {
+          showSpfExternalStatus('Please enter at least one domain', 'error');
+          updateSpfExternalStats(0, 0);
+          return;
+        }
+        
+        let ipInput = document.getElementById('spf-external-ips').value;
+        ipInput = ipInput.replace(/,/g, ' ');
+        ipInput = ipInput.replace(/\s+/g, ' ');
+        const ipArray = ipInput.trim().split(' ').filter(ip => ip.trim() !== '');
+        
+        if (ipArray.length === 0) {
+          showSpfExternalStatus('Please enter at least one IP address', 'error');
+          updateSpfExternalStats(0, 0);
+          return;
+        }
+        
+        const validIPs = [];
+        const invalidIPs = [];
+        
+        ipArray.forEach(ip => {
+          if (isValidIP(ip)) {
+            validIPs.push(ip);
+          } else {
+            invalidIPs.push(ip);
+          }
+        });
+        
+        if (validIPs.length === 0) {
+          showSpfExternalStatus('No valid IP addresses found', 'error');
+          updateSpfExternalStats(0, 0);
+          return;
+        }
+        
+        if (invalidIPs.length > 0) {
+          showSpfExternalStatus(`Generated records with ${invalidIPs.length} invalid IP(s) ignored`, 'warning');
+        } else {
+          showSpfExternalStatus(`Successfully generated ${domains.length} SPF records`, 'success');
+        }
+        
+        const formattedIPs = validIPs.map(ip => `ip4:${ip}`).join(' ');
+        
+        let resultHTML = '';
+        domains.forEach(domain => {
+          const spfRecord = `v=spf1 ${formattedIPs} -all`;
+          resultHTML += `
+            <div class="record-item">
+              <div class="record-content">${domain},${domain},TXT,${spfRecord}</div>
+            </div>
+          `;
+        });
+        
+        if (invalidIPs.length > 0) {
+          resultHTML += `
+            <div class="record-item error">
+              <div class="record-content">Invalid IPs: ${invalidIPs.join(', ')}</div>
+            </div>
+          `;
+        }
+        
+        document.getElementById('spf-external-result').innerHTML = resultHTML;
+        updateSpfExternalStats(domains.length, invalidIPs.length);
+      };
+      
+      window.clearSpfExternalInputs = function() {
+        document.getElementById('spf-external-domains').value = '';
+        document.getElementById('spf-external-ips').value = '';
+        document.getElementById('spf-external-result').innerHTML = '';
+        document.getElementById('spf-external-stats').innerHTML = '';
+        showSpfExternalStatus('Ready to generate SPF records in external format', 'info');
+      };
+      
+      window.copySpfExternalToClipboard = function() {
+        const resultElements = document.querySelectorAll('#spf-external-result .record-content');
+        if (resultElements.length === 0) {
+          showSpfExternalStatus('Nothing to copy', 'error');
+          return;
+        }
+        
+        let textToCopy = '';
+        resultElements.forEach(el => {
+          if (!el.closest('.error')) {
+            textToCopy += el.textContent + '\n';
+          }
+        });
+        
+        navigator.clipboard.writeText(textToCopy.trim())
+          .then(() => showSpfExternalStatus('Records copied!', 'success'))
+          .catch(err => showSpfExternalStatus('Failed to copy: ' + err, 'error'));
+      };
+      
+      window.downloadSpfExternalRecords = function() {
+        const resultElements = document.querySelectorAll('#spf-external-result .record-content');
+        if (resultElements.length === 0) {
+          showSpfExternalStatus('Nothing to save', 'error');
+          return;
+        }
+        
+        let textToDownload = '';
+        resultElements.forEach(el => {
+          if (!el.closest('.error')) {
+            textToDownload += el.textContent + '\n';
+          }
+        });
+        
+        const blob = new Blob([textToDownload.trim()], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'spf-external-records.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        showSpfExternalStatus('Records saved!', 'success');
+      };
+      
+      window.showSpfExternalStatus = function(message, type) {
+        const statusElement = document.getElementById('spf-external-statusMessage');
+        statusElement.className = `status ${type}`;
+        statusElement.innerHTML = `
+          <i class="fas ${
+            type === 'success' ? 'fa-check-circle' : 
+            type === 'error' ? 'fa-times-circle' : 
+            type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle'
+          }"></i>
+          <span>${message}</span>
+        `;
+      };
+      
+      window.updateSpfExternalStats = function(successCount, errorCount) {
+        const statsElement = document.getElementById('spf-external-stats');
+        statsElement.innerHTML = `
+          <div class="stat-item">
+            <i class="fas fa-check-circle stat-success"></i>
+            <span>Valid: <span class="stat-value stat-success">${successCount}</span></span>
+          </div>
+          ${errorCount > 0 ? `
+          <div class="stat-item">
+            <i class="fas fa-exclamation-circle stat-error"></i>
+            <span>Invalid: <span class="stat-value stat-error">${errorCount}</span></span>
+          </div>
+          ` : ''}
+        `;
+      };
+      
+      window.isValidIP = function(ip) {
+        const ipv4Regex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+        return ipv4Regex.test(ip);
+      };
+      
+      window.updateSpfStats = function(successCount, errorCount) {
+        const statsElement = document.getElementById('spf-stats');
+        statsElement.innerHTML = `
+          <div class="stat-item">
+            <i class="fas fa-check-circle stat-success"></i>
+            <span>Valid: <span class="stat-value stat-success">${successCount}</span></span>
+          </div>
+          ${errorCount > 0 ? `
+          <div class="stat-item">
+            <i class="fas fa-exclamation-circle stat-error"></i>
+            <span>Invalid: <span class="stat-value stat-error">${errorCount}</span></span>
+          </div>
+          ` : ''}
+        `;
+      };
+      
+      window.clearSpfInputs = function() {
+        document.getElementById('spf-domains').value = '';
+        document.getElementById('spf-ips').value = '';
+        document.getElementById('spf-result').innerHTML = '';
+        document.getElementById('spf-stats').innerHTML = '';
+        showSpfStatus('Ready to generate SPF records', 'info');
+      };
+      
+      window.copySpfToClipboard = function() {
+        const resultElements = document.querySelectorAll('#spf-result .record-content');
+        if (resultElements.length === 0) {
+          showSpfStatus('Nothing to copy', 'error');
+          return;
+        }
+        
+        let textToCopy = '';
+        resultElements.forEach(el => {
+          if (!el.closest('.error')) {
+            textToCopy += el.textContent + '\n';
+          }
+        });
+        
+        navigator.clipboard.writeText(textToCopy.trim())
+          .then(() => showSpfStatus('Records copied!', 'success'))
+          .catch(err => showSpfStatus('Failed to copy: ' + err, 'error'));
+      };
+      
+      window.downloadSpfRecords = function() {
+        const resultElements = document.querySelectorAll('#spf-result .record-content');
+        if (resultElements.length === 0) {
+          showSpfStatus('Nothing to save', 'error');
+          return;
+        }
+        
+        let textToDownload = '';
+        resultElements.forEach(el => {
+          if (!el.closest('.error')) {
+            textToDownload += el.textContent + '\n';
+          }
+        });
+        
+        const blob = new Blob([textToDownload.trim()], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'spf-records.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        showSpfStatus('Records saved!', 'success');
+      };
+      
+      window.showSpfStatus = function(message, type) {
+        const statusElement = document.getElementById('spf-statusMessage');
+        statusElement.className = `status ${type}`;
+        statusElement.innerHTML = `
+          <i class="fas ${
+            type === 'success' ? 'fa-check-circle' : 
+            type === 'error' ? 'fa-times-circle' : 
+            type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle'
+          }"></i>
+          <span>${message}</span>
+        `;
+      };
+      
+      window.generateTxtRecords = function() {
+        const inputText = document.getElementById('txt-input').value;
+        const lines = inputText.split('\n');
+        let successCount = 0;
+        let errorCount = 0;
+        let resultHTML = '';
+        
+        for (const line of lines) {
+          if (line.trim() === '') continue;
+          
+          try {
+            const normalized = line.replace(/,/g, ' ');
+            const parts = normalized.split(/\s+/).filter(part => part !== '');
+            
+            if (parts.length < 2) {
+              throw new Error('Invalid format - needs domain and verification data');
+            }
+            
+            const domain = parts[0];
+            let verificationParts = [];
+            let verificationStarted = false;
+            
+            for (const part of parts.slice(1)) {
+              if (part === domain && !verificationStarted) {
+                continue;
+              }
+              verificationStarted = true;
+              verificationParts.push(part);
+            }
+            
+            const verification = verificationParts.join(' ').trim();
+            
+            if (!verification) {
+              throw new Error('Missing verification phrase');
+            }
+            
+            const txtRecord = `${domain},${domain},TXT,${verification}`;
+            
+            resultHTML += `
+              <div class="record-item">
+                <div class="record-content">${txtRecord}</div>
+              </div>
+            `;
+            
+            successCount++;
+          } catch (e) {
+            resultHTML += `
+              <div class="record-item error">
+                <div class="record-content">Error: ${line}</div>
+              </div>
+            `;
+            errorCount++;
+          }
+        }
+        
+        const resultElement = document.getElementById('txt-result');
+        if (successCount === 0 && errorCount > 0) {
+          resultElement.innerHTML = resultHTML;
+          showTxtStatus('No valid records generated', 'error');
+        } else if (errorCount > 0) {
+          resultElement.innerHTML = resultHTML;
+          showTxtStatus(`Generated ${successCount} records with ${errorCount} errors`, 'warning');
+        } else if (successCount > 0) {
+          resultElement.innerHTML = resultHTML;
+          showTxtStatus(`Successfully generated ${successCount} TXT records`, 'success');
+        } else {
+          resultElement.innerHTML = '<div class="record-item">No valid input found</div>';
+          showTxtStatus('Ready to generate TXT records', 'info');
+        }
+        
+        updateTxtStats(successCount, errorCount);
+      };
+      
+      window.updateTxtStats = function(successCount, errorCount) {
+        const statsElement = document.getElementById('txt-stats');
+        statsElement.innerHTML = `
+          <div class="stat-item">
+            <i class="fas fa-check-circle stat-success"></i>
+            <span>Valid: <span class="stat-value stat-success">${successCount}</span></span>
+          </div>
+          ${errorCount > 0 ? `
+          <div class="stat-item">
+            <i class="fas fa-exclamation-circle stat-error"></i>
+            <span>Errors: <span class="stat-value stat-error">${errorCount}</span></span>
+          </div>
+          ` : ''}
+        `;
+      };
+      
+      window.clearTxtInputs = function() {
+        document.getElementById('txt-input').value = '';
+        document.getElementById('txt-result').innerHTML = '';
+        document.getElementById('txt-stats').innerHTML = '';
+        showTxtStatus('Ready to generate TXT records', 'info');
+      };
+      
+      window.copyTxtToClipboard = function() {
+        const resultElements = document.querySelectorAll('#txt-result .record-content');
+        if (resultElements.length === 0) {
+          showTxtStatus('Nothing to copy', 'error');
+          return;
+        }
+        
+        let textToCopy = '';
+        resultElements.forEach(el => {
+          if (!el.closest('.error')) {
+            textToCopy += el.textContent + '\n';
+          }
+        });
+        
+        if (textToCopy.trim() === '') {
+          showTxtStatus('No valid records to copy', 'error');
+          return;
+        }
+        
+        navigator.clipboard.writeText(textToCopy.trim())
+          .then(() => showTxtStatus('Records copied!', 'success'))
+          .catch(err => showTxtStatus('Failed to copy: ' + err, 'error'));
+      };
+      
+      window.downloadTxtRecords = function() {
+        const resultElements = document.querySelectorAll('#txt-result .record-content');
+        if (resultElements.length === 0) {
+          showTxtStatus('Nothing to save', 'error');
+          return;
+        }
+        
+        let textToDownload = '';
+        resultElements.forEach(el => {
+          if (!el.closest('.error')) {
+            textToDownload += el.textContent + '\n';
+          }
+        });
+        
+        if (textToDownload.trim() === '') {
+          showTxtStatus('No valid records to save', 'error');
+          return;
+        }
+        
+        const blob = new Blob([textToDownload.trim()], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'txt-records.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        showTxtStatus('Records saved!', 'success');
+      };
+      
+      window.showTxtStatus = function(message, type) {
+        const statusElement = document.getElementById('txt-statusMessage');
+        statusElement.className = `status ${type}`;
+        statusElement.innerHTML = `
+          <i class="fas ${
+            type === 'success' ? 'fa-check-circle' : 
+            type === 'error' ? 'fa-times-circle' : 
+            type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle'
+          }"></i>
+          <span>${message}</span>
+        `;
+      };
+      
+      window.generateDmarcRecords = function() {
+        const domains = document.getElementById('dmarc-domains').value.split('\n')
+          .map(domain => domain.trim())
+          .filter(domain => domain.length > 0);
+        
+        if (domains.length === 0) {
+          showDmarcStatus('Please enter at least one domain', 'error');
+          updateDmarcStats(0, 0);
+          return;
+        }
+        
+        let resultHTML = '';
+        domains.forEach(domain => {
+          const dmarcRecord = `${domain},_dmarc.${domain},TXT,v=DMARC1; p=none;`;
+          resultHTML += `
+            <div class="record-item">
+              <div class="record-content">${dmarcRecord}</div>
+            </div>
+          `;
+        });
+        
+        document.getElementById('dmarc-result').innerHTML = resultHTML;
+        updateDmarcStats(domains.length, 0);
+        showDmarcStatus(`Successfully generated ${domains.length} DMARC records`, 'success');
+      };
+      
+      window.updateDmarcStats = function(successCount, errorCount) {
+        const statsElement = document.getElementById('dmarc-stats');
+        statsElement.innerHTML = `
+          <div class="stat-item">
+            <i class="fas fa-check-circle stat-success"></i>
+            <span>Valid: <span class="stat-value stat-success">${successCount}</span></span>
+          </div>
+        `;
+      };
+      
+      window.clearDmarcInputs = function() {
+        document.getElementById('dmarc-domains').value = '';
+        document.getElementById('dmarc-result').innerHTML = '';
+        document.getElementById('dmarc-stats').innerHTML = '';
+        showDmarcStatus('Ready to generate DMARC records', 'info');
+      };
+      
+      window.copyDmarcToClipboard = function() {
+        const resultElements = document.querySelectorAll('#dmarc-result .record-content');
+        if (resultElements.length === 0) {
+          showDmarcStatus('Nothing to copy', 'error');
+          return;
+        }
+        
+        let textToCopy = '';
+        resultElements.forEach(el => {
+          textToCopy += el.textContent + '\n';
+        });
+        
+        navigator.clipboard.writeText(textToCopy.trim())
+          .then(() => showDmarcStatus('Records copied!', 'success'))
+          .catch(err => showDmarcStatus('Failed to copy: ' + err, 'error'));
+      };
+      
+      window.downloadDmarcRecords = function() {
+        const resultElements = document.querySelectorAll('#dmarc-result .record-content');
+        if (resultElements.length === 0) {
+          showDmarcStatus('Nothing to save', 'error');
+          return;
+        }
+        
+        let textToDownload = '';
+        resultElements.forEach(el => {
+          textToDownload += el.textContent + '\n';
+        });
+        
+        const blob = new Blob([textToDownload.trim()], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'dmarc-records.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        showDmarcStatus('Records saved!', 'success');
+      };
+      
+      window.showDmarcStatus = function(message, type) {
+        const statusElement = document.getElementById('dmarc-statusMessage');
+        statusElement.className = `status ${type}`;
+        statusElement.innerHTML = `
+          <i class="fas ${
+            type === 'success' ? 'fa-check-circle' : 
+            type === 'error' ? 'fa-times-circle' : 
+            type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle'
+          }"></i>
+          <span>${message}</span>
+        `;
+      };
+    }
+
+    // =============================================
+    // BACK TO TOP BUTTON
+    // =============================================
+    const backToTopBtn = document.getElementById('backToTopBtn');
+
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
+    });
+
+    backToTopBtn.addEventListener('click', function() {
+      const activeSection = document.querySelector('.tool-section.active');
+      if (activeSection) {
+        clearToolData(activeSection.id);
+        activeSection.classList.remove('active');
+      }
+      
+      resetAllTools();
+      
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    function resetAllTools() {
+      document.querySelectorAll('textarea').forEach(textarea => {
+        textarea.value = '';
+      });
+      
+      document.querySelectorAll('.file-input').forEach(input => {
+        input.value = '';
+      });
+      
+      document.querySelectorAll('.results-area').forEach(area => {
+        area.innerHTML = '';
+      });
+      
+      document.querySelectorAll('.template-container').forEach(container => {
+        container.style.display = 'none';
+      });
+      
+      document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        if (radio.id.includes('Rdns')) {
+          radio.checked = true;
+        } else {
+          radio.checked = false;
+        }
+      });
+      
+      document.getElementById('progress').style.display = 'none';
+      document.getElementById('mboxDownloadAll').style.display = 'none';
+    }
+
+    // =============================================
+    // INITIALIZE ALL TOOLS
+    // =============================================
+    document.addEventListener('DOMContentLoaded', function() {
+      initBulkTransformer();
+      initMboxConverter();
+      initBulkRemover();
+      initSingleRemover();
+      initSingleReceivedExtractor();
+      initBulkReceivedExtractor();
+      initTextCombiner();
+      initDomainExtractor();
+      initDnsGenerator();
+    });
   </script>
 </body>
 </html>
