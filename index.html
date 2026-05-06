@@ -183,10 +183,6 @@
       font-size: 0.8rem;
     }
     
-    .file-label:hover {
-      background: #e0ebff;
-    }
-    
     .file-input {
       display: none;
     }
@@ -1236,8 +1232,75 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script>
     // =============================================
-    // TOOL NAVIGATION AND UTILITIES
+    // FIXED COPY FUNCTIONALITY - GLOBAL FIX FOR ALL COPY BUTTONS
     // =============================================
+    
+    // Universal copy function that works with all textareas and result divs
+    function universalCopyToClipboard(element, buttonElement) {
+      let textToCopy = '';
+      
+      // If element is a textarea or input
+      if (element.tagName === 'TEXTAREA' || element.tagName === 'INPUT') {
+        textToCopy = element.value;
+      } 
+      // If element is a div with text content
+      else if (element.classList && element.classList.contains('result')) {
+        textToCopy = element.innerText || element.textContent;
+      }
+      // General fallback
+      else {
+        textToCopy = element.innerText || element.textContent || element.value;
+      }
+      
+      if (!textToCopy || textToCopy.trim() === '') {
+        showCopyFeedback(buttonElement, 'Nothing to copy!', false);
+        return false;
+      }
+      
+      // Use modern clipboard API
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(textToCopy.trim()).then(() => {
+          showCopyFeedback(buttonElement, 'Copied!', true);
+        }).catch(() => {
+          fallbackCopyToClipboard(textToCopy, buttonElement);
+        });
+      } else {
+        fallbackCopyToClipboard(textToCopy, buttonElement);
+      }
+      return true;
+    }
+    
+    function fallbackCopyToClipboard(text, buttonElement) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.top = '-9999px';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      textarea.setSelectionRange(0, text.length);
+      let success = false;
+      try {
+        success = document.execCommand('copy');
+      } catch (err) {
+        success = false;
+      }
+      document.body.removeChild(textarea);
+      showCopyFeedback(buttonElement, success ? 'Copied!' : 'Copy failed', success);
+    }
+    
+    function showCopyFeedback(button, message, success) {
+      const originalText = button.innerHTML;
+      const originalDisabled = button.disabled;
+      button.innerHTML = `<i class="fas ${success ? 'fa-check' : 'fa-times'}"></i> ${message}`;
+      button.disabled = true;
+      setTimeout(() => {
+        button.innerHTML = originalText;
+        button.disabled = originalDisabled;
+      }, 1500);
+    }
+    
+    // TOOL NAVIGATION AND UTILITIES
     const toolCards = document.querySelectorAll('.tool-card');
     const toolSections = document.querySelectorAll('.tool-section');
     const backButtons = document.querySelectorAll('.back-btn');
@@ -1395,7 +1458,6 @@
           lines.splice(insertIndex, 0, `Sender: ${senderValue}`);
           output = lines.join('\n');
         } else {
-          // If Sender header exists, replace it with our forced [RDNS] version
           output = output.replace(/^(Sender:.*?)$/gmi, `Sender: ${senderValue}`);
         }
       }
@@ -1449,12 +1511,10 @@
       showButtonFeedback(document.getElementById('singleIpBtn'), "Done!");
     });
     
+    // FIXED: Single Transformer Copy Button
     document.getElementById('singleCopyBtn').addEventListener('click', () => {
       const output = document.getElementById('singleOutput');
-      if (!output.value) { showButtonFeedback(document.getElementById('singleCopyBtn'), "Nothing to copy!"); return; }
-      output.select();
-      document.execCommand("copy");
-      showButtonFeedback(document.getElementById('singleCopyBtn'), "Copied!");
+      universalCopyToClipboard(output, document.getElementById('singleCopyBtn'));
     });
     
     document.getElementById('singleClearBtn').addEventListener('click', () => {
@@ -1466,6 +1526,62 @@
       showButtonFeedback(document.getElementById('singleClearBtn'), "Cleared!");
     });
 
+    // =============================================
+    // FIXED: Single Header Remover Copy Buttons
+    // =============================================
+    document.getElementById('copyNormalOutput').addEventListener('click', () => {
+      const outputDiv = document.getElementById('singleRemoverOutput');
+      universalCopyToClipboard(outputDiv, document.getElementById('copyNormalOutput'));
+    });
+    
+    document.getElementById('copyTemplateOutput').addEventListener('click', () => {
+      const outputDiv = document.getElementById('singleRemoverTemplateOutput');
+      universalCopyToClipboard(outputDiv, document.getElementById('copyTemplateOutput'));
+    });
+    
+    // =============================================
+    // FIXED: Single Received Extractor Copy Button
+    // =============================================
+    document.getElementById('singleReceivedCopyBtn').addEventListener('click', () => {
+      const outputDiv = document.getElementById('singleReceivedOutput');
+      universalCopyToClipboard(outputDiv, document.getElementById('singleReceivedCopyBtn'));
+    });
+    
+    // =============================================
+    // FIXED: Domain Extractor Copy Button
+    // =============================================
+    document.getElementById('domainExtractorCopyBtn').addEventListener('click', () => {
+      const outputDiv = document.getElementById('domainExtractorOutput');
+      universalCopyToClipboard(outputDiv, document.getElementById('domainExtractorCopyBtn'));
+    });
+    
+    // =============================================
+    // FIXED: DNS Record Generator Copy Functions
+    // =============================================
+    window.copySpfToClipboard = function() {
+      const resultDiv = document.getElementById('spf-result');
+      const copyBtn = event.target.closest('button');
+      universalCopyToClipboard(resultDiv, copyBtn);
+    };
+    
+    window.copySpfExternalToClipboard = function() {
+      const resultDiv = document.getElementById('spf-external-result');
+      const copyBtn = event.target.closest('button');
+      universalCopyToClipboard(resultDiv, copyBtn);
+    };
+    
+    window.copyTxtToClipboard = function() {
+      const resultDiv = document.getElementById('txt-result');
+      const copyBtn = event.target.closest('button');
+      universalCopyToClipboard(resultDiv, copyBtn);
+    };
+    
+    window.copyDmarcToClipboard = function() {
+      const resultDiv = document.getElementById('dmarc-result');
+      const copyBtn = event.target.closest('button');
+      universalCopyToClipboard(resultDiv, copyBtn);
+    };
+    
     // =============================================
     // ALL OTHER TOOLS REMAIN 100% ORIGINAL - UNCHANGED
     // =============================================
@@ -2063,13 +2179,9 @@
       const outputDiv = document.getElementById('singleRemoverOutput');
       const templateOutputDiv = document.getElementById('singleRemoverTemplateOutput');
       const removeBtn = document.getElementById('singleRemoverBtn');
-      const copyBtn = document.getElementById('copyNormalOutput');
-      const templateCopyBtn = document.getElementById('copyTemplateOutput');
       const clearBtn = document.getElementById('singleRemoverClearBtn');
       
       removeBtn.addEventListener('click', removeHeaders);
-      copyBtn.addEventListener('click', () => handleCopy(outputDiv, copyBtn));
-      templateCopyBtn.addEventListener('click', () => handleCopy(templateOutputDiv, templateCopyBtn));
       clearBtn.addEventListener('click', clearAll);
       
       function removeHeaders() {
@@ -2114,22 +2226,6 @@
         return content;
       }
       
-      function handleCopy(outputElement, button) {
-        if (!outputElement.textContent.trim() || 
-            outputElement.textContent === "No template provided") {
-          showButtonFeedback(button, "Nothing to copy!");
-          return;
-        }
-        
-        const tempTextarea = document.createElement('textarea');
-        tempTextarea.value = outputElement.textContent;
-        document.body.appendChild(tempTextarea);
-        tempTextarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempTextarea);
-        showButtonFeedback(button, "Copied!");
-      }
-      
       function clearAll() {
         inputText.value = '';
         templateInput.value = '';
@@ -2142,13 +2238,11 @@
     // SINGLE RECEIVED EXTRACTOR (ORIGINAL)
     function initSingleReceivedExtractor() {
       const extractBtn = document.getElementById('singleReceivedExtractBtn');
-      const copyBtn = document.getElementById('singleReceivedCopyBtn');
       const clearBtn = document.getElementById('singleReceivedClearBtn');
       const inputText = document.getElementById('singleReceivedInput');
       const outputDiv = document.getElementById('singleReceivedOutput');
 
       extractBtn.addEventListener('click', extractReceivedHeaders);
-      copyBtn.addEventListener('click', copyReceivedHeaders);
       clearBtn.addEventListener('click', clearAll);
 
       function extractReceivedHeaders() {
@@ -2172,21 +2266,6 @@
 
         outputDiv.textContent = formattedHeaders;
         showButtonFeedback(extractBtn, "Received headers extracted!");
-      }
-
-      function copyReceivedHeaders() {
-        if (!outputDiv.textContent.trim() || outputDiv.textContent === "No Received headers found") {
-          showButtonFeedback(copyBtn, "Nothing to copy!");
-          return;
-        }
-        
-        const tempTextarea = document.createElement('textarea');
-        tempTextarea.value = outputDiv.textContent;
-        document.body.appendChild(tempTextarea);
-        tempTextarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempTextarea);
-        showButtonFeedback(copyBtn, "Copied!");
       }
 
       function clearAll() {
@@ -2504,13 +2583,11 @@
     // DOMAIN & IP EXTRACTOR (ORIGINAL)
     function initDomainExtractor() {
       const extractBtn = document.getElementById('domainExtractorBtn');
-      const copyBtn = document.getElementById('domainExtractorCopyBtn');
       const clearBtn = document.getElementById('domainExtractorClearBtn');
       const inputText = document.getElementById('domainExtractorInput');
       const outputDiv = document.getElementById('domainExtractorOutput');
 
       extractBtn.addEventListener('click', extractDomains);
-      copyBtn.addEventListener('click', copyContent);
       clearBtn.addEventListener('click', clearContent);
 
       function extractDomains() {
@@ -2563,21 +2640,6 @@
 
         outputDiv.textContent = output.trim();
         showButtonFeedback(extractBtn, "Extracted!");
-      }
-
-      function copyContent() {
-        if (!outputDiv.textContent.trim()) {
-          showButtonFeedback(copyBtn, "Nothing to copy!");
-          return;
-        }
-        
-        const tempInput = document.createElement('textarea');
-        tempInput.value = outputDiv.textContent;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempInput);
-        showButtonFeedback(copyBtn, "Copied!");
       }
 
       function clearContent() {
@@ -2747,22 +2809,9 @@
       };
       
       window.copySpfExternalToClipboard = function() {
-        const resultElements = document.querySelectorAll('#spf-external-result .record-content');
-        if (resultElements.length === 0) {
-          showSpfExternalStatus('Nothing to copy', 'error');
-          return;
-        }
-        
-        let textToCopy = '';
-        resultElements.forEach(el => {
-          if (!el.closest('.error')) {
-            textToCopy += el.textContent + '\n';
-          }
-        });
-        
-        navigator.clipboard.writeText(textToCopy.trim())
-          .then(() => showSpfExternalStatus('Records copied!', 'success'))
-          .catch(err => showSpfExternalStatus('Failed to copy: ' + err, 'error'));
+        const resultDiv = document.getElementById('spf-external-result');
+        const copyBtn = event.target.closest('button');
+        universalCopyToClipboard(resultDiv, copyBtn);
       };
       
       window.downloadSpfExternalRecords = function() {
@@ -2851,22 +2900,9 @@
       };
       
       window.copySpfToClipboard = function() {
-        const resultElements = document.querySelectorAll('#spf-result .record-content');
-        if (resultElements.length === 0) {
-          showSpfStatus('Nothing to copy', 'error');
-          return;
-        }
-        
-        let textToCopy = '';
-        resultElements.forEach(el => {
-          if (!el.closest('.error')) {
-            textToCopy += el.textContent + '\n';
-          }
-        });
-        
-        navigator.clipboard.writeText(textToCopy.trim())
-          .then(() => showSpfStatus('Records copied!', 'success'))
-          .catch(err => showSpfStatus('Failed to copy: ' + err, 'error'));
+        const resultDiv = document.getElementById('spf-result');
+        const copyBtn = event.target.closest('button');
+        universalCopyToClipboard(resultDiv, copyBtn);
       };
       
       window.downloadSpfRecords = function() {
@@ -3006,27 +3042,9 @@
       };
       
       window.copyTxtToClipboard = function() {
-        const resultElements = document.querySelectorAll('#txt-result .record-content');
-        if (resultElements.length === 0) {
-          showTxtStatus('Nothing to copy', 'error');
-          return;
-        }
-        
-        let textToCopy = '';
-        resultElements.forEach(el => {
-          if (!el.closest('.error')) {
-            textToCopy += el.textContent + '\n';
-          }
-        });
-        
-        if (textToCopy.trim() === '') {
-          showTxtStatus('No valid records to copy', 'error');
-          return;
-        }
-        
-        navigator.clipboard.writeText(textToCopy.trim())
-          .then(() => showTxtStatus('Records copied!', 'success'))
-          .catch(err => showTxtStatus('Failed to copy: ' + err, 'error'));
+        const resultDiv = document.getElementById('txt-result');
+        const copyBtn = event.target.closest('button');
+        universalCopyToClipboard(resultDiv, copyBtn);
       };
       
       window.downloadTxtRecords = function() {
@@ -3118,20 +3136,9 @@
       };
       
       window.copyDmarcToClipboard = function() {
-        const resultElements = document.querySelectorAll('#dmarc-result .record-content');
-        if (resultElements.length === 0) {
-          showDmarcStatus('Nothing to copy', 'error');
-          return;
-        }
-        
-        let textToCopy = '';
-        resultElements.forEach(el => {
-          textToCopy += el.textContent + '\n';
-        });
-        
-        navigator.clipboard.writeText(textToCopy.trim())
-          .then(() => showDmarcStatus('Records copied!', 'success'))
-          .catch(err => showDmarcStatus('Failed to copy: ' + err, 'error'));
+        const resultDiv = document.getElementById('dmarc-result');
+        const copyBtn = event.target.closest('button');
+        universalCopyToClipboard(resultDiv, copyBtn);
       };
       
       window.downloadDmarcRecords = function() {
