@@ -1092,7 +1092,7 @@
       </div>
     </div>
     
-    <!-- DNS Record Generator (ORIGINAL - UNCHANGED) -->
+    <!-- DNS Record Generator (MODIFIED - Handles both IPs and Domains) -->
     <div id="dns-generator" class="tool-section">
       <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Tools</button>
       <h2 class="section-title"><i class="fas fa-server"></i> DNS Record Generator</h2>
@@ -1111,8 +1111,8 @@
             <textarea id="spf-domains" placeholder="example.com&#10;example.org&#10;example.net"></textarea>
           </div>
           <div class="input-section">
-            <label for="spf-ips">IP Addresses</label>
-            <textarea id="spf-ips" placeholder="192.168.1.1 192.168.1.2 192.168.1.3"></textarea>
+            <label for="spf-ips">IP Addresses or Domains</label>
+            <textarea id="spf-ips" placeholder="192.168.1.1 192.168.1.2 192.168.1.3&#10;or&#10;domain1.com domain2.com"></textarea>
           </div>
         </div>
         <div class="action-btns">
@@ -1142,8 +1142,8 @@
             <textarea id="spf-external-domains" placeholder="example.com&#10;example.org&#10;example.net"></textarea>
           </div>
           <div class="input-section">
-            <label for="spf-external-ips">IP Addresses</label>
-            <textarea id="spf-external-ips" placeholder="192.168.1.1 192.168.1.2 192.168.1.3"></textarea>
+            <label for="spf-external-ips">IP Addresses or Domains</label>
+            <textarea id="spf-external-ips" placeholder="192.168.1.1 192.168.1.2 192.168.1.3&#10;or&#10;domain1.com domain2.com"></textarea>
           </div>
         </div>
         <div class="action-btns">
@@ -2658,7 +2658,9 @@
       }
     }
 
-    // DNS RECORD GENERATOR (ORIGINAL)
+    // =============================================
+    // DNS RECORD GENERATOR (MODIFIED - Handles both IPs and Domains)
+    // =============================================
     function initDnsGenerator() {
       document.querySelectorAll('.dns-tab').forEach(tab => {
         tab.addEventListener('click', function() {
@@ -2671,6 +2673,12 @@
           document.getElementById(`${tabId}-tab`).classList.add('active');
         });
       });
+
+      // Helper function to validate domain
+      window.isValidDomain = function(domain) {
+        const domainRegex = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+        return domainRegex.test(domain);
+      };
 
       window.generateSpfRecords = function() {
         const domains = document.getElementById('spf-domains').value.split('\n')
@@ -2689,55 +2697,61 @@
         const ipArray = ipInput.trim().split(' ').filter(ip => ip.trim() !== '');
         
         if (ipArray.length === 0) {
-          showSpfStatus('Please enter at least one IP address', 'error');
+          showSpfStatus('Please enter at least one IP address or domain', 'error');
           updateSpfStats(0, 0);
           return;
         }
         
-        const validIPs = [];
-        const invalidIPs = [];
+        const validEntries = [];
+        const invalidEntries = [];
         
-        ipArray.forEach(ip => {
-          if (isValidIP(ip)) {
-            validIPs.push(ip);
-          } else {
-            invalidIPs.push(ip);
+        ipArray.forEach(entry => {
+          // Check if it's a valid IP
+          if (isValidIP(entry)) {
+            validEntries.push(entry);
+          } 
+          // Check if it's a valid domain
+          else if (isValidDomain(entry)) {
+            validEntries.push(entry);
+          } 
+          else {
+            invalidEntries.push(entry);
           }
         });
         
-        if (validIPs.length === 0) {
-          showSpfStatus('No valid IP addresses found', 'error');
+        if (validEntries.length === 0) {
+          showSpfStatus('No valid IP addresses or domains found', 'error');
           updateSpfStats(0, 0);
           return;
         }
         
-        if (invalidIPs.length > 0) {
-          showSpfStatus(`Generated records with ${invalidIPs.length} invalid IP(s) ignored`, 'warning');
+        if (invalidEntries.length > 0) {
+          showSpfStatus(`Generated records with ${invalidEntries.length} invalid entry(ies) ignored`, 'warning');
         } else {
           showSpfStatus(`Successfully generated ${domains.length} SPF records`, 'success');
         }
         
-        const formattedIPs = validIPs.join(';');
+        const formattedEntries = validEntries.join(';');
         
         let resultHTML = '';
         domains.forEach(domain => {
           resultHTML += `
             <div class="record-item">
-              <div class="record-content">${domain},${domain},TXT,Arecords:${formattedIPs}</div>
+              <div class="record-content">${domain},${domain},TXT,Arecords:${formattedEntries}</div>
             </div>
           `;
         });
         
-        if (invalidIPs.length > 0) {
+        if (invalidEntries.length > 0) {
           resultHTML += `
             <div class="record-item error">
-              <div class="record-content">Invalid IPs: ${invalidIPs.join(', ')}</div>
+              <div class="record-content">Invalid entries: ${invalidEntries.join(', ')}</div>
             </div>
           `;
         }
         
         document.getElementById('spf-result').innerHTML = resultHTML;
-        updateSpfStats(domains.length, invalidIPs.length);
+        updateSpfStats(domains.length, invalidEntries.length);
       };
       
       window.generateSpfExternalRecords = function() {
@@ -2757,39 +2771,41 @@
         const ipArray = ipInput.trim().split(' ').filter(ip => ip.trim() !== '');
         
         if (ipArray.length === 0) {
-          showSpfExternalStatus('Please enter at least one IP address', 'error');
+          showSpfExternalStatus('Please enter at least one IP address or domain', 'error');
           updateSpfExternalStats(0, 0);
           return;
         }
         
-        const validIPs = [];
-        const invalidIPs = [];
+        const validEntries = [];
+        const invalidEntries = [];
         
-        ipArray.forEach(ip => {
-          if (isValidIP(ip)) {
-            validIPs.push(ip);
+        ipArray.forEach(entry => {
+          if (isValidIP(entry)) {
+            validEntries.push(`ip4:${entry}`);
+          } else if (isValidDomain(entry)) {
+            validEntries.push(`include:${entry}`);
           } else {
-            invalidIPs.push(ip);
+            invalidEntries.push(entry);
           }
         });
         
-        if (validIPs.length === 0) {
-          showSpfExternalStatus('No valid IP addresses found', 'error');
+        if (validEntries.length === 0) {
+          showSpfExternalStatus('No valid IP addresses or domains found', 'error');
           updateSpfExternalStats(0, 0);
           return;
         }
         
-        if (invalidIPs.length > 0) {
-          showSpfExternalStatus(`Generated records with ${invalidIPs.length} invalid IP(s) ignored`, 'warning');
+        if (invalidEntries.length > 0) {
+          showSpfExternalStatus(`Generated records with ${invalidEntries.length} invalid entry(ies) ignored`, 'warning');
         } else {
           showSpfExternalStatus(`Successfully generated ${domains.length} SPF records`, 'success');
         }
         
-        const formattedIPs = validIPs.map(ip => `ip4:${ip}`).join(' ');
+        const formattedEntries = validEntries.join(' ');
         
         let resultHTML = '';
         domains.forEach(domain => {
-          const spfRecord = `v=spf1 ${formattedIPs} -all`;
+          const spfRecord = `v=spf1 ${formattedEntries} -all`;
           resultHTML += `
             <div class="record-item">
               <div class="record-content">${domain},${domain},TXT,${spfRecord}</div>
@@ -2797,16 +2813,16 @@
           `;
         });
         
-        if (invalidIPs.length > 0) {
+        if (invalidEntries.length > 0) {
           resultHTML += `
             <div class="record-item error">
-              <div class="record-content">Invalid IPs: ${invalidIPs.join(', ')}</div>
+              <div class="record-content">Invalid entries: ${invalidEntries.join(', ')}</div>
             </div>
           `;
         }
         
         document.getElementById('spf-external-result').innerHTML = resultHTML;
-        updateSpfExternalStats(domains.length, invalidIPs.length);
+        updateSpfExternalStats(domains.length, invalidEntries.length);
       };
       
       window.clearSpfExternalInputs = function() {
